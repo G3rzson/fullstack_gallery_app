@@ -1,0 +1,63 @@
+import { Request, Response } from "express";
+import { galeryTitleFormSchema } from "../../validation/galeryTitleFormSchema";
+import fs from "fs/promises";
+import path from "path";
+import GaleryTitleModel from "../../db/galeryTitleSchema";
+import sanitize from "sanitize-filename";
+
+export async function createGaleryTitle(req: Request, res: Response) {
+  try {
+    const result = galeryTitleFormSchema.safeParse(req.body);
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error!",
+      });
+    }
+
+    const { galeryTitle } = result.data;
+    const safeFolderName = sanitize(galeryTitle);
+    const galeryFolderPath = path.join("uploads", safeFolderName);
+
+    try {
+      await fs.mkdir(galeryFolderPath, { recursive: true });
+    } catch (err: any) {
+      if (err.code === "EEXIST") {
+        return res
+          .status(400)
+          .json({ success: false, message: "Galery title already exists!" });
+      }
+      throw err;
+    }
+
+    const newGaleryTitle = new GaleryTitleModel({
+      galeryTitle,
+      path: galeryFolderPath,
+    });
+
+    try {
+      await newGaleryTitle.save();
+    } catch (error: unknown) {
+      const mongoError = error as { code?: number };
+      if (mongoError.code === 11000) {
+        return res.status(400).json({
+          success: false,
+          message: "Galery title already exists!",
+        });
+      }
+      if (error instanceof Error) console.error(error.message);
+      throw error;
+    }
+
+    return res.json({
+      success: true,
+      message: "Galery title created!",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error!",
+    });
+  }
+}
