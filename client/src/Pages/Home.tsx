@@ -1,11 +1,9 @@
-import GaleryContent from "../Components/Galery/GaleryContent";
-import GaleryNav from "../Components/Galery/GaleryNav";
+import PageTitle from "../Components/Titles/PageTitle";
 
 export default function Home() {
   return (
-    <div className="flex flex-row h-full">
-      <GaleryNav />
-      <GaleryContent />
+    <div className="flex-1">
+      <PageTitle>Home</PageTitle>
     </div>
   );
 }

@@ -1,22 +1,23 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Header from "./Components/Header/Header";
+import { BrowserRouter as Router } from "react-router-dom";
 import Footer from "./Components/Footer/Footer";
-import { ROUTES } from "./Routes/Routes";
 import { Toaster } from "react-hot-toast";
+import HandleRoutes from "./Components/Routes/HandleRoutes";
+import PageNav from "./Components/PageNav/PageNav";
 
 export default function App() {
   return (
     <Router>
-      <Header />
-      <main className="grow">
-        <Toaster position="top-right" />
-        <Routes>
-          {ROUTES.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
-          ))}
-        </Routes>
-      </main>
-      <Footer />
+      <Toaster position="top-right" />
+
+      <div className="flex min-h-screen">
+        <PageNav />
+
+        <div className="flex-1 flex flex-col min-h-0">
+          <HandleRoutes />
+
+          <Footer />
+        </div>
+      </div>
     </Router>
   );
 }

@@ -1,24 +1,39 @@
-import type { FieldErrors, UseFormRegister } from "react-hook-form";
-import type { GaleryTitleFormType } from "../../../Validation/GaleryTitleFormSchema";
+import type {
+  FieldErrors,
+  UseFormRegister,
+  FieldValues,
+  Path,
+} from "react-hook-form";
 
-type Props = {
-  register: UseFormRegister<GaleryTitleFormType>;
-  errors: FieldErrors<GaleryTitleFormType>;
+type Props<T extends FieldValues> = {
+  register: UseFormRegister<T>;
+  errors: FieldErrors<T>;
   placeholder: string;
+  type: string;
+  registerName: Path<T>;
+  multiple?: boolean;
 };
 
-export default function InputField({ register, errors, placeholder }: Props) {
+export default function InputField<T extends FieldValues>({
+  register,
+  errors,
+  placeholder,
+  type,
+  registerName,
+  multiple = false,
+}: Props<T>) {
   return (
     <div className="relative">
       <input
-        {...register("galeryTitle")}
+        {...register(registerName)}
         className="bg-white text-black border-none outline-0 p-2 rounded w-full"
-        type="text"
+        type={type}
         placeholder={placeholder}
+        multiple={!!multiple}
       />
-      {errors.galeryTitle && (
+      {errors[registerName] && (
         <p className="dark:text-red-400 text-red-500 text-sm absolute -bottom-5 left-0">
-          {errors.galeryTitle.message}
+          {String(errors[registerName]?.message)}
         </p>
       )}
     </div>

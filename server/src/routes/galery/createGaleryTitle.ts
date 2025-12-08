@@ -4,6 +4,7 @@ import fs from "fs/promises";
 import path from "path";
 import GaleryTitleModel from "../../db/galeryTitleSchema";
 import sanitize from "sanitize-filename";
+import slugify from "slugify";
 
 export async function createGaleryTitle(req: Request, res: Response) {
   try {
@@ -17,7 +18,21 @@ export async function createGaleryTitle(req: Request, res: Response) {
 
     const { galeryTitle } = result.data;
     const safeFolderName = sanitize(galeryTitle);
+    //console.log("Safe folder name:", safeFolderName);
     const galeryFolderPath = path.join("uploads", safeFolderName);
+
+    const safeUrl = slugify(safeFolderName, {
+      lower: true, // kisbetűs legyen
+      strict: true, // csak a-z0-9 és kötőjel
+    });
+
+    let slug = safeUrl;
+    let counter = 1;
+
+    while (await GaleryTitleModel.findOne({ url: slug })) {
+      slug = `${safeUrl}-${counter}`;
+      counter++;
+    }
 
     try {
       await fs.mkdir(galeryFolderPath, { recursive: true });
@@ -33,6 +48,7 @@ export async function createGaleryTitle(req: Request, res: Response) {
     const newGaleryTitle = new GaleryTitleModel({
       galeryTitle,
       path: galeryFolderPath,
+      url: slug,
     });
 
     try {

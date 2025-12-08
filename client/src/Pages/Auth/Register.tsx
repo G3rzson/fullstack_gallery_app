@@ -1,5 +1,9 @@
-import PageTitle from "../../Components/PageTitle/PageTitle";
+import PageTitle from "../../Components/Titles/PageTitle";
 
 export default function Register() {
-  return <PageTitle>Register</PageTitle>;
+  return (
+    <div className="flex-1">
+      <PageTitle>Register</PageTitle>
+    </div>
+  );
 }
