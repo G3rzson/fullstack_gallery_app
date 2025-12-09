@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import GaleryImageForm from "../../Components/Forms/GaleryImageForm";
+import GaleryImageForm from "../../../../GaleryImageForm";
 import ImageSlider from "../../Components/Galery/ImageSlider";
 
 export default function Galery() {

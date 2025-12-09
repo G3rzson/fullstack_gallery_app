@@ -14,7 +14,7 @@ export default function Authentication() {
   }, [pathName, setShowAuthMenu]);
 
   return (
-    <div className="relative dark:bg-zinc-800 bg-zinc-100 m-4 rounded">
+    <div className="relative dark:bg-zinc-800 bg-zinc-100 m-4 shadow-lg rounded">
       {showAuthMenu && <AuthMenu />}
 
       <button

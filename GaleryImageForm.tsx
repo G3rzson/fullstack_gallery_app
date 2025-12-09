@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
-import InputField from "./Elements/InputField";
-import SubmitBtn from "./Elements/SubmitBtn";
+import InputField from "./client/src/Components/Forms/Elements/InputField";
+import SubmitBtn from "./client/src/Components/Forms/Elements/SubmitBtn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   galeryImagesFormSchema,
   type GaleryImagesFormType,
-} from "../../Validation/GaleryImageFormSchema";
+} from "./client/src/Validation/GaleryImageFormSchema";
 
 type Props = {
   url: string | undefined;
@@ -34,7 +34,7 @@ export default function GaleryImageForm({ url }: Props) {
 
     onSuccess: () => {
       toast.success("Sikeresen létrehozva!");
-      queryClient.invalidateQueries({ queryKey: ["galeryImages"] });
+      queryClient.invalidateQueries({ queryKey: [`galeryImages-${url}`] });
       reset();
     },
 

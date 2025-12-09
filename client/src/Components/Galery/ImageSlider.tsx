@@ -9,15 +9,15 @@ import FetchError from "../Fetch/FetchError";
 import FetchEmpty from "../Fetch/FetchEmpty";
 import { handleErrorMessage } from "../../Functions/handleErrorMessage";
 import { useGetData } from "../../Hooks/useGetData";
+import DeleteImage from "./DeleteImage";
 
-type Props = { url: string | undefined };
-
-export default function ImageSlider({ url }: Props) {
+export default function ImageSlider({ url }: { url: string | undefined }) {
   const [index, setIndex] = useState(0);
 
   const { data, isLoading, isError, error } =
     useGetData<BackendAnswerGaleryImagesType>(
-      `http://localhost:8000/galery/${url}/images`
+      `http://localhost:8000/galery/${url}/images`,
+      `galeryImages-${url}`
     );
 
   const errorMessage = handleErrorMessage(isError, error);
@@ -37,8 +37,12 @@ export default function ImageSlider({ url }: Props) {
     return <FetchEmpty message="Nincsenek elérhető képek a galériában!" />;
 
   return (
-    <div className="relative m-4 h-[60vh] overflow-hidden flex flex-1 flex-col items-center justify-center">
-      <ImageView images={data?.images} index={index} />
+    <div className="relative flex flex-1 items-center justify-center">
+      <div className="h-80 group relative ">
+        <ImageView images={data?.images} index={index} />
+
+        <DeleteImage images={data?.images} index={index} url={url} />
+      </div>
 
       <ImageNavBtn images={data?.images} setIndex={setIndex} direction="prev" />
       <ImageNavBtn images={data?.images} setIndex={setIndex} direction="next" />

@@ -9,6 +9,9 @@ import {
   uploadGaleryImages,
   createGaleryImage,
 } from "./routes/galery/createGaleryImage";
+import { deleteGaleryTitle } from "./routes/galery/deleteGaleryTitle";
+import { deleteGaleryImage } from "./routes/galery/deleteGaleryImage";
+import { editGaleryTitle } from "./routes/galery/editGaleryTitle";
 
 dotenv.config();
 const app = express();
@@ -24,6 +27,9 @@ app.post("/galery/create", createGaleryTitle);
 app.post("/galery/:url", uploadGaleryImages, createGaleryImage);
 app.get("/galery/get-galery-titles", getGaleryTitles);
 app.get("/galery/:url/images", getGaleryImages);
+app.delete("/galery/delete/:id", deleteGaleryTitle);
+app.delete("/galery/image/delete/:id", deleteGaleryImage);
+app.put("/galery/update/:id", editGaleryTitle);
 
 connectToDB().then(() => {
   app.listen(PORT, () =>

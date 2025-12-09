@@ -11,9 +11,9 @@ export default function CustomLink({ children, to, activeLink }: Props) {
     <Link
       className={`${
         activeLink
-          ? "dark:bg-zinc-200 dark:text-zinc-800 bg-zinc-800 text-zinc-100"
-          : ""
-      } block p-4 dark:hover:bg-zinc-200 dark:hover:text-zinc-800 hover:bg-zinc-800 hover:text-zinc-100 duration-300`}
+          ? "dark:bg-zinc-700 bg-zinc-400"
+          : "dark:hover:bg-zinc-600 hover:bg-zinc-300"
+      } block p-4 duration-300`}
       to={to}
     >
       {children}

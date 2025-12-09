@@ -10,7 +10,7 @@ export default function ImageView({ images, index }: Props) {
     <img
       src={`http://localhost:8000${images[index].url}`}
       alt={images[index].filename}
-      className="h-full object-contain"
+      className="h-full w-auto object-contain rounded-xl"
     />
   );
 }

@@ -3,10 +3,11 @@ import axios from "axios";
 
 export function useGetData<T>(
   url?: string,
+  queryKey?: string,
   options?: Omit<UseQueryOptions<T, unknown>, "queryKey" | "queryFn">
 ) {
   return useQuery<T, unknown>({
-    queryKey: [url],
+    queryKey: [queryKey || url],
     queryFn: async () => {
       if (!url) throw new Error("URL is undefined");
       const res = await axios.get(url);
