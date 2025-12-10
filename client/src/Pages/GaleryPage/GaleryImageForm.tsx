@@ -1,6 +1,3 @@
-import toast from "react-hot-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -11,9 +8,10 @@ import InputField from "../../Components/CustomElements/CustomInputField";
 import SubmitBtn from "../../Components/CustomElements/CustomSubmitBtn";
 import CustomInputErrorMsg from "../../Components/CustomElements/CustomInputErrorMsg";
 import { useParams } from "react-router-dom";
+import UsePostMutation from "../../Hooks/UsePostMutation";
 
 export default function GaleryImageForm() {
-  const { url } = useParams<{ url: string }>();
+  const { "url-params": urlParams } = useParams<{ "url-params": string }>();
   const {
     register,
     handleSubmit,
@@ -23,26 +21,12 @@ export default function GaleryImageForm() {
     resolver: zodResolver(galeryImagesFormSchema),
   });
 
-  const queryClient = useQueryClient();
-
-  const addMutation = useMutation({
-    mutationFn: (formData: FormData) =>
-      axios.post(`http://localhost:8000/galery/${url}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      }),
-
-    onSuccess: () => {
-      toast.success("Sikeresen létrehozva!");
-      queryClient.invalidateQueries({ queryKey: [`galeryImages-${url}`] });
-      reset();
-    },
-
-    onError: (error) => {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.message || "Ismeretlen hiba történt!"
-        : "Ismeretlen hiba történt!";
-
-      toast.error(message);
+  const postMutation = UsePostMutation<GaleryImagesFormType>({
+    url: `http://localhost:8000/galery/${urlParams}`,
+    queryKey: `galeryImages-${urlParams}`,
+    reset,
+    axiosConfig: {
+      headers: { "Content-Type": "multipart/form-data" },
     },
   });
 
@@ -55,7 +39,7 @@ export default function GaleryImageForm() {
       );
     }
 
-    addMutation.mutate(formData);
+    postMutation.mutate(formData);
   }
 
   return (
@@ -76,7 +60,7 @@ export default function GaleryImageForm() {
         <CustomInputErrorMsg errors={errors} registerName="galeryImages" />
       </div>
 
-      <SubmitBtn isSubmitting={isSubmitting || addMutation.isPending}>
+      <SubmitBtn isSubmitting={isSubmitting || postMutation.isPending}>
         Képek hozzáadása
       </SubmitBtn>
     </form>

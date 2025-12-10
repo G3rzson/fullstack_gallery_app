@@ -8,7 +8,7 @@ import { Route, Routes } from "react-router-dom";
 const ROUTES = [
   { path: "*", element: <NotFoundPage /> },
   { path: "/", element: <HomePage /> },
-  { path: "/galery/:url", element: <GaleryPage /> },
+  { path: "/galery/:url-params", element: <GaleryPage /> },
   { path: "/auth/login", element: <LoginPage /> },
   { path: "/auth/register", element: <RegisterPage /> },
 ];

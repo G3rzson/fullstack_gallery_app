@@ -6,11 +6,9 @@ import {
 } from "../../../Validation/GaleryTitleFormSchema";
 import InputField from "../../CustomElements/CustomInputField";
 import SubmitBtn from "../../CustomElements/CustomSubmitBtn";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { FaFolderPlus } from "react-icons/fa";
 import CustomInputErrorMsg from "../../CustomElements/CustomInputErrorMsg";
+import UsePostMutation from "../../../Hooks/UsePostMutation";
 
 export default function GaleryTitleForm() {
   const {
@@ -22,30 +20,15 @@ export default function GaleryTitleForm() {
     resolver: zodResolver(galeryTitleFormSchema),
   });
 
-  const queryClient = useQueryClient();
-
-  const addMutation = useMutation({
-    mutationFn: (data: GaleryTitleFormType) =>
-      axios.post("http://localhost:8000/galery/create", data),
-
-    onSuccess: () => {
-      toast.success("Sikeresen létrehozva!");
-      queryClient.invalidateQueries({ queryKey: ["galeryTitles"] });
-      reset();
-    },
-
-    onError: (error) => {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.message || "Ismeretlen hiba történt!"
-        : "Ismeretlen hiba történt!";
-
-      toast.error(message);
-    },
+  const postMutation = UsePostMutation<GaleryTitleFormType>({
+    url: "http://localhost:8000/galery/create",
+    queryKey: "galeryTitles",
+    reset,
   });
 
   function onSubmit(data: GaleryTitleFormType) {
     // console.log(data);
-    addMutation.mutate(data);
+    postMutation.mutate(data);
   }
 
   return (
@@ -64,7 +47,7 @@ export default function GaleryTitleForm() {
         <CustomInputErrorMsg errors={errors} registerName="galeryTitle" />
       </div>
 
-      <SubmitBtn isSubmitting={isSubmitting || addMutation.isPending}>
+      <SubmitBtn isSubmitting={isSubmitting || postMutation.isPending}>
         Létrehozás
         <FaFolderPlus />
       </SubmitBtn>

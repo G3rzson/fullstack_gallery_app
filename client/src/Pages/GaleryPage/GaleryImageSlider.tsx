@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useState } from "react";
 import type { BackendAnswerGaleryImagesType } from "../../Types/types";
 import FetchError from "../../Components/CustomElements/FetchResultError";
 import FetchEmpty from "../../Components/CustomElements/FetchResultEmpty";
 import CustomLoader from "../../Components/CustomElements/CustomLoader";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import { useParams } from "react-router-dom";
@@ -14,37 +10,20 @@ import ImageView from "../../Components/GaleryPageComp/ImageView";
 import ImageNavBtn from "../../Components/GaleryPageComp/ImageNavBtn";
 import DeleteImage from "../../Components/GaleryPageComp/DeleteImage";
 import ImagePagination from "../../Components/GaleryPageComp/ImagePagination";
+import UseGetMutation from "../../Hooks/UseGetMutation";
 
 export default function GaleryImageSlider() {
-  const { url } = useParams<{ url: string }>();
+  const { "url-params": urlParams } = useParams<{ "url-params": string }>();
+  //console.log(urlParams);
   const [index, setIndex] = useState(0);
 
   const { data, isLoading, isError, error } =
-    useQuery<BackendAnswerGaleryImagesType>({
-      queryKey: [`galeryImages-${url}`],
-      queryFn: async () => {
-        const res = await axios.get(
-          `http://localhost:8000/galery/${url}/images`
-        );
-        return res.data;
-      },
+    UseGetMutation<BackendAnswerGaleryImagesType>({
+      queryKey: `galeryImages-${urlParams}`,
+      url: `http://localhost:8000/galery/${urlParams}/images`,
     });
 
-  const errorMessage =
-    isError && axios.isAxiosError(error)
-      ? error.response?.data?.message || "Ismeretlen hiba történt!"
-      : isError
-      ? "Ismeretlen hiba történt!"
-      : null;
-
-  useEffect(() => {
-    if (errorMessage) {
-      toast.error(errorMessage);
-    }
-  }, [errorMessage]);
-
-  if (isError && errorMessage)
-    return <FetchError errorMessage={errorMessage} />;
+  if (isError) return <FetchError error={error} />;
 
   if (isLoading) return <CustomLoader />;
 
@@ -56,7 +35,11 @@ export default function GaleryImageSlider() {
       <div className="h-80 group relative ">
         <ImageView images={data?.images} index={index} />
 
-        <DeleteImage images={data?.images} index={index} url={url} />
+        <DeleteImage
+          images={data?.images}
+          index={index}
+          urlParams={urlParams}
+        />
       </div>
 
       <ImageNavBtn images={data?.images} setIndex={setIndex} direction="next">

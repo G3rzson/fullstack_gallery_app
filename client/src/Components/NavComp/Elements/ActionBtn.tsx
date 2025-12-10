@@ -1,9 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import type { GaleryTitleType } from "../../../Types/types";
 import { useContextProvider } from "../../../Hooks/UseContextProvider";
+import UseDeleteMutation from "../../../Hooks/UseDeleteMutation";
 
 type Props = {
   children: React.ReactNode;
@@ -18,30 +15,12 @@ export default function ActionBtn({
   galeryTitle,
   setIsOpen,
 }: Props) {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const { setEditingGaleryTitleObj } = useContextProvider();
 
-  const deleteMutation = useMutation({
-    mutationFn: () => {
-      return axios.delete(
-        `http://localhost:8000/galery/delete/${galeryTitle._id}`
-      );
-    },
-
-    onSuccess: () => {
-      toast.success("Sikeresen törölve!");
-      queryClient.invalidateQueries({ queryKey: ["galeryTitles"] });
-      navigate("/");
-    },
-
-    onError: (error) => {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.message || "Ismeretlen hiba történt!"
-        : "Ismeretlen hiba történt!";
-
-      toast.error(message);
-    },
+  const deleteMutation = UseDeleteMutation({
+    queryKey: "galeryTitles",
+    url: `http://localhost:8000/galery/delete/${galeryTitle._id}`,
+    withNavigation: true,
   });
 
   function handleClick() {

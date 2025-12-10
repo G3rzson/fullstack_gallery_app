@@ -6,13 +6,10 @@ import {
   galeryTitleFormSchema,
   type GaleryTitleFormType,
 } from "../../../Validation/GaleryTitleFormSchema";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import type { GaleryTitleType } from "../../../Types/types";
 import CustomInputErrorMsg from "../../CustomElements/CustomInputErrorMsg";
+import UsePutMutation from "../../../Hooks/UsePutMutation";
 
 type Props = {
   galeryTitle: GaleryTitleType;
@@ -21,10 +18,7 @@ type Props = {
 export default function GaleryEditItem({ galeryTitle }: Props) {
   const { editingGaleryTitleObj, setEditingGaleryTitleObj } =
     useContextProvider();
-  const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const {
     register,
@@ -51,42 +45,17 @@ export default function GaleryEditItem({ galeryTitle }: Props) {
     }
   }, [editingGaleryTitleObj, reset]);
 
-  const editMutation = useMutation({
-    mutationFn: (data: GaleryTitleFormType) =>
-      axios.put(
-        `http://localhost:8000/galery/update/${editingGaleryTitleObj?._id}`,
-        data
-      ),
-
-    onSuccess: (response) => {
-      toast.success("Sikeresen frissítve!");
-      queryClient.invalidateQueries({ queryKey: ["galeryTitles"] });
-      setEditingGaleryTitleObj(null);
-      reset();
-
-      // Ha az URL változott és a felhasználó ezen a galérián van, navigálunk az új URL-re
-      const newUrl = response.data?.data?.url;
-      const oldUrl = galeryTitle.url;
-      if (newUrl && oldUrl && newUrl !== oldUrl) {
-        // Ellenőrizzük, hogy az aktuális oldalon vagyunk-e ezen a galérián
-        if (location.pathname === `/galery/${oldUrl}`) {
-          navigate(`/galery/${newUrl}`, { replace: true });
-        }
-      }
-    },
-
-    onError: (error) => {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.message || "Ismeretlen hiba történt!"
-        : "Ismeretlen hiba történt!";
-
-      toast.error(message);
-    },
+  const putMutation = UsePutMutation<GaleryTitleFormType>({
+    url: `http://localhost:8000/galery/update/${editingGaleryTitleObj?._id}`,
+    queryKey: "galeryTitles",
+    reset,
+    setEditingGaleryTitleObj,
+    galeryTitle,
   });
 
   function onSubmit(data: GaleryTitleFormType) {
     // console.log(data);
-    editMutation.mutate(data);
+    putMutation.mutate(data);
   }
   return (
     <form
