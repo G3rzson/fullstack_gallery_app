@@ -1,8 +1,8 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import Footer from "./Components/Footer/Footer";
 import { Toaster } from "react-hot-toast";
-import HandleRoutes from "./Components/Routes/HandleRoutes";
-import PageNav from "./Components/PageNav/PageNav";
+import HandleRoutes from "./Routes/HandleRoutes";
+import PageNav from "./Components/NavComp/PageNav";
 
 export default function App() {
   return (

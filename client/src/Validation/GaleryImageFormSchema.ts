@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 export const galeryImagesFormSchema = z.object({
@@ -13,7 +13,7 @@ export const galeryImagesFormSchema = z.object({
     .refine(
       (files) =>
         !!files && Array.from(files).every((f) => f.size <= MAX_FILE_SIZE),
-      "Egy fájl max 5 MB lehet!"
+      "Egy fájl max 10 MB lehet!"
     )
     .refine(
       (files) =>
