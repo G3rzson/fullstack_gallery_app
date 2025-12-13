@@ -1,13 +1,10 @@
 import { Schema, model, models } from "mongoose";
+import { GaleryTitleType } from "../types/types";
 
-type GaleryTitleType = {
-  galeryTitle: string;
-  path: string;
-  url: string;
-};
+type GaleryTitleSchemaType = Omit<GaleryTitleType, "_id">;
 
 // Schema
-const galeryTitleSchema = new Schema<GaleryTitleType>({
+const galeryTitleSchema = new Schema<GaleryTitleSchemaType>({
   galeryTitle: { type: String, required: true, unique: true },
   path: { type: String },
   url: { type: String },
@@ -15,6 +12,6 @@ const galeryTitleSchema = new Schema<GaleryTitleType>({
 // Model
 const GaleryTitleModel =
   models.GaleryTitle ||
-  model<GaleryTitleType>("GaleryTitle", galeryTitleSchema);
+  model<GaleryTitleSchemaType>("GaleryTitle", galeryTitleSchema);
 
 export default GaleryTitleModel;

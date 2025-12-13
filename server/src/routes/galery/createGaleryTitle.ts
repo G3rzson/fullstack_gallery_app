@@ -12,7 +12,7 @@ export async function createGaleryTitle(req: Request, res: Response) {
     if (!result.success) {
       return res.status(400).json({
         success: false,
-        message: "Validation error!",
+        message: "Hibás adat!",
       });
     }
 
@@ -40,7 +40,7 @@ export async function createGaleryTitle(req: Request, res: Response) {
       if (err.code === "EEXIST") {
         return res
           .status(400)
-          .json({ success: false, message: "Galery title already exists!" });
+          .json({ success: false, message: "Galéria már létezik!" });
       }
       throw err;
     }
@@ -58,7 +58,7 @@ export async function createGaleryTitle(req: Request, res: Response) {
       if (mongoError.code === 11000) {
         return res.status(400).json({
           success: false,
-          message: "Galery title already exists!",
+          message: "Galéria már létezik!",
         });
       }
       if (error instanceof Error) console.error(error.message);
@@ -67,13 +67,13 @@ export async function createGaleryTitle(req: Request, res: Response) {
 
     return res.json({
       success: true,
-      message: "Galery title created!",
+      message: "Galéria létrehozva!",
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
       success: false,
-      message: "Server error!",
+      message: "Szerver hiba!",
     });
   }
 }

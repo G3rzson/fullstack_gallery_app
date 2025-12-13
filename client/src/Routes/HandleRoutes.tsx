@@ -1,8 +1,8 @@
-import LoginPage from "../Pages/Auth/LoginPage";
-import RegisterPage from "../Pages/Auth/RegisterPage";
+import LoginPage from "../Pages/Auth/Login/LoginPage";
+import RegisterPage from "../Pages/Auth/Register/RegisterPage";
 import GaleryPage from "../Pages/GaleryPage/GaleryPage";
-import HomePage from "../Pages/HomePage";
-import NotFoundPage from "../Pages/NotFoundPage";
+import HomePage from "../Pages/Home/HomePage";
+import NotFoundPage from "../Pages/NotFound/NotFoundPage";
 import { Route, Routes } from "react-router-dom";
 
 const ROUTES = [

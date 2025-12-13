@@ -61,12 +61,10 @@ export async function editGaleryTitle(req: Request, res: Response) {
     } catch (fsError: unknown) {
       if ((fsError as NodeJS.ErrnoException)?.code !== "ENOENT") {
         console.error("File system error:", fsError);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            message: "Hiba a galéria mappa átnevezése közben.",
-          });
+        return res.status(500).json({
+          success: false,
+          message: "Hiba a galéria mappa átnevezése közben.",
+        });
       }
       // Ha nem létezett a régi mappa, folytatjuk
     }

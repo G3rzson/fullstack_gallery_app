@@ -6,7 +6,7 @@ import sanitize from "sanitize-filename";
 import GaleryTitleModel from "../../db/galeryTitleSchema";
 import GaleryImageModel from "../../db/galeryImageSchema";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 const storage = multer.diskStorage({
@@ -83,7 +83,11 @@ export async function createGaleryImage(
     // Save to DB
     await GaleryImageModel.insertMany(saved);
 
-    return res.json({ success: true, images: saved });
+    return res.json({
+      success: true,
+      message: "Images uploaded successfully",
+      data: saved,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ success: false, message: "Server error!" });

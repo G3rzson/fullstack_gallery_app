@@ -5,12 +5,7 @@ export type GaleryTitleType = {
   url: string;
 };
 
-export type BackendAnswerGaleryTitleType = {
-  success: boolean;
-  galeryTitles: GaleryTitleType[];
-};
-
-export type GaleryImagesType = {
+export type GaleryImageType = {
   _id: string;
   filename: string;
   url: string;
@@ -18,7 +13,15 @@ export type GaleryImagesType = {
   createdAt?: Date;
 };
 
-export type BackendAnswerGaleryImagesType = {
+type BaseResponseType = {
   success: boolean;
-  images: GaleryImagesType[];
+  message: string;
 };
+
+export type WithAuthInfoType = {
+  accessToken: string;
+  user: string;
+};
+
+export type ResponseType<T = undefined> = BaseResponseType &
+  (T extends undefined ? {} : { data: T });

@@ -22,10 +22,8 @@ export async function deleteGaleryTitle(req: Request, res: Response) {
     }
 
     try {
-      // 1. Töröljük a fájlrendszerből a galéria mappáját és annak tartalmát
       await fs.rm(galeryTitleObj.path, { recursive: true, force: true });
     } catch (fsError: unknown) {
-      // Ha a mappa nem létezik, folytatjuk (lehet már törölve lett)
       if ((fsError as NodeJS.ErrnoException)?.code !== "ENOENT") {
         console.error("File system error:", fsError);
         return res.status(500).json({
@@ -35,7 +33,6 @@ export async function deleteGaleryTitle(req: Request, res: Response) {
       }
     }
 
-    // 2. Ha a mappa törlés sikeres (vagy nem létezett), töröljük az adatbázisból
     await Promise.all([
       GaleryTitleModel.findByIdAndDelete(galeryTitleId),
       GaleryImageModel.deleteMany({ galeryUrl: galeryTitleObj.url }),

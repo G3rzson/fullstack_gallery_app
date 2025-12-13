@@ -1,6 +1,10 @@
 import { FaTrash } from "react-icons/fa";
-import type { GaleryImagesType } from "../../Types/types";
-import UseDeleteMutation from "../../Hooks/UseDeleteMutation";
+import type { GaleryImagesType, ResponseType } from "../../Types/types";
+import api from "../../api/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 type Props = {
   images: GaleryImagesType[];
@@ -9,9 +13,33 @@ type Props = {
 };
 
 export default function DeleteImage({ images, index, urlParams }: Props) {
-  const deleteMutation = UseDeleteMutation({
-    queryKey: `galeryImages-${urlParams}`,
-    url: `http://localhost:8000/galery/image/delete/${images[index]._id}`,
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const deleteMutation = useMutation({
+    mutationFn: () => {
+      return api.delete<ResponseType>(
+        `http://localhost:8000/galery/image/delete/${images[index]._id}`
+      );
+    },
+
+    onSuccess: () => {
+      toast.success("Sikeresen törölve!");
+      queryClient.invalidateQueries({
+        queryKey: [`galeryImages-${urlParams}`],
+      });
+      if (images.length === 0) {
+        navigate("/");
+      }
+    },
+
+    onError: (error) => {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || "Ismeretlen hiba történt!"
+        : "Ismeretlen hiba történt!";
+
+      toast.error(message);
+    },
   });
 
   return (

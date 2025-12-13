@@ -1,5 +1,3 @@
-import { nextImageFn } from "../../Functions/nextImageFn";
-import { prevImageFn } from "../../Functions/prevImageFn";
 import type { GaleryImagesType } from "../../Types/types";
 
 type Props = {
@@ -19,8 +17,8 @@ export default function ImageNavBtn({
     <button
       onClick={
         direction === "prev"
-          ? () => prevImageFn(setIndex, images)
-          : () => nextImageFn(setIndex, images)
+          ? () => setIndex((i) => (i - 1 + images.length) % images.length)
+          : () => setIndex((i) => (i + 1) % images.length)
       }
       className={`absolute top-1/2 -translate-y-1/2 bg-transparent cursor-pointer ${
         direction === "prev" ? "left-5" : "right-5"
