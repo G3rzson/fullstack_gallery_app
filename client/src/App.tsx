@@ -2,8 +2,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Footer from "./Components/Footer/Footer";
 import { Toaster } from "react-hot-toast";
 import HandleRoutes from "./Routes/HandleRoutes";
-import { useAxiosInterceptor } from "./api/api";
 import NavPage from "./Components/NavComp/NavPage";
+import { useAxiosInterceptor } from "./Hooks/useAxiosInterceptor";
 
 export default function App() {
   useAxiosInterceptor();

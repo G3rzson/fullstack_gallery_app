@@ -37,14 +37,12 @@ app.use(
 app.use("/uploads", express.static("uploads"));
 
 app.post("/galery/galery-title/create", createGaleryTitle);
-
 app.get("/galery/galery-titles/get", getGaleryTitles);
 app.post("/galery/:url", uploadGaleryImages, createGaleryImage);
 app.get("/galery/:url/images", getGaleryImages);
 app.delete("/galery/delete/:id", deleteGaleryTitle);
 app.delete("/galery/image/delete/:id", deleteGaleryImage);
 app.put("/galery/update/:id", editGaleryTitle);
-
 app.post("/auth/register", registerUser);
 app.post("/auth/login", loginUser);
 app.post("/auth/logout", logoutUser);

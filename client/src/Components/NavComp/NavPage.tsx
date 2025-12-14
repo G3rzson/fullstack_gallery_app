@@ -1,18 +1,52 @@
 import GaleryLinks from "./GaleryLinks/GaleryLinks";
 import GaleryTitleForm from "./GaleryTitleForm/GaleryTitleForm";
-import Auth from "./Auth/Auth";
-import HomeLink from "./HomeLink/HomeLink";
+import { useState } from "react";
+import AuthComp from "./Auth/AuthComp";
+import { IoExitOutline } from "react-icons/io5";
+import { Link, useMatch } from "react-router-dom";
 
 export default function NavPage() {
+  const [isNavOpen, setIsNavOpen] = useState(true);
+  const isActive = !!useMatch("/");
+
   return (
-    <nav className="w-48 h-screen dark:bg-zinc-900 bg-zinc-200 flex flex-col justify-between">
-      <HomeLink />
+    <nav
+      className={`${
+        isNavOpen ? "w-48" : "w-12"
+      } h-screen relative dark:bg-zinc-900 bg-zinc-200 flex flex-col justify-between`}
+    >
+      <button
+        aria-label={isNavOpen ? "Oldalsáv bezárása" : "Oldalsáv megnyitása"}
+        className={`${
+          isNavOpen ? "rotate-y-180" : "rotate-y-0"
+        } border-none outline-none cursor-pointer absolute top-4 right-3 transition-transform duration-300`}
+        onClick={() => setIsNavOpen((prev) => !prev)}
+      >
+        <abbr title={isNavOpen ? "Oldalsáv bezárása" : "Oldalsáv megnyitása"}>
+          <IoExitOutline size={24} />
+        </abbr>
+      </button>
 
-      <GaleryTitleForm />
+      {isNavOpen && (
+        <div className=" h-screen flex flex-col justify-between">
+          <Link
+            className={`${
+              isActive
+                ? "dark:bg-zinc-700 bg-zinc-400"
+                : "dark:hover:bg-zinc-600 hover:bg-zinc-300"
+            } block p-4 duration-300`}
+            to="/"
+          >
+            Főoldal
+          </Link>
 
-      <GaleryLinks />
+          <GaleryTitleForm />
 
-      <Auth />
+          <GaleryLinks />
+
+          <AuthComp />
+        </div>
+      )}
     </nav>
   );
 }

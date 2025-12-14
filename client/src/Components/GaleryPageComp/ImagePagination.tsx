@@ -1,7 +1,7 @@
-import type { GaleryImagesType } from "../../Types/types";
+import type { GaleryImageType } from "../../Types/types";
 
 type Props = {
-  images: GaleryImagesType[];
+  images: GaleryImageType[];
   setIndex: React.Dispatch<React.SetStateAction<number>>;
   index: number;
 };

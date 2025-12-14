@@ -1,5 +1,5 @@
 import { FaCheck } from "react-icons/fa";
-import { useContextProvider } from "../../../Hooks/UseContextProvider";
+import { useContextProvider } from "../../../Hooks/useContextProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -7,21 +7,15 @@ import {
   type GaleryTitleFormType,
 } from "../../../Validation/GaleryTitleFormSchema";
 import { useEffect, useRef } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "../../../api/api";
-import type { GaleryTitleType, ResponseType } from "../../../Types/types";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useGaleryTitleUpdate } from "../../../Hooks/useGaleryTitleUpdate";
 
-export default function GaleryEditItem() {
+export default function GaleryUpdateForm() {
   const { editingGaleryTitleObj, setEditingGaleryTitleObj } =
     useContextProvider();
   const navigate = useNavigate();
   const location = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
-  const queryClient = useQueryClient();
-
   const {
     register,
     handleSubmit,
@@ -35,6 +29,7 @@ export default function GaleryEditItem() {
   });
 
   useEffect(() => {
+    // Beallítja az aktuális galéria címet az input mezőbe és fókuszál rá
     if (editingGaleryTitleObj?.galeryTitle) {
       reset({ galeryTitle: editingGaleryTitleObj.galeryTitle });
     }
@@ -47,45 +42,23 @@ export default function GaleryEditItem() {
     }
   }, [editingGaleryTitleObj, reset]);
 
-  const putMutation = useMutation({
-    mutationFn: async (data: GaleryTitleFormType) => {
-      const response = await api.put<ResponseType<GaleryTitleType>>(
-        `/galery/update/${editingGaleryTitleObj?._id}`,
-        data
-      );
-      return response.data;
-    },
-
-    onSuccess: (data) => {
-      toast.success(data.message || "Sikeres átnevezés!");
-      queryClient.invalidateQueries({ queryKey: ["galeryTitles"] });
-      const oldUrl = editingGaleryTitleObj?.url;
-      const newUrl = data.data?.url;
-      // If currently on the edited gallery's route, navigate to the new URL
-      if (oldUrl && newUrl) {
-        const currentPath = location.pathname;
-        if (currentPath === `/galery/${oldUrl}`) {
-          navigate(`/galery/${newUrl}`, { replace: true });
-        }
-      }
-      setEditingGaleryTitleObj(null);
-      reset();
-    },
-
-    onError: (error) => {
-      toast.error(
-        `${
-          axios.isAxiosError(error)
-            ? error.response?.data?.message || "Ismeretlen hiba történt!"
-            : "Ismeretlen hiba történt!"
-        }`
-      );
-    },
+  const updateGaleryTitle = useGaleryTitleUpdate({
+    galeryTitleId: editingGaleryTitleObj?._id,
   });
 
   function onSubmit(data: GaleryTitleFormType) {
     //console.log(data);
-    putMutation.mutate(data);
+    updateGaleryTitle.mutate(data, {
+      onSuccess: (data) => {
+        const oldUrl = editingGaleryTitleObj?.url;
+        const newUrl = data.data?.url;
+        if (oldUrl && newUrl && location.pathname === `/galery/${oldUrl}`) {
+          navigate(`/galery/${newUrl}`, { replace: true });
+        }
+        setEditingGaleryTitleObj(null);
+        reset();
+      },
+    });
   }
 
   return (
@@ -111,7 +84,7 @@ export default function GaleryEditItem() {
         )}
       </div>
       <button
-        disabled={putMutation.isPending}
+        disabled={updateGaleryTitle.isPending}
         type="submit"
         className="cursor-pointer disabled:cursor-not-allowed"
       >
