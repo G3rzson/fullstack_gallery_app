@@ -21,8 +21,10 @@ export default function Galery() {
     resolver: zodResolver(galeryImagesFormSchema),
   });
 
-  const postMutation = useGaleryImageCreate({ urlParams: urlParams });
+  // galéria kép feltöltés deklaráció
+  const uploadImageMutation = useGaleryImageCreate({ urlParams: urlParams });
 
+  // űrlap elküldése
   function onSubmit(data: GaleryImagesFormType) {
     // Build FormData from the FileList (append all files)
     const formData = new FormData();
@@ -32,12 +34,16 @@ export default function Galery() {
       );
     }
 
-    postMutation.mutate(formData, {
+    uploadImageMutation.mutate(formData, {
       onSuccess: () => {
         reset();
       },
     });
   }
+
+  /* ----------------------------------------------------
+     | todo : max 10 képet lehessen egyszerre feltölteni   |
+     ------------------------------------------------------ */
 
   return (
     <div className="flex flex-1 flex-col">
@@ -51,6 +57,7 @@ export default function Galery() {
             className="bg-white text-black border-none outline-0 p-2 rounded w-full"
             type="file"
             multiple
+            id="galeryImages"
             accept="image/*"
             aria-label="Képek input mezője"
           />
@@ -65,7 +72,7 @@ export default function Galery() {
         <button
           className="cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-4 disabled:bg-zinc-500 disabled:hover:bg-zinc-500 dark:bg-green-800 dark:hover:bg-green-600 dark:text-zinc-100 bg-green-300 hover:bg-green-500 text-zinc-900 p-2 rounded duration-300"
           type="submit"
-          disabled={postMutation.isPending}
+          disabled={uploadImageMutation.isPending}
         >
           Képek hozzáadása
         </button>

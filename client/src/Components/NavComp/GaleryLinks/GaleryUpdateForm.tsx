@@ -14,7 +14,7 @@ export default function GaleryUpdateForm() {
   const { editingGaleryTitleObj, setEditingGaleryTitleObj } =
     useContextProvider();
   const navigate = useNavigate();
-  const location = useLocation();
+  const { pathname } = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
   const {
     register,
@@ -28,8 +28,8 @@ export default function GaleryUpdateForm() {
     },
   });
 
+  // Beallítja az aktuális galéria címet az input mezőbe és fókuszál rá
   useEffect(() => {
-    // Beallítja az aktuális galéria címet az input mezőbe és fókuszál rá
     if (editingGaleryTitleObj?.galeryTitle) {
       reset({ galeryTitle: editingGaleryTitleObj.galeryTitle });
     }
@@ -42,17 +42,19 @@ export default function GaleryUpdateForm() {
     }
   }, [editingGaleryTitleObj, reset]);
 
+  // Galéria cím frissítése hook
   const updateGaleryTitle = useGaleryTitleUpdate({
     galeryTitleId: editingGaleryTitleObj?._id,
   });
 
+  // Űrlap elküldése
   function onSubmit(data: GaleryTitleFormType) {
     //console.log(data);
     updateGaleryTitle.mutate(data, {
       onSuccess: (data) => {
         const oldUrl = editingGaleryTitleObj?.url;
         const newUrl = data.data?.url;
-        if (oldUrl && newUrl && location.pathname === `/galery/${oldUrl}`) {
+        if (oldUrl && newUrl && pathname === `/galery/${oldUrl}`) {
           navigate(`/galery/${newUrl}`, { replace: true });
         }
         setEditingGaleryTitleObj(null);
@@ -74,6 +76,8 @@ export default function GaleryUpdateForm() {
             inputRef.current = e;
           }}
           type="text"
+          id="galeryTitle"
+          aria-label="Galéria átnevezése input"
           className="w-full dark:text-zinc-100 text-zinc-900 border-none outline-0"
         />
 
@@ -87,6 +91,7 @@ export default function GaleryUpdateForm() {
         disabled={updateGaleryTitle.isPending}
         type="submit"
         className="cursor-pointer disabled:cursor-not-allowed"
+        aria-label="Galéria cím mentése gomb"
       >
         <FaCheck color="green" />
       </button>

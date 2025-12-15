@@ -1,18 +1,51 @@
 import { Link, useLocation } from "react-router-dom";
-import type { ResponseType, GaleryTitleType } from "../../../Types/types";
-import { useState } from "react";
+import type { GaleryTitleType } from "../../../Types/types";
+import { useEffect, useRef, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import DropdownMenu from "./DropdownMenu";
 
 type Props = {
   galeryTitleObj: GaleryTitleType;
-  data: ResponseType<GaleryTitleType[]>;
+  galeryTitleArray: GaleryTitleType[];
 };
 
-export default function GaleryLinkItem({ galeryTitleObj, data }: Props) {
+export default function GaleryLinkItem({
+  galeryTitleObj,
+  galeryTitleArray,
+}: Props) {
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const activeLink = pathname === `/galery/${galeryTitleObj.url}`;
+
+  // Route váltáskor DropdownMenu bezár
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  // Outside clickre DropdownMenu bezár
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      // Ha a kattintás az DropdownMenu-n kívül történt bezárja az DropdownMenu-t
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    // Csak akkor figyelje az eseményt, ha az dropdown nyitva van
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    // Takarítás, minden esetben eltávolítja az eseményfigyelőt
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
     <li className="relative">
       <Link
@@ -32,7 +65,8 @@ export default function GaleryLinkItem({ galeryTitleObj, data }: Props) {
             <DropdownMenu
               galeryTitleObj={galeryTitleObj}
               setIsOpen={setIsOpen}
-              data={data}
+              galeryTitleArray={galeryTitleArray}
+              dropdownRef={dropdownRef}
             />
           )}
 

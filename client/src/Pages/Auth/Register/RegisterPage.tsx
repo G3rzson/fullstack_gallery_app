@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuthRegister from "../../../Hooks/useAuthRegister";
 import {
   registerFormSchema,
@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function Register() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -17,12 +18,15 @@ export default function Register() {
     resolver: zodResolver(registerFormSchema),
   });
 
+  // regisztráció hook deklarálása
   const postMutation = useAuthRegister();
 
+  // űrlap elküldése
   function onSubmit(data: RegisterFormType) {
     postMutation.mutate(data, {
       onSuccess: () => {
         reset();
+        navigate("/auth/login");
       },
     });
   }
@@ -39,6 +43,7 @@ export default function Register() {
             {...register("username")}
             className="bg-white text-black border-none outline-0 p-2 rounded w-full"
             type="text"
+            id="username"
             placeholder="Felhasználónév"
             aria-label="Felhasználónév"
           />
@@ -55,6 +60,7 @@ export default function Register() {
             {...register("email")}
             className="bg-white text-black border-none outline-0 p-2 rounded w-full"
             type="text"
+            id="email"
             placeholder="Email"
             aria-label="Email"
           />
@@ -71,6 +77,7 @@ export default function Register() {
             {...register("password")}
             className="bg-white text-black border-none outline-0 p-2 rounded w-full"
             type="password"
+            id="password"
             placeholder="Jelszó"
             aria-label="Jelszó"
           />

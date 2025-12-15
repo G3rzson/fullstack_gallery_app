@@ -6,11 +6,11 @@ import {
   type LoginFormType,
 } from "../../../Validation/LoginFormSchema";
 import useAuthLogin from "../../../Hooks/useAuthLogin";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const { setAccessToken, setUser } = useContextProvider();
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -20,14 +20,17 @@ export default function Login() {
     resolver: zodResolver(loginFormSchema),
   });
 
+  // bejelenkezés hook deklarálása
   const loginUserMutation = useAuthLogin();
 
+  // űrlap elküldése
   function onSubmit(data: LoginFormType) {
     loginUserMutation.mutate(data, {
       onSuccess: (data) => {
         setAccessToken(data.data.accessToken);
         setUser(data.data.user);
         reset();
+        navigate("/");
       },
     });
   }
@@ -44,6 +47,7 @@ export default function Login() {
             {...register("username")}
             className="bg-white text-black border-none outline-0 p-2 rounded w-full"
             type="text"
+            id="username"
             placeholder="Felhasználónév"
             aria-label="Felhasználónév"
             autoFocus
@@ -61,6 +65,7 @@ export default function Login() {
             {...register("password")}
             className="bg-white text-black border-none outline-0 p-2 rounded w-full"
             type="password"
+            id="password"
             placeholder="Jelszó"
             aria-label="Jelszó"
           />

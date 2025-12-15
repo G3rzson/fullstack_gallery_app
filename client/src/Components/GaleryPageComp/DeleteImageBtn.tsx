@@ -1,30 +1,41 @@
 import { FaTrash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import type { GaleryImageType } from "../../Types/types";
 import useGaleryImageDelete from "../../Hooks/useGaleryImageDelete";
+import { useEffect } from "react";
 
 type Props = {
-  images: GaleryImageType[];
-  index: number;
+  imageObj: GaleryImageType;
   urlParams: string | undefined;
 };
 
-export default function DeleteImageBtn({ images, index, urlParams }: Props) {
-  const navigate = useNavigate();
+export default function DeleteImageBtn({ imageObj, urlParams }: Props) {
+  // ha nincs kép, ne jelenítsen meg semmit
+  if (!imageObj) return null;
 
+  // figyeli a billentyűzet eseményeket
+  function handleKeyDown(event: KeyboardEvent) {
+    if (event.key === "Delete") {
+      handleDelete();
+    }
+  }
+
+  // billentyűzet események kezelése
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleDelete]);
+
+  // törlés hook definíció
   const deleteMutation = useGaleryImageDelete({
-    imageId: images[index]._id,
+    imageId: imageObj._id,
     urlParams,
   });
 
+  // kép törlése függvény
   function handleDelete() {
-    deleteMutation.mutate(undefined, {
-      onSuccess: () => {
-        if (images.length === 1) {
-          navigate("/");
-        }
-      },
-    });
+    deleteMutation.mutate();
   }
 
   return (

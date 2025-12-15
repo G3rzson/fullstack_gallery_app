@@ -8,12 +8,15 @@ type Props = {
 
 export default function useGaleryImageGet({ urlParams }: Props) {
   return useQuery({
-    queryKey: [`galeryImages-${urlParams}`],
+    queryKey: ["galeryImages", urlParams],
     queryFn: async () => {
       const res = await api.get<ResponseType<GaleryImageType[]>>(
         `http://localhost:8000/galery/${urlParams}/images`
       );
       return res.data;
     },
+
+    // csak akkor fusson le, ha van urlParams
+    enabled: !!urlParams,
   });
 }

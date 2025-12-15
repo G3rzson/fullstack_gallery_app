@@ -6,6 +6,7 @@ import {
 } from "../../../Validation/GaleryTitleFormSchema";
 import { FaFolderPlus } from "react-icons/fa";
 import useGaleryTitleCreate from "../../../Hooks/useGaleryTitleCreate";
+import { useNavigate } from "react-router-dom";
 
 export default function GaleryTitleForm() {
   const {
@@ -16,13 +17,18 @@ export default function GaleryTitleForm() {
   } = useForm<GaleryTitleFormType>({
     resolver: zodResolver(galeryTitleFormSchema),
   });
+  const navigate = useNavigate();
 
+  // galéria cím létrehozása
   const postMutation = useGaleryTitleCreate();
 
+  // űrlap elküldése
   function onSubmit(data: GaleryTitleFormType) {
     postMutation.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         reset();
+
+        navigate(`/galery/${data.data.url}`);
       },
     });
   }
@@ -37,6 +43,7 @@ export default function GaleryTitleForm() {
           {...register("galeryTitle")}
           className="bg-white text-black border-none outline-0 p-2 rounded w-full"
           type="text"
+          id="galeryTitle"
           placeholder="Galéria címe"
           aria-label="Galéria címe"
         />

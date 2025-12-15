@@ -10,18 +10,25 @@ import useGaleryTitleGet from "../../../Hooks/useGaleryTitleGet";
 
 export default function GaleryLinks() {
   const navigate = useNavigate();
-  const location = useLocation().pathname;
+  const { pathname } = useLocation();
   const { editingGaleryTitleObj } = useContextProvider();
 
   // Galéria címek lekérése
   const { data, isLoading, isError, error } = useGaleryTitleGet();
 
+  // Galéria címek tömbje
+  const galeryTitleArray = data?.data || [];
+
   // Ha nincs galéria és a hely jelenleg a /galery, akkor irányítsa át a főoldalra
   useEffect(() => {
-    if (!isLoading && location === "/galery" && data?.data.length === 0) {
+    if (
+      !isLoading &&
+      pathname.startsWith("/galery") &&
+      galeryTitleArray.length === 0
+    ) {
       navigate("/");
     }
-  }, [data, isLoading, location, navigate]);
+  }, [galeryTitleArray, isLoading, pathname, navigate]);
 
   // Hiba kezelés
   if (isError) return <ErrorMsg error={error} />;
@@ -30,19 +37,22 @@ export default function GaleryLinks() {
   if (isLoading) return <Loader />;
 
   // Üres adat kezelés
-  if (!data?.data?.length)
+  if (galeryTitleArray.length === 0)
     return <EmptyData text={"Még nincsenek elérhető galériák!"} />;
 
+  /* ---------------------------------------------------------------------------------------------------------------------------
+     | todo : a galeryLinkitem magassága lekérése js-ben és ha több mint 5 elem van akkor a dropdown menü pozícióját felülírni  |
+     --------------------------------------------------------------------------------------------------------------------------- */
   return (
     <ul className="flex-1 overflow-auto pe-1 me-1 dark:dark">
-      {data.data.map((galeryTitleObj) =>
+      {galeryTitleArray.map((galeryTitleObj) =>
         editingGaleryTitleObj?._id === galeryTitleObj._id ? (
           <GaleryUpdateForm key={galeryTitleObj._id} />
         ) : (
           <GaleryLinkItem
             key={galeryTitleObj._id}
             galeryTitleObj={galeryTitleObj}
-            data={data}
+            galeryTitleArray={galeryTitleArray}
           />
         )
       )}

@@ -22,7 +22,7 @@ export default function useGaleryImageDelete({ imageId, urlParams }: Props) {
 
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [`galeryImages-${urlParams}`],
+        queryKey: ["galeryImages", urlParams],
       });
 
       toast.success(data.message || "Sikeresen törölve!");

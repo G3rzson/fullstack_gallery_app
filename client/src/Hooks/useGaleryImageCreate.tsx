@@ -23,7 +23,7 @@ export default function useGaleryImageCreate({ urlParams }: Props) {
 
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [`galeryImages-${urlParams}`],
+        queryKey: ["galeryImages", urlParams],
       });
 
       toast.success(data.message || "Képek sikeresen feltöltve!");

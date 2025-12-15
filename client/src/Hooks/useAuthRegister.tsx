@@ -17,7 +17,7 @@ export default function useAuthRegister() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["register"] });
 
-      toast.success(data.message || "Sikeres bejelentkezés!");
+      toast.success(data.message || "Sikeres regisztráció!");
     },
 
     onError: (error) => {

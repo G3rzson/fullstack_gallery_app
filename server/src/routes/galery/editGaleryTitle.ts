@@ -77,10 +77,34 @@ export async function editGaleryTitle(req: Request, res: Response) {
     await galeryTitleObj.save();
 
     // Frissítjük a GaleryImage rekordokat
-    await GaleryImageModel.updateMany(
-      { galeryUrl: oldSlug },
-      { galeryUrl: slug }
-    );
+    const imagesToUpdate = await GaleryImageModel.find({ galeryUrl: oldSlug });
+    if (imagesToUpdate.length > 0) {
+      const newFolderName = safeFolderName;
+      const bulkOps = imagesToUpdate.map((img) => {
+        const currentUrl = img.url;
+        // Extract folder segment after "/uploads/"
+        // Example: "/uploads/Galéria/filename.jpg" -> folderSegment = "Galéria"
+        const match = currentUrl.match(/^\/uploads\/([^/]+)\//);
+        const currentFolder = match?.[1];
+        const newPrefix = path.posix.join("/uploads", newFolderName, "/");
+        let newUrl = currentUrl;
+        if (currentFolder) {
+          const currentPrefix = path.posix.join("/uploads", currentFolder, "/");
+          if (currentUrl.startsWith(currentPrefix)) {
+            newUrl = newPrefix + currentUrl.slice(currentPrefix.length);
+          }
+        }
+
+        return {
+          updateOne: {
+            filter: { _id: img._id },
+            update: { $set: { galeryUrl: slug, url: newUrl } },
+          },
+        };
+      });
+
+      await GaleryImageModel.bulkWrite(bulkOps);
+    }
 
     return res.json({
       success: true,

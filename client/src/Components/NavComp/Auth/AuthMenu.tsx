@@ -1,5 +1,5 @@
 import { useContextProvider } from "../../../Hooks/useContextProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthLogout } from "../../../Hooks/useAuthLogout";
 
 type Props = {
@@ -8,7 +8,9 @@ type Props = {
 
 export default function AuthMenu({ setShowAuthMenu }: Props) {
   const { user, setAccessToken, setUser } = useContextProvider();
+  const navigate = useNavigate();
 
+  // kijelentkezés hook definíciója
   const logoutMutation = useAuthLogout();
 
   // kijelentkezés kezelése
@@ -18,9 +20,14 @@ export default function AuthMenu({ setShowAuthMenu }: Props) {
         setAccessToken(null);
         setUser(null);
         setShowAuthMenu(false);
+        navigate("/");
       },
     });
   }
+
+  /* ------------------------------
+     | todo : fiók törlése opció  |
+     ------------------------------ */
 
   return (
     <div className="absolute text-center bottom-12 w-full shadow-lg dark:bg-zinc-800 bg-zinc-100 rounded overflow-hidden">
@@ -28,6 +35,7 @@ export default function AuthMenu({ setShowAuthMenu }: Props) {
         <button
           onClick={handleLogout}
           disabled={logoutMutation.isPending}
+          aria-label="Kijelentkezés"
           className="dark:hover:bg-zinc-600 hover:bg-zinc-300 disabled:cursor-not-allowed w-full p-4 duration-300 cursor-pointer"
         >
           Kijelentkezés

@@ -68,6 +68,7 @@ export async function createGaleryTitle(req: Request, res: Response) {
     return res.json({
       success: true,
       message: "Galéria létrehozva!",
+      data: newGaleryTitle,
     });
   } catch (error) {
     console.error(error);
