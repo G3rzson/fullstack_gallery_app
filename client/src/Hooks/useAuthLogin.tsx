@@ -11,7 +11,7 @@ export default function useAuthLogin() {
   return useMutation({
     mutationFn: async (data: LoginFormType) => {
       const response = await api.post<ResponseType<WithAuthInfoType>>(
-        "/auth/login",
+        "/api/auth/login",
         data
       );
       return response.data;

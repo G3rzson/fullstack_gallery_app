@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import GaleryImageModel from "../../db/galeryImageSchema";
-import type { GaleryImageType } from "../../types/types";
+import GaleryImageModel from "../db/models/galeryImage.model";
+import type { GaleryImageType } from "../types/types";
 
-export async function getGaleryImages(req: Request, res: Response) {
+export async function galeryImageGet(req: Request, res: Response) {
   try {
     const url = req.params.url;
     if (!url)

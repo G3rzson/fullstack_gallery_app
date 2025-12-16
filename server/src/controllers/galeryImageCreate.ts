@@ -3,8 +3,8 @@ import multer from "multer";
 import path from "path";
 import fs from "fs/promises";
 import sanitize from "sanitize-filename";
-import GaleryTitleModel from "../../db/galeryTitleSchema";
-import GaleryImageModel from "../../db/galeryImageSchema";
+import GaleryTitleModel from "../db/models/galeryTitle.model";
+import GaleryImageModel from "../db/models/galeryImage.model";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -47,13 +47,9 @@ const upload = multer({
   fileFilter,
 });
 
-export const uploadGaleryImages = upload.array("galeryImages", 20);
+export const uploadGaleryImagesMW = upload.array("galeryImages", 20);
 
-export async function createGaleryImage(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function galeryImageCreate(req: Request, res: Response) {
   try {
     const url = req.params.url;
     const files = ((req as any).files as any[]) || [];

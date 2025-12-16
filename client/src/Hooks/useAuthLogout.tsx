@@ -10,7 +10,7 @@ export function useAuthLogout() {
   return useMutation({
     mutationFn: async () => {
       const response = await api.post<ResponseType<WithAuthInfoType>>(
-        "http://localhost:8000/auth/logout"
+        "/api/auth/logout"
       );
       return response.data;
     },

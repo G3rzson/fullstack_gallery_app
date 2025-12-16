@@ -10,7 +10,7 @@ export default function useAuthRegister() {
 
   return useMutation({
     mutationFn: async (data: RegisterFormType) => {
-      const response = await api.post<ResponseType>("/auth/register", data);
+      const response = await api.post<ResponseType>("/api/auth/register", data);
       return response.data;
     },
 

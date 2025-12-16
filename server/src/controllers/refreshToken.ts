@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { generateAccessToken } from "../../functions/generateAccessToken";
+import { generateAccessToken } from "../utils/generateAccessToken";
 import dotenv from "dotenv";
 dotenv.config();
 

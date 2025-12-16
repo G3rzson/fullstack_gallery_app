@@ -14,7 +14,7 @@ export default function useGaleryImageCreate({ urlParams }: Props) {
   return useMutation({
     mutationFn: async (data: FormData) => {
       const response = await api.post<ResponseType>(
-        `galery/${urlParams}`,
+        `/api/galery/image/upload/${urlParams}`,
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

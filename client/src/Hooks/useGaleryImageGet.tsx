@@ -11,7 +11,7 @@ export default function useGaleryImageGet({ urlParams }: Props) {
     queryKey: ["galeryImages", urlParams],
     queryFn: async () => {
       const res = await api.get<ResponseType<GaleryImageType[]>>(
-        `http://localhost:8000/galery/${urlParams}/images`
+        `/api/galery/image/get/${urlParams}`
       );
       return res.data;
     },

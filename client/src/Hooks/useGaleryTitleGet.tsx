@@ -7,7 +7,7 @@ export default function useGaleryTitleGet() {
     queryKey: ["galeryTitles"],
     queryFn: async () => {
       const res = await api.get<ResponseType<GaleryTitleType[]>>(
-        "/galery/galery-titles/get"
+        "/api/galery/title/get"
       );
       return res.data;
     },

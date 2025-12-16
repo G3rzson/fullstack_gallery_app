@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import RegisterUserModel from "../../db/registerUserSchema";
-import { generateAccessToken } from "../../functions/generateAccessToken";
-import { generateRefreshToken } from "../../functions/generateRefreshToken";
-import { loginFormSchema } from "../../validation/loginFormSchema";
+import { generateAccessToken } from "../utils/generateAccessToken";
+import { generateRefreshToken } from "../utils/generateRefreshToken";
+import { loginFormSchema } from "../zodSchemas/loginFormSchema";
+import { RegisterUserModel } from "../db/models/registerUser.model";
 
 export async function loginUser(req: Request, res: Response) {
   try {

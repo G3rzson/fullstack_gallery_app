@@ -39,7 +39,7 @@ export default function DeleteImageBtn({ imageObj, urlParams }: Props) {
   }
 
   return (
-    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-zinc-900/70 w-full rounded-b-xl flex items-center justify-center gap-4 p-4">
+    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 duration-300 bg-zinc-900/70 w-full flex items-center justify-center gap-4 p-4">
       <button
         onClick={handleDelete}
         disabled={deleteMutation.isPending}

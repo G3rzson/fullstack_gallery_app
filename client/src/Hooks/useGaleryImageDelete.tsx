@@ -15,7 +15,7 @@ export default function useGaleryImageDelete({ imageId, urlParams }: Props) {
   return useMutation({
     mutationFn: async () => {
       const response = await api.delete<ResponseType>(
-        `http://localhost:8000/galery/image/delete/${imageId}`
+        `/api/galery/image/delete/${imageId}`
       );
       return response.data;
     },

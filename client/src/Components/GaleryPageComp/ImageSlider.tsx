@@ -44,7 +44,7 @@ export default function ImageSlider() {
 
   return (
     <div className="relative flex flex-1 items-center justify-center">
-      <div className="h-80 group relative p-4">
+      <div className="h-80 group relative">
         <img
           src={`http://localhost:8000${imageObj.url}`}
           alt={imageObj.filename}

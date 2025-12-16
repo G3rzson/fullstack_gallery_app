@@ -10,7 +10,7 @@ export default function useGaleryTitleCreate() {
   return useMutation({
     mutationFn: async (data: GaleryTitleFormType) => {
       const response = await api.post<ResponseType<GaleryTitleType>>(
-        "/galery/galery-title/create",
+        "/api/galery/title/create",
         data
       );
       return response.data;

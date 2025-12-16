@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import GaleryImageModel from "../../db/galeryImageSchema";
+import GaleryImageModel from "../db/models/galeryImage.model";
 import fs from "fs/promises";
 import path from "path";
 
-export async function deleteGaleryImage(req: Request, res: Response) {
+export async function galeryImageDelete(req: Request, res: Response) {
   try {
     const galeryImageId = req.params.id;
     //console.log(galeryImageId);

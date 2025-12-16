@@ -13,7 +13,7 @@ export function useGaleryTitleUpdate({ galeryTitleId }: Props) {
   return useMutation({
     mutationFn: async (data: GaleryTitleFormType) => {
       const response = await api.put<ResponseType<GaleryTitleType>>(
-        `/galery/update/${galeryTitleId}`,
+        `/api/galery/title/update/${galeryTitleId}`,
         data
       );
       return response.data;

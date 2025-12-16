@@ -1,13 +1,9 @@
 import { Schema, model, models } from "mongoose";
+import { GaleryImageType } from "../../types/types";
 
-type GaleryImageType = {
-  filename: string;
-  url: string;
-  galeryUrl: string;
-  createdAt?: Date;
-};
+export type galeryImageSchemaType = Omit<GaleryImageType, "_id">;
 
-const galeryImageSchema = new Schema<GaleryImageType>({
+const galeryImageSchema = new Schema<galeryImageSchemaType>({
   filename: { type: String, required: true },
   url: { type: String, required: true },
   galeryUrl: { type: String, required: true },
@@ -16,6 +12,5 @@ const galeryImageSchema = new Schema<GaleryImageType>({
 
 const GaleryImageModel =
   models.GaleryImage ||
-  model<GaleryImageType>("GaleryImage", galeryImageSchema);
-
+  model<galeryImageSchemaType>("GaleryImage", galeryImageSchema);
 export default GaleryImageModel;

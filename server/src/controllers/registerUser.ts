@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import RegisterUserModel from "../../db/registerUserSchema";
-import { registerFormSchema } from "../../validation/registerFormSchema";
+import { registerFormSchema } from "../zodSchemas/registerFormSchema";
+import { RegisterUserModel } from "../db/models/registerUser.model";
 
 export async function registerUser(req: Request, res: Response) {
   try {

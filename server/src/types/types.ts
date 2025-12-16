@@ -12,3 +12,10 @@ export type GaleryImageType = {
   galeryUrl: string;
   createdAt?: Date;
 };
+
+export type RegisterUserType = {
+  _id: string;
+  username: string;
+  email: string;
+  password: string;
+};
