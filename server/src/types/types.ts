@@ -19,3 +19,9 @@ export type RegisterUserType = {
   email: string;
   password: string;
 };
+
+export type RefreshTokenPayload = {
+  user: string;
+  iat: number;
+  exp: number;
+};

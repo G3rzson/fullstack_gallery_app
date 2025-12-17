@@ -1,12 +1,20 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import dotenv from "dotenv";
+dotenv.config();
 
-export async function logoutUser(req: Request, res: Response) {
+export function logoutUserController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User already logged out!" });
+      return res.json({
+        success: true,
+        message: "User logged out successfully!",
+        data: { user: null, accessToken: null },
+      });
     }
 
     return res
@@ -21,11 +29,7 @@ export async function logoutUser(req: Request, res: Response) {
         message: "User logged out successfully!",
         data: { user: null, accessToken: null },
       });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      success: false,
-      message: "Server error!",
-    });
+  } catch (err) {
+    next(err);
   }
 }

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { getGaleryTitlesService } from "../../services/galery.service";
+import { getAllGaleryTitleService } from "../../services/galery/getAllGaleryTitleService";
 
 export async function galeryTitleGetController(
   req: Request,
@@ -7,7 +7,7 @@ export async function galeryTitleGetController(
   next: NextFunction
 ) {
   try {
-    const galeryTitles = await getGaleryTitlesService();
+    const galeryTitles = await getAllGaleryTitleService();
 
     return res.status(200).json({
       success: true,

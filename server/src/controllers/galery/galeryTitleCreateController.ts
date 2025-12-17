@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { createGaleryService } from "../../services/galery.service";
 import { GaleryTitleFormType } from "../../zodSchemas/galeryTitleFormSchema";
+import { createGaleryTitleService } from "../../services/galery/createGaleryTitleService";
 
 export async function galeryTitleCreateController(
   req: Request<{}, {}, GaleryTitleFormType>,
@@ -10,7 +10,7 @@ export async function galeryTitleCreateController(
   try {
     const { galeryTitle } = req.body;
 
-    const galeryTitleObj = await createGaleryService(galeryTitle);
+    const galeryTitleObj = await createGaleryTitleService(galeryTitle);
 
     res.status(201).json({
       success: true,

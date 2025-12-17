@@ -1,11 +1,11 @@
-import { createGaleryTitle } from "../db/repositories/galery.repository";
-import { BadRequestError } from "../errors/BadRequestError";
-import { createSafeGaleryNames } from "../utils/createSafeGaleryNames";
-import { findUniqueSlug } from "../utils/findUniqueSlug";
 import fs from "fs/promises";
 import path from "path";
+import { createSafeGaleryNames } from "../../utils/createSafeGaleryNames";
+import { findUniqueSlug } from "../../utils/findUniqueSlug";
+import { BadRequestError } from "../../errors/BadRequestError";
+import { createGaleryTitle } from "../../db/repositories/galery.repository";
 
-export async function createGaleryService(galeryTitle: string) {
+export async function createGaleryTitleService(galeryTitle: string) {
   // sanitize and create unique folder name and slug
   const { safeFolderName, safeUrl } = createSafeGaleryNames(galeryTitle);
 

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { deleteGaleryService } from "../../services/galery.service";
+import { deleteGaleryTitleService } from "../../services/galery/deleteGaleryTitleService";
 
 export async function galeryTitleDeleteController(
   req: Request,
@@ -9,7 +9,7 @@ export async function galeryTitleDeleteController(
   try {
     const { id } = req.params;
 
-    await deleteGaleryService(id);
+    await deleteGaleryTitleService(id);
 
     res.json({
       success: true,

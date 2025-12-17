@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { GaleryTitleFormType } from "../../zodSchemas/galeryTitleFormSchema";
-import { updateGaleryService } from "../../services/galery.service";
+import { updateGaleryTitleService } from "../../services/galery/updateGaleryTitleService";
 
 type GaleryParams = {
   id: string;
@@ -15,7 +15,7 @@ export async function galeryTitleUpdateController(
     const { id } = req.params;
     const { galeryTitle } = req.body;
 
-    const updatedGalery = await updateGaleryService(id, galeryTitle);
+    const updatedGalery = await updateGaleryTitleService(id, galeryTitle);
 
     res.json({
       success: true,

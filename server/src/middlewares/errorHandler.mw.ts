@@ -10,7 +10,11 @@ export function errorHandlerMW(
 ) {
   console.error(err);
 
-  // Saját, ismert hibák
+  /*---------------------------------------------------------------
+    | külső hiba loggoló szolgáltatások integrációja ide kerülhet |
+    ---------------------------------------------------------------*/
+
+  // handle custom AppErrors
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       success: false,
@@ -18,7 +22,7 @@ export function errorHandlerMW(
     });
   }
 
-  // Ismeretlen hiba → mindig 500
+  //  handle other unexpected errors
   return res.status(500).json({
     success: false,
     message: "Szerver hiba!",

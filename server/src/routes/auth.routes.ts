@@ -1,14 +1,21 @@
 import { Router } from "express";
-import { loginUser } from "../controllers/loginUser";
-import { registerUser } from "../controllers/registerUser";
-import { logoutUser } from "../controllers/logoutUser";
-import { refreshToken } from "../controllers/refreshToken";
+import { registerUserController } from "../controllers/auth/registerUserController";
+import { logoutUserController } from "../controllers/auth/logoutUserController";
+import { loginUserController } from "../controllers/auth/loginUserController";
+import { refreshTokenController } from "../controllers/auth/refreshTokenController";
 
 const authRouter = Router();
 
-authRouter.post("/login", loginUser);
-authRouter.post("/register", registerUser);
-authRouter.post("/logout", logoutUser);
-authRouter.post("/refresh", refreshToken);
+// Login route
+authRouter.post("/login", loginUserController);
+
+// Register route
+authRouter.post("/register", registerUserController);
+
+// Logout route
+authRouter.post("/logout", logoutUserController);
+
+// Refresh token route
+authRouter.post("/refresh", refreshTokenController);
 
 export default authRouter;

@@ -4,6 +4,7 @@ import GaleryTitleModel, {
 } from "../models/galeryTitle.model";
 import { BadRequestError } from "../../errors/BadRequestError";
 import { MongoServerError } from "mongodb";
+import { GaleryImageType } from "../../types/types";
 
 // create galery title
 export async function createGaleryTitle(data: GaleryTitleSchemaType) {
@@ -37,4 +38,23 @@ export async function deleteGaleryTitleById(id: string) {
 // delete galery images by galery URL
 export async function deleteGaleryImagesByUrl(url: string) {
   return await GaleryImageModel.deleteMany({ galeryUrl: url });
+}
+
+// find images by galery URL
+export async function findGaleryImagesByUrl(
+  url: string
+): Promise<GaleryImageType[]> {
+  return GaleryImageModel.find({ galeryUrl: url })
+    .sort({ createdAt: -1 })
+    .lean();
+}
+
+// find galery image by ID
+export async function findGaleryImageById(id: string) {
+  return GaleryImageModel.findById(id);
+}
+
+// delete galery image by ID
+export async function deleteGaleryImageById(id: string) {
+  return GaleryImageModel.findByIdAndDelete(id);
 }

@@ -1,13 +1,13 @@
+import fs from "fs/promises";
 import {
   deleteGaleryImagesByUrl,
   deleteGaleryTitleById,
   findGaleryTitleById,
-} from "../db/repositories/galery.repository";
-import { NotFoundError } from "../errors/NotFoundError";
-import fs from "fs/promises";
+} from "../../db/repositories/galery.repository";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 // delete galery by ID
-export async function deleteGaleryService(galeryTitleId: string) {
+export async function deleteGaleryTitleService(galeryTitleId: string) {
   const galery = await findGaleryTitleById(galeryTitleId);
 
   if (!galery) {

@@ -1,13 +1,16 @@
-import { findGaleryTitleById } from "../db/repositories/galery.repository";
-import { NotFoundError } from "../errors/NotFoundError";
-import { createSafeGaleryNames } from "../utils/createSafeGaleryNames";
-import { findUniqueSlug } from "../utils/findUniqueSlug";
-import { renameGaleryFolder } from "../utils/renameGaleryFolder";
-import { updateGaleryImages } from "../utils/updateGaleryImages";
 import path from "path";
+import { findGaleryTitleById } from "../../db/repositories/galery.repository";
+import { NotFoundError } from "../../errors/NotFoundError";
+import { createSafeGaleryNames } from "../../utils/createSafeGaleryNames";
+import { findUniqueSlug } from "../../utils/findUniqueSlug";
+import { renameGaleryFolder } from "../../utils/renameGaleryFolder";
+import { updateGaleryImages } from "../../utils/updateGaleryImages";
 
 // rename galery folder
-export async function updateGaleryService(galeryId: string, newTitle: string) {
+export async function updateGaleryTitleService(
+  galeryId: string,
+  newTitle: string
+) {
   const galery = await findGaleryTitleById(galeryId);
   if (!galery) {
     throw new NotFoundError("Galéria nem található");
