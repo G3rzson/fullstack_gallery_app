@@ -1,14 +1,14 @@
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useParams } from "react-router-dom";
 import {
   galeryImagesFormSchema,
   type GaleryImagesFormType,
-} from "../../Validation/GaleryImageFormSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams } from "react-router-dom";
-import useGaleryImageCreate from "../../Hooks/useGaleryImageCreate";
-import ImageSlider from "../../Components/GaleryPageComp/ImageSlider";
+} from "../ZodSchemas/GaleryImageFormSchema";
+import useGaleryImageCreate from "../Hooks/useGaleryImageCreate";
+import ImageSlider from "../Components/GaleryPageComp/ImageSlider";
 
-export default function Galery() {
+export default function GaleryImagePage() {
   const params = useParams();
   const urlParams = params["url-params"]!;
 

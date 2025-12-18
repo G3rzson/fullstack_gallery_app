@@ -1,14 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import api from "../api/api";
-import type { GaleryTitleType, ResponseType } from "../Types/types";
+import { api } from "../Axios/api";
 
 export default function useGaleryTitleGet() {
   return useQuery({
     queryKey: ["galeryTitles"],
     queryFn: async () => {
-      const res = await api.get<ResponseType<GaleryTitleType[]>>(
-        "/api/galery/title/get"
-      );
+      const res = await api.get("/api/galery/title/get");
       return res.data;
     },
   });

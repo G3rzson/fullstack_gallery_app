@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function NotFound() {
+export default function NotFoundPage() {
   return (
     <div className="flex items-center justify-center flex-col gap-10 h-full">
       <h1 className="text-3xl">404 | Oldal nem található</h1>

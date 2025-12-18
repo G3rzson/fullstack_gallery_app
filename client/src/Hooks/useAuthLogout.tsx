@@ -1,17 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "../api/api";
-import type { ResponseType, WithAuthInfoType } from "../Types/types";
+import { api } from "../Axios/api";
 import toast from "react-hot-toast";
-import { handleAxiosError } from "../Functions/handleAxiosError";
+import { handleAxiosError } from "../Utils/handleAxiosError";
 
 export function useAuthLogout() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async () => {
-      const response = await api.post<ResponseType<WithAuthInfoType>>(
-        "/api/auth/logout"
-      );
+      const response = await api.post("/api/auth/logout");
       return response.data;
     },
 

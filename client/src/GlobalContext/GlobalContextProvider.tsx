@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { GlobalContext } from "./Context";
 import type { GaleryTitleType } from "../Types/types";
-import api from "../api/api";
+import { refreshApi } from "../Axios/api";
 
 export type ContextType = {
   editingGaleryTitleObj: GaleryTitleType | null;
@@ -23,26 +23,39 @@ export default function GlobalContextProvider({
 }) {
   const [editingGaleryTitleObj, setEditingGaleryTitleObj] =
     useState<GaleryTitleType | null>(null);
+
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [user, setUser] = useState<string | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const restoreSession = async () => {
       try {
-        setIsAuthLoading(true);
-        const res = await api.post("/auth/refresh", {});
-        if (res.data.success) {
-          setAccessToken(res.data?.accessToken);
-          setUser(res.data?.user);
-        }
-      } catch (err) {
-        // remain logged out
+        const { data } = await refreshApi.post("/api/auth/refresh");
+
+        if (!isMounted) return;
+
+        setAccessToken(data.accessToken ?? null);
+        setUser(data.user ?? null);
+      } catch {
+        if (!isMounted) return;
+
+        setAccessToken(null);
+        setUser(null);
       } finally {
-        setIsAuthLoading(false);
+        if (isMounted) {
+          setIsAuthLoading(false);
+        }
       }
     };
+
     restoreSession();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (

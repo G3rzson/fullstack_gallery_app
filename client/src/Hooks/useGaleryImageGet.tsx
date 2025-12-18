@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import api from "../api/api";
-import type { GaleryImageType, ResponseType } from "../Types/types";
-
+import { api } from "../Axios/api";
 type Props = {
   urlParams: string | undefined;
 };
@@ -10,9 +8,7 @@ export default function useGaleryImageGet({ urlParams }: Props) {
   return useQuery({
     queryKey: ["galeryImages", urlParams],
     queryFn: async () => {
-      const res = await api.get<ResponseType<GaleryImageType[]>>(
-        `/api/galery/image/get/${urlParams}`
-      );
+      const res = await api.get(`/api/galery/image/get/${urlParams}`);
       return res.data;
     },
 

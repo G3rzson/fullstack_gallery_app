@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "../api/api";
+import { api } from "../Axios/api";
 import toast from "react-hot-toast";
-import { handleAxiosError } from "../Functions/handleAxiosError";
-import type { ResponseType } from "../Types/types";
+import { handleAxiosError } from "../Utils/handleAxiosError";
 
 type Props = {
   galeryTitleId: string;
@@ -13,7 +12,7 @@ export default function useGaleryTitleDelete({ galeryTitleId }: Props) {
 
   return useMutation({
     mutationFn: async () => {
-      const response = await api.delete<ResponseType>(
+      const response = await api.delete(
         `/api/galery/title/delete/${galeryTitleId}`
       );
       return response.data;

@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "../api/api";
-import type { GaleryTitleType, ResponseType } from "../Types/types";
+import { api } from "../Axios/api";
 import toast from "react-hot-toast";
-import type { GaleryTitleFormType } from "../Validation/GaleryTitleFormSchema";
-import { handleAxiosError } from "../Functions/handleAxiosError";
+import type { GaleryTitleFormType } from "../ZodSchemas/GaleryTitleFormSchema";
+import { handleAxiosError } from "../Utils/handleAxiosError";
 
 type Props = { galeryTitleId: string | undefined };
 
@@ -12,7 +11,7 @@ export function useGaleryTitleUpdate({ galeryTitleId }: Props) {
 
   return useMutation({
     mutationFn: async (data: GaleryTitleFormType) => {
-      const response = await api.put<ResponseType<GaleryTitleType>>(
+      const response = await api.put(
         `/api/galery/title/update/${galeryTitleId}`,
         data
       );

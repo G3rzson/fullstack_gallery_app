@@ -1,16 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { RegisterFormType } from "../Validation/RegisterFormSchema";
-import api from "../api/api";
+import type { RegisterFormType } from "../ZodSchemas/RegisterFormSchema";
+import { api } from "../Axios/api";
 import toast from "react-hot-toast";
-import type { ResponseType } from "../Types/types";
-import { handleAxiosError } from "../Functions/handleAxiosError";
+import { handleAxiosError } from "../Utils/handleAxiosError";
 
 export default function useAuthRegister() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (data: RegisterFormType) => {
-      const response = await api.post<ResponseType>("/api/auth/register", data);
+      const response = await api.post("/api/auth/register", data);
       return response.data;
     },
 

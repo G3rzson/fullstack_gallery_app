@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import useAuthRegister from "../../../Hooks/useAuthRegister";
+import useAuthRegister from "../../Hooks/useAuthRegister";
 import {
   registerFormSchema,
   type RegisterFormType,
-} from "../../../Validation/RegisterFormSchema";
+} from "../../ZodSchemas/RegisterFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 

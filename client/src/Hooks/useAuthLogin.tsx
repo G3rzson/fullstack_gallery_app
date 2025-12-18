@@ -1,19 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { LoginFormType } from "../Validation/LoginFormSchema";
-import type { WithAuthInfoType, ResponseType } from "../Types/types";
-import api from "../api/api";
+import type { LoginFormType } from "../ZodSchemas/LoginFormSchema";
 import toast from "react-hot-toast";
-import { handleAxiosError } from "../Functions/handleAxiosError";
+import { handleAxiosError } from "../Utils/handleAxiosError";
+import { api } from "../Axios/api";
 
 export default function useAuthLogin() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (data: LoginFormType) => {
-      const response = await api.post<ResponseType<WithAuthInfoType>>(
-        "/api/auth/login",
-        data
-      );
+      const response = await api.post("/api/auth/login", data);
       return response.data;
     },
 

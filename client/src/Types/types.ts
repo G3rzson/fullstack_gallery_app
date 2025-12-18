@@ -18,10 +18,12 @@ type BaseResponseType = {
   message: string;
 };
 
-export type WithAuthInfoType = {
-  accessToken: string;
-  user: string;
+export type WithAuthDataType = {
+  data: {
+    accessToken: string;
+    user: string;
+  };
 };
 
-export type ResponseType<T = undefined> = BaseResponseType &
+export type BackendResponseType<T = undefined> = BaseResponseType &
   (T extends undefined ? {} : { data: T });

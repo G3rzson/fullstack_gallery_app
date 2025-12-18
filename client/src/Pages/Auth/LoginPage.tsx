@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
-import { useContextProvider } from "../../../Hooks/useContextProvider";
+import { useContextProvider } from "../../Hooks/useContextProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   loginFormSchema,
   type LoginFormType,
-} from "../../../Validation/LoginFormSchema";
-import useAuthLogin from "../../../Hooks/useAuthLogin";
+} from "../../ZodSchemas/LoginFormSchema";
+import useAuthLogin from "../../Hooks/useAuthLogin";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {

@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   galeryTitleFormSchema,
   type GaleryTitleFormType,
-} from "../../../Validation/GaleryTitleFormSchema";
+} from "../../../ZodSchemas/GaleryTitleFormSchema";
 import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGaleryTitleUpdate } from "../../../Hooks/useGaleryTitleUpdate";

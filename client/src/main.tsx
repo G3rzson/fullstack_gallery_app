@@ -2,17 +2,23 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import GlobalContextProvider from "./GlobalContext/ContextProvider";
+import GlobalContextProvider from "./GlobalContext/GlobalContextProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AxiosInterceptorProvider from "./Hooks/AxiosInterceptorProvider";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <GlobalContextProvider>
+    <Router>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <GlobalContextProvider>
+          <AxiosInterceptorProvider>
+            <App />
+          </AxiosInterceptorProvider>
+        </GlobalContextProvider>
       </QueryClientProvider>
-    </GlobalContextProvider>
+    </Router>
   </StrictMode>
 );

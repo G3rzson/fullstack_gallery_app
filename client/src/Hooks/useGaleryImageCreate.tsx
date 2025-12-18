@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "../api/api";
-import { handleAxiosError } from "../Functions/handleAxiosError";
+import { api } from "../Axios/api";
+import { handleAxiosError } from "../Utils/handleAxiosError";
 import toast from "react-hot-toast";
-import type { ResponseType } from "../Types/types";
 
 type Props = {
   urlParams: string | undefined;
@@ -13,7 +12,7 @@ export default function useGaleryImageCreate({ urlParams }: Props) {
 
   return useMutation({
     mutationFn: async (data: FormData) => {
-      const response = await api.post<ResponseType>(
+      const response = await api.post(
         `/api/galery/image/upload/${urlParams}`,
         data,
         { headers: { "Content-Type": "multipart/form-data" } }

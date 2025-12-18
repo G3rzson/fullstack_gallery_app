@@ -1,4 +1,4 @@
-import { handleAxiosError } from "../../Functions/handleAxiosError";
+import { handleAxiosError } from "../../Utils/handleAxiosError";
 
 type Props = {
   error: unknown;
