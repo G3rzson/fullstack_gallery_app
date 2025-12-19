@@ -1,14 +1,20 @@
 import { loginUserService } from "../../services/auth/loginUserServices";
-import { loginFormSchema } from "../../zodSchemas/loginFormSchema";
+import { LoginFormType } from "../../zodSchemas/loginFormSchema";
 import { Request, Response } from "express";
 
-export async function loginUserController(req: Request, res: Response) {
-  const { username, password } = loginFormSchema.parse(req.body);
+export async function loginUserController(
+  req: Request<{}, {}, LoginFormType>,
+  res: Response
+) {
+  const { username, password } = req.body;
 
-  const { accessToken, user } = await loginUserService(username, password);
+  const { accessToken, userObj, refreshToken } = await loginUserService({
+    username,
+    password,
+  });
 
   res
-    .cookie("refreshToken", user.refreshToken, {
+    .cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -16,7 +22,7 @@ export async function loginUserController(req: Request, res: Response) {
     })
     .json({
       success: true,
-      message: "User logged in successfully!",
-      data: { accessToken, user: user.username },
+      message: "Sikeres bejelentkezés!",
+      data: { accessToken, username: userObj.username },
     });
 }

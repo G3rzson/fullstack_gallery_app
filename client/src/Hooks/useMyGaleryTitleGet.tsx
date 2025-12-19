@@ -3,7 +3,7 @@ import { api } from "../Axios/api";
 import type { BackendResponseType, GaleryTitleType } from "../Types/types";
 import { useContextProvider } from "./useContextProvider";
 
-export default function useGaleryTitleGet() {
+export default function useMyGaleryTitleGet() {
   const { user, isAuthLoading } = useContextProvider();
 
   return useQuery<BackendResponseType<GaleryTitleType[]>>({
@@ -11,7 +11,7 @@ export default function useGaleryTitleGet() {
     enabled: !isAuthLoading,
     queryFn: async () => {
       const res = await api.get<BackendResponseType<GaleryTitleType[]>>(
-        "/api/galery/title/get"
+        "/api/galery/title/me/get"
       );
       return res.data;
     },

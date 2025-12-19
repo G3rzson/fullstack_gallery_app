@@ -1,19 +1,20 @@
-import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContextProvider } from "../../../Hooks/useContextProvider";
-import GaleryUpdateForm from "./GaleryUpdateForm";
-import Loader from "../../GlobalComponents/Loader";
-import GaleryLinkItem from "./GaleryLinkItem";
+import { useEffect } from "react";
 import ErrorMsg from "../../GlobalComponents/ErrorMsg";
+import Loader from "../../GlobalComponents/Loader";
 import EmptyData from "../../GlobalComponents/EmptyData";
-import useGaleryTitleGet from "../../../Hooks/useGaleryTitleGet";
+import useMyGaleryTitleGet from "../../../Hooks/useMyGaleryTitleGet";
+import GaleryUpdateForm from "./GaleryUpdateForm";
+import GaleryLinkItem from "./GaleryLinkItem";
 
-export default function GaleryLinks() {
+export default function MyGaleryLinks() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { editingGaleryTitleObj } = useContextProvider();
 
-  const { data, isLoading, isError, error } = useGaleryTitleGet();
+  const { data, isLoading, isError, error } = useMyGaleryTitleGet();
+  console.log("MyGaleryLinks data:", data);
 
   const galeryTitleArray = data?.data || [];
 

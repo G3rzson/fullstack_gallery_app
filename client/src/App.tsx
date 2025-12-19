@@ -33,6 +33,7 @@ export default function App() {
 const ROUTES = [
   { path: "*", element: <NotFoundPage /> },
   { path: "/", element: <HomePage /> },
+  { path: "/my-galery-titles", element: <HomePage /> },
   { path: "/galery/:url-params", element: <GaleryImagePage /> },
   { path: "/auth/login", element: <LoginPage /> },
   { path: "/auth/register", element: <RegisterPage /> },

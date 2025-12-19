@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn src/server.ts"
+    "dev": "ts-node-dev --respawn --files --project tsconfig.json src/server.ts"
   },
   "keywords": [],
   "author": "",

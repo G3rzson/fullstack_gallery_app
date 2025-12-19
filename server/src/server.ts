@@ -12,16 +12,12 @@ dotenv.config();
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
-// json middleware for parsing application/json
 app.use(express.json());
 
-// cookie parser middleware for parsing cookies
 app.use(cookieParser());
 
-// allow only specific origins for CORS
 const allowedOrigins = [process.env.FRONTEND_URL];
 
-// CORS setup with dynamic origin checking
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -35,22 +31,15 @@ app.use(
   })
 );
 
-// images static serving
 app.use("/uploads", express.static("uploads"));
 
-// galery routes
 app.use("/api/galery", galeryRouter);
-
-// auth routes
 app.use("/api/auth", authRouter);
 
-// handle 404 for all unknown routes. ALWAYS after the routes
 app.use(invalidUrlMW);
 
-// global error handler
 app.use(errorHandlerMW);
 
-// connect to DB and start server
 connectToDB().then(() => {
   app.listen(PORT, () =>
     console.log(`Server running at http://localhost:${PORT}`)

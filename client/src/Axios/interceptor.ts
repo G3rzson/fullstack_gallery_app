@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { api, refreshApi } from "./api";
 import { useContextProvider } from "../Hooks/useContextProvider";
 import { queryClient } from "../ReactQuery/queryClient";
+import type { BackendResponseType, WithAuthDataType } from "../Types/types";
 import {
   AxiosHeaders,
   type AxiosError,
@@ -69,15 +70,19 @@ export function useAxiosInterceptor() {
           isRefreshing = true;
 
           try {
-            const { data } = await refreshApi.post<{
-              accessToken: string;
-              user: string;
-            }>("/api/auth/refresh");
+            const response = await refreshApi.post<
+              BackendResponseType<WithAuthDataType>
+            >("/api/auth/refresh");
 
-            const { accessToken: newToken, user } = data;
+            const refreshed = response.data.data;
+            if (!refreshed?.accessToken || !refreshed?.username) {
+              throw new Error("Invalid refresh response payload");
+            }
+
+            const { accessToken: newToken, username } = refreshed;
 
             setAccessToken(newToken);
-            setUser(user);
+            setUser(username);
 
             processQueue(null, newToken);
 

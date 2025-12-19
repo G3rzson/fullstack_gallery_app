@@ -4,10 +4,15 @@ import { useState } from "react";
 import AuthComp from "./Auth/AuthComp";
 import { IoExitOutline } from "react-icons/io5";
 import { Link, useMatch } from "react-router-dom";
+import { useContextProvider } from "../../Hooks/useContextProvider";
+import MyGaleryLinks from "./GaleryLinks/MyGaleryLinks";
 
 export default function NavComp() {
   const [isNavOpen, setIsNavOpen] = useState(true);
-  const isActive = !!useMatch("/");
+
+  const { user } = useContextProvider();
+  const homeActive = !!useMatch("/");
+  const myGaleryTitlesActive = !!useMatch("/my-galery-titles");
 
   return (
     <section
@@ -32,7 +37,7 @@ export default function NavComp() {
           <div className=" h-screen flex flex-col justify-between">
             <Link
               className={`${
-                isActive
+                homeActive
                   ? "dark:bg-zinc-700 bg-zinc-400"
                   : "dark:hover:bg-zinc-600 hover:bg-zinc-300"
               } block p-4 duration-300`}
@@ -41,9 +46,20 @@ export default function NavComp() {
               Főoldal
             </Link>
 
-            <GaleryTitleForm />
+            <Link
+              className={`${
+                myGaleryTitlesActive
+                  ? "dark:bg-zinc-700 bg-zinc-400"
+                  : "dark:hover:bg-zinc-600 hover:bg-zinc-300"
+              } block p-4 duration-300`}
+              to="/my-galery-titles"
+            >
+              Saját galériák
+            </Link>
 
-            <GaleryLinks />
+            {user && <GaleryTitleForm />}
+
+            {homeActive ? <GaleryLinks /> : <MyGaleryLinks />}
 
             <AuthComp />
           </div>

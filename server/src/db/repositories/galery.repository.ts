@@ -6,8 +6,9 @@ import { BadRequestError } from "../../errors/BadRequestError";
 import { MongoServerError } from "mongodb";
 import { GaleryImageType } from "../../types/types";
 
-// create galery title
-export async function createGaleryTitle(data: GaleryTitleSchemaType) {
+export async function createGaleryTitle(
+  data: GaleryTitleSchemaType
+): Promise<GaleryTitleSchemaType> {
   try {
     return await GaleryTitleModel.create(data);
   } catch (err: unknown) {
@@ -20,9 +21,22 @@ export async function createGaleryTitle(data: GaleryTitleSchemaType) {
   }
 }
 
-// get all galery titles
-export async function getAllGaleryTitles() {
-  return await GaleryTitleModel.find();
+export async function getAllGaleryTitles(): Promise<GaleryTitleSchemaType[]> {
+  return await GaleryTitleModel.find({ isPrivate: false })
+    .sort({ galeryTitle: 1 })
+    .lean();
+}
+
+export async function getMyGaleryTitles(
+  username: string
+): Promise<GaleryTitleSchemaType[]> {
+  return await GaleryTitleModel.find({ createdBy: username })
+    .sort({ galeryTitle: 1 })
+    .lean();
+}
+
+export async function findGaleryTitleByUrl(url: string) {
+  return await GaleryTitleModel.findOne({ url }).lean();
 }
 
 // find galery title by ID

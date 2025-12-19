@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import { getAllGaleryTitleService } from "../../services/galery/getAllGaleryTitleService";
+import { getMyGaleryTitleService } from "../../services/galery/getMyGaleryTitleService";
 
-export async function galeryTitleGetController(
+export async function myGaleryTitleGetController(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    const galeryTitlesArray = await getAllGaleryTitleService();
+    const username = req.username!;
+    const galeryTitlesArray = await getMyGaleryTitleService(username);
 
     return res.status(200).json({
       success: true,

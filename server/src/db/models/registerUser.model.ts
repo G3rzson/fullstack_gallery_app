@@ -1,7 +1,10 @@
-import { Schema, model, models } from "mongoose";
-import { RegisterUserType } from "../../types/types";
+import { Schema, model, models, Document } from "mongoose";
 
-export type RegisterUserSchemaType = Omit<RegisterUserType, "_id">;
+export type RegisterUserSchemaType = Document & {
+  username: string;
+  email: string;
+  password: string;
+};
 
 const registerUserSchema = new Schema<RegisterUserSchemaType>({
   username: { type: String, required: true, unique: true },

@@ -12,18 +12,26 @@ import { validateObjectIdMW } from "../middlewares/validateUrlObjectId.mw";
 import { validateUrlParam } from "../middlewares/validateUrlParams.mw";
 import { validateGaleryTitleExistsMW } from "../middlewares/validateGaleryTitleExists.mw";
 import { uploadGaleryImagesMW } from "../middlewares/uploadGaleryImages.mw";
+import { verifyAccessTokenMW } from "../middlewares/verifyAccessTokenMW";
+import { getUserFromTokenMW } from "../middlewares/getUserFromToken.mw";
+import { myGaleryTitleGetController } from "../controllers/galery/myGaleryTitleGetController";
 
 const galeryRouter = Router();
 
-// create galery title
 galeryRouter.post(
   "/title/create",
+  verifyAccessTokenMW(),
   validateDataMW(galeryTitleFormSchema),
   galeryTitleCreateController
 );
 
-// read galery title
 galeryRouter.get("/title/get", galeryTitleGetController);
+
+galeryRouter.get(
+  "/title/me/get",
+  verifyAccessTokenMW(),
+  myGaleryTitleGetController
+);
 
 // delete galery title
 galeryRouter.delete(
@@ -53,6 +61,7 @@ galeryRouter.post(
 galeryRouter.get(
   "/image/get/:url",
   validateUrlParam("url"),
+  getUserFromTokenMW(),
   galeryImageGetController
 );
 

@@ -6,9 +6,18 @@ import {
 } from "../../ZodSchemas/RegisterFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import InputField from "../../Components/GlobalComponents/InputField";
+import InputErrorMsg from "../../Components/GlobalComponents/InputError";
+import SubmitBtn from "../../Components/GlobalComponents/SubmitBtn";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { handleAxiosError } from "../../Utils/handleAxiosError";
 
 export default function Register() {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { mutateAsync, isPending } = useAuthRegister();
   const {
     register,
     handleSubmit,
@@ -18,17 +27,15 @@ export default function Register() {
     resolver: zodResolver(registerFormSchema),
   });
 
-  // regisztráció hook deklarálása
-  const postMutation = useAuthRegister();
-
-  // űrlap elküldése
-  function onSubmit(data: RegisterFormType) {
-    postMutation.mutate(data, {
-      onSuccess: () => {
-        reset();
-        navigate("/auth/login");
-      },
-    });
+  async function onSubmit(data: RegisterFormType) {
+    try {
+      const res = await mutateAsync(data);
+      reset();
+      navigate("/auth/login");
+      toast.success(res.message ?? "Sikeres regisztráció!");
+    } catch (error) {
+      toast.error(handleAxiosError(error));
+    }
   }
 
   return (
@@ -36,67 +43,58 @@ export default function Register() {
       <h1 className="text-3xl">Regisztráció</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-6 dark:bg-zinc-900 bg-zinc-200 rounded-lg w-80 mx-auto p-4"
+        className="flex flex-col gap-6 dark:bg-zinc-900 bg-zinc-200 rounded-lg sm:w-80 w-full mx-auto p-4"
       >
         <div className="relative">
-          <input
-            {...register("username")}
-            className="bg-white text-black border-none outline-0 p-2 rounded w-full"
+          <InputField
+            register={register}
+            registerName="username"
             type="text"
-            id="username"
-            placeholder="Felhasználónév"
-            aria-label="Felhasználónév"
+            title="Felhasználónév"
+            disabled={isPending}
           />
 
-          {errors["username"] && (
-            <p className="dark:text-red-400 text-red-500 text-xs absolute -bottom-4 left-0">
-              {String(errors["username"]?.message)}
-            </p>
-          )}
+          <InputErrorMsg errorMsg={errors["username"]?.message} />
         </div>
 
         <div className="relative">
-          <input
-            {...register("email")}
-            className="bg-white text-black border-none outline-0 p-2 rounded w-full"
-            type="text"
-            id="email"
-            placeholder="Email"
-            aria-label="Email"
+          <InputField
+            register={register}
+            registerName="email"
+            type="email"
+            title="Email"
+            disabled={isPending}
           />
 
-          {errors["email"] && (
-            <p className="dark:text-red-400 text-red-500 text-xs absolute -bottom-4 left-0">
-              {String(errors["email"]?.message)}
-            </p>
-          )}
+          <InputErrorMsg errorMsg={errors["email"]?.message} />
         </div>
 
         <div className="relative">
-          <input
-            {...register("password")}
-            className="bg-white text-black border-none outline-0 p-2 rounded w-full"
-            type="password"
-            id="password"
-            placeholder="Jelszó"
-            aria-label="Jelszó"
+          <InputField
+            register={register}
+            registerName="password"
+            type={showPassword ? "text" : "password"}
+            title="Jelszó"
+            disabled={isPending}
           />
 
-          {errors["password"] && (
-            <p className="dark:text-red-400 text-red-500 text-xs absolute -bottom-4 left-0">
-              {String(errors["password"]?.message)}
-            </p>
-          )}
+          <InputErrorMsg errorMsg={errors["password"]?.message} />
+
+          <button
+            onClick={() => setShowPassword((prev) => !prev)}
+            type="button"
+            aria-label={showPassword ? "Rejtett jelszó" : "Mutat jelszó"}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-zinc-800 cursor-pointer"
+          >
+            <abbr title={showPassword ? "Jelszót elrejt" : "Jelszót mutat"}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </abbr>
+          </button>
         </div>
 
-        <button
-          className="cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-4 disabled:bg-zinc-500 disabled:hover:bg-zinc-500 dark:bg-green-800 dark:hover:bg-green-600 dark:text-zinc-100 bg-green-300 hover:bg-green-500 text-zinc-900 p-2 rounded duration-300"
-          type="submit"
-          disabled={postMutation.isPending}
-          aria-label="Regisztráció"
-        >
+        <SubmitBtn disabled={isPending} ariaLabel="Regisztráció">
           Regisztráció
-        </button>
+        </SubmitBtn>
 
         <p className="flex items-center gap-4">
           Van már fiókod?

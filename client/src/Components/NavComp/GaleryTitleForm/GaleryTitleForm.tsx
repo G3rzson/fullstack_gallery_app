@@ -10,8 +10,12 @@ import { useNavigate } from "react-router-dom";
 import InputField from "../../GlobalComponents/InputField";
 import InputError from "../../GlobalComponents/InputError";
 import SubmitBtn from "../../GlobalComponents/SubmitBtn";
+import toast from "react-hot-toast";
+import { handleAxiosError } from "../../../Utils/handleAxiosError";
 
 export default function GaleryTitleForm() {
+  const { mutateAsync, isPending } = useGaleryTitleCreate();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -20,20 +24,16 @@ export default function GaleryTitleForm() {
   } = useForm<GaleryTitleFormType>({
     resolver: zodResolver(galeryTitleFormSchema),
   });
-  const navigate = useNavigate();
 
-  const postMutation = useGaleryTitleCreate();
-
-  function onSubmit(data: GaleryTitleFormType) {
-    //console.log("Submitting form with data:", data);
-    postMutation.mutate(data, {
-      onSuccess: (data) => {
-        //console.log("Form submitted successfully:", data);
-        reset();
-
-        navigate(`/galery/${data.data.url}`);
-      },
-    });
+  async function onSubmit(data: GaleryTitleFormType) {
+    try {
+      const res = await mutateAsync(data);
+      reset();
+      toast.success(res.message ?? "Galéria létrehozva!");
+      navigate(`/galery/${res.data.url}`);
+    } catch (error) {
+      toast.error(handleAxiosError(error));
+    }
   }
 
   return (
@@ -47,13 +47,25 @@ export default function GaleryTitleForm() {
           registerName="galeryTitle"
           type="text"
           title="Galéria címe"
-          disabled={postMutation.isPending}
+          disabled={isPending}
         />
 
-        <InputError errors={errors} inputKey="galeryTitle" />
+        <InputError errorMsg={errors["galeryTitle"]?.message} />
       </div>
 
-      <SubmitBtn disabled={postMutation.isPending} ariaLabel="Űrlap beküldése">
+      <div className="flex items-center gap-2">
+        <input
+          {...register("isPrivate")}
+          className="cursor-pointer"
+          type="checkbox"
+          id="isPrivate"
+        />
+        <label className="cursor-pointer select-none" htmlFor="isPrivate">
+          Legyen privát.
+        </label>
+      </div>
+
+      <SubmitBtn disabled={isPending} ariaLabel="Űrlap beküldése">
         Létrehozás <FaFolderPlus />
       </SubmitBtn>
     </form>

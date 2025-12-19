@@ -1,8 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import { api } from "../Axios/api";
 import type { GaleryTitleFormType } from "../ZodSchemas/GaleryTitleFormSchema";
-import { handleAxiosError } from "../Utils/handleAxiosError";
 import type { BackendResponseType, GaleryTitleType } from "../Types/types";
 
 export default function useGaleryTitleCreate() {
@@ -20,14 +18,8 @@ export default function useGaleryTitleCreate() {
       return response.data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["galeryTitles"] });
-
-      toast.success(data.message || "Galéria létrehozva!");
-    },
-
-    onError: (error) => {
-      toast.error(handleAxiosError(error));
     },
   });
 }

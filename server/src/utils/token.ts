@@ -1,34 +1,46 @@
-import dotenv from "dotenv";
-dotenv.config();
-import jwt from "jsonwebtoken";
-import { RefreshTokenPayload } from "../types/types";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { UnauthorizedError } from "../errors/UnauthorizedError";
+import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../config/env";
 
-// Access token
-export function generateAccessToken(user: string): string {
-  const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
-  if (!ACCESS_TOKEN_SECRET) {
-    throw new Error("Hiányzó ACCESS_TOKEN környezeti változó");
-  }
+export type RefreshTokenPayload = JwtPayload & {
+  username: string;
+};
 
-  return jwt.sign({ user }, ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+export type AccessTokenPayload = JwtPayload & {
+  username: string;
+};
+
+export function generateAccessToken(username: string): string {
+  return jwt.sign({ username }, ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
 }
 
-// Refresh token
-export function generateRefreshToken(user: string): string {
-  const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
-  if (!REFRESH_TOKEN_SECRET) {
-    throw new Error("Hiányzó REFRESH_TOKEN környezeti változó");
-  }
-
-  return jwt.sign({ user }, REFRESH_TOKEN_SECRET, { expiresIn: "1d" });
+export function generateRefreshToken(username: string): string {
+  return jwt.sign({ username }, REFRESH_TOKEN_SECRET, { expiresIn: "1d" });
 }
 
-// Verify refresh token
 export function verifyRefreshToken(token: string): RefreshTokenPayload {
-  const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
-  if (!REFRESH_TOKEN_SECRET) {
-    throw new Error("Hiányzó REFRESH_TOKEN környezeti változó");
-  }
+  try {
+    const decoded = jwt.verify(token, REFRESH_TOKEN_SECRET);
 
-  return jwt.verify(token, REFRESH_TOKEN_SECRET) as RefreshTokenPayload;
+    if (typeof decoded !== "object" || !("username" in decoded)) {
+      throw new UnauthorizedError("Invalid refresh token payload");
+    }
+
+    return decoded as RefreshTokenPayload;
+  } catch {
+    throw new UnauthorizedError("Invalid or expired refresh token");
+  }
+}
+
+export function verifyAccessToken(token: string): AccessTokenPayload {
+  try {
+    const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET);
+    if (typeof decoded !== "object" || !("username" in decoded)) {
+      throw new UnauthorizedError("Invalid access token payload");
+    }
+
+    return decoded as AccessTokenPayload;
+  } catch {
+    throw new UnauthorizedError("Invalid or expired access token");
+  }
 }

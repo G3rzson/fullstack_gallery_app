@@ -8,26 +8,21 @@ export default function AuthComp() {
   const { pathname } = useLocation();
   const authRef = useRef<HTMLDivElement | null>(null);
 
-  // Route váltáskor Authmenu bezár
   useEffect(() => {
     setShowAuthMenu(false);
   }, [pathname]);
 
-  // Outside clickre Authmenu bezár
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      // Ha a kattintás az AuthComp-en kívül történt bezárja az AuthMenu-t
       if (authRef.current && !authRef.current.contains(e.target as Node)) {
         setShowAuthMenu(false);
       }
     }
 
-    // Csak akkor figyelje az eseményt, ha az AuthMenu nyitva van
     if (showAuthMenu) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
-    // Takarítás, minden esetben eltávolítja az eseményfigyelőt
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -42,6 +37,7 @@ export default function AuthComp() {
 
       <button
         onClick={() => setShowAuthMenu((prev) => !prev)}
+        aria-label="User menu"
         className="cursor-pointer text-zinc-800 dark:text-zinc-200 w-full flex items-center justify-center p-2"
       >
         <IoMdPerson size={24} />

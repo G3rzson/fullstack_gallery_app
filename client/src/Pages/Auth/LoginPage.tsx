@@ -7,9 +7,18 @@ import {
 } from "../../ZodSchemas/LoginFormSchema";
 import useAuthLogin from "../../Hooks/useAuthLogin";
 import { Link, useNavigate } from "react-router-dom";
+import InputField from "../../Components/GlobalComponents/InputField";
+import InputErrorMsg from "../../Components/GlobalComponents/InputError";
+import SubmitBtn from "../../Components/GlobalComponents/SubmitBtn";
+import toast from "react-hot-toast";
+import { handleAxiosError } from "../../Utils/handleAxiosError";
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Login() {
+  const [showPassword, setShowPassword] = useState(false);
   const { setAccessToken, setUser } = useContextProvider();
+  const { mutateAsync, isPending } = useAuthLogin();
   const navigate = useNavigate();
   const {
     register,
@@ -20,19 +29,17 @@ export default function Login() {
     resolver: zodResolver(loginFormSchema),
   });
 
-  // bejelenkezés hook deklarálása
-  const loginUserMutation = useAuthLogin();
-
-  // űrlap elküldése
-  function onSubmit(data: LoginFormType) {
-    loginUserMutation.mutate(data, {
-      onSuccess: (data) => {
-        setAccessToken(data.data.accessToken);
-        setUser(data.data.user);
-        reset();
-        navigate("/");
-      },
-    });
+  async function onSubmit(data: LoginFormType) {
+    try {
+      const res = await mutateAsync(data);
+      reset();
+      setAccessToken(res.data.accessToken);
+      setUser(res.data.username);
+      toast.success(res.message ?? "Sikeres bejelentkezés!");
+      navigate("/");
+    } catch (error) {
+      toast.error(handleAxiosError(error));
+    }
   }
 
   return (
@@ -43,48 +50,43 @@ export default function Login() {
         className="flex flex-col gap-6 dark:bg-zinc-900 bg-zinc-200 rounded-lg w-80 mx-auto p-4"
       >
         <div className="relative">
-          <input
-            {...register("username")}
-            className="bg-white text-black border-none outline-0 p-2 rounded w-full"
+          <InputField
+            register={register}
+            registerName="username"
             type="text"
-            id="username"
-            placeholder="Felhasználónév"
-            aria-label="Felhasználónév"
-            autoFocus
+            title="Felhasználónév"
+            disabled={isPending}
           />
 
-          {errors["username"] && (
-            <p className="dark:text-red-400 text-red-500 text-xs absolute -bottom-4 left-0">
-              {String(errors["username"]?.message)}
-            </p>
-          )}
+          <InputErrorMsg errorMsg={errors["username"]?.message} />
         </div>
 
         <div className="relative">
-          <input
-            {...register("password")}
-            className="bg-white text-black border-none outline-0 p-2 rounded w-full"
-            type="password"
-            id="password"
-            placeholder="Jelszó"
-            aria-label="Jelszó"
+          <InputField
+            register={register}
+            registerName="password"
+            type={showPassword ? "text" : "password"}
+            title="Jelszó"
+            disabled={isPending}
           />
 
-          {errors["password"] && (
-            <p className="dark:text-red-400 text-red-500 text-xs absolute -bottom-4 left-0">
-              {String(errors["password"]?.message)}
-            </p>
-          )}
+          <InputErrorMsg errorMsg={errors["password"]?.message} />
+
+          <button
+            onClick={() => setShowPassword((prev) => !prev)}
+            type="button"
+            aria-label={showPassword ? "Rejtett jelszó" : "Mutat jelszó"}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-zinc-800 cursor-pointer"
+          >
+            <abbr title={showPassword ? "Jelszót elrejt" : "Jelszót mutat"}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </abbr>
+          </button>
         </div>
 
-        <button
-          className="cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-4 disabled:bg-zinc-500 disabled:hover:bg-zinc-500 dark:bg-green-800 dark:hover:bg-green-600 dark:text-zinc-100 bg-green-300 hover:bg-green-500 text-zinc-900 p-2 rounded duration-300"
-          type="submit"
-          disabled={loginUserMutation.isPending}
-          aria-label="Bejelentkezés"
-        >
+        <SubmitBtn disabled={isPending} ariaLabel="Regisztráció">
           Bejelentkezés
-        </button>
+        </SubmitBtn>
 
         <p className="flex items-center gap-4">
           Még nincs fiókod?

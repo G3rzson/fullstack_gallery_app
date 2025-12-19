@@ -9,7 +9,7 @@ export async function galeryImageGetController(
   try {
     const { url } = req.params;
 
-    const images = await getGaleryImagesService(url);
+    const images = await getGaleryImagesService(url, req.username);
 
     res.json({
       success: true,

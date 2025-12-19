@@ -3,6 +3,7 @@ export type GaleryTitleType = {
   galeryTitle: string;
   path: string;
   url: string;
+  createdBy: string;
 };
 
 export type GaleryImageType = {
@@ -19,10 +20,8 @@ type BaseResponseType = {
 };
 
 export type WithAuthDataType = {
-  data: {
-    accessToken: string;
-    user: string;
-  };
+  accessToken: string;
+  username: string;
 };
 
 export type BackendResponseType<T = undefined> = BaseResponseType &

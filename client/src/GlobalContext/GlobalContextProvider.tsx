@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { GlobalContext } from "./Context";
 import type { GaleryTitleType } from "../Types/types";
 import { refreshApi } from "../Axios/api";
+import type { BackendResponseType, WithAuthDataType } from "../Types/types";
 
 export type ContextType = {
   editingGaleryTitleObj: GaleryTitleType | null;
@@ -31,14 +32,18 @@ export default function GlobalContextProvider({
   useEffect(() => {
     let isMounted = true;
 
-    const restoreSession = async () => {
+    const restoreToken = async () => {
       try {
-        const { data } = await refreshApi.post("/api/auth/refresh");
+        const response = await refreshApi.post<
+          BackendResponseType<WithAuthDataType>
+        >("/api/auth/refresh");
+
+        const refreshed = response.data.data;
 
         if (!isMounted) return;
 
-        setAccessToken(data.accessToken ?? null);
-        setUser(data.user ?? null);
+        setAccessToken(refreshed?.accessToken ?? null);
+        setUser(refreshed?.username ?? null);
       } catch {
         if (!isMounted) return;
 
@@ -51,7 +56,7 @@ export default function GlobalContextProvider({
       }
     };
 
-    restoreSession();
+    restoreToken();
 
     return () => {
       isMounted = false;
