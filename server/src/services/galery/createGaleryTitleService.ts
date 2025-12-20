@@ -9,9 +9,16 @@ export async function createGaleryTitleService(
   isPrivate: boolean,
   username: string
 ) {
-  const { safeFolderName, safeUrl } = createSafeGaleryNames(galeryTitle);
+  const { safeGaleryTitleFolder, safeUrl, safeUserFolder } =
+    createSafeGaleryNames(galeryTitle, username);
+
   const slug = await findUniqueSlug(safeUrl);
-  const galeryFolderPath = path.join("uploads", safeFolderName);
+
+  const galeryFolderPath = path.join(
+    "uploads",
+    safeUserFolder,
+    safeGaleryTitleFolder
+  );
 
   await fs.mkdir(galeryFolderPath, { recursive: true });
 

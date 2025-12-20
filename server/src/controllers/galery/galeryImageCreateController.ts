@@ -16,11 +16,14 @@ export async function galeryImageCreateController(
       throw new BadRequestError("Nincsenek feltöltött fájlok");
     }
 
-    const folderName = path.basename(gal.path);
+    const relativeDir = path
+      .relative("uploads", gal.path)
+      .split(path.sep)
+      .join("/");
 
     const saved = files.map((f) => ({
       filename: f.filename,
-      url: `/uploads/${folderName}/${f.filename}`,
+      url: `/uploads/${relativeDir}/${f.filename}`,
       galeryUrl: gal.url,
       createdAt: new Date(),
     }));

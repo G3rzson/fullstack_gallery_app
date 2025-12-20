@@ -9,7 +9,7 @@ export type GaleryTitleSchemaType = {
 };
 
 const galeryTitleSchema = new Schema<GaleryTitleSchemaType>({
-  galeryTitle: { type: String, required: true, unique: true },
+  galeryTitle: { type: String, required: true },
   path: { type: String, required: true, unique: true },
   url: { type: String, required: true, unique: true },
   createdBy: { type: String, required: true },

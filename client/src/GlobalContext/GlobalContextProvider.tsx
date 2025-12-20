@@ -31,6 +31,7 @@ export default function GlobalContextProvider({
 
   useEffect(() => {
     let isMounted = true;
+    setIsAuthLoading(true);
 
     const restoreToken = async () => {
       try {

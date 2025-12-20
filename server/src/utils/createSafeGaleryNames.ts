@@ -1,13 +1,14 @@
 import sanitize from "sanitize-filename";
 import slugify from "slugify";
 
-export function createSafeGaleryNames(title: string) {
-  const safeFolderName = sanitize(title);
+export function createSafeGaleryNames(title: string, username: string) {
+  const safeUserFolder = sanitize(username);
+  const safeGaleryTitleFolder = sanitize(title);
 
-  const safeUrl = slugify(safeFolderName, {
+  const safeUrl = slugify(safeGaleryTitleFolder, {
     lower: true,
     strict: true,
   });
 
-  return { safeFolderName, safeUrl };
+  return { safeGaleryTitleFolder, safeUrl, safeUserFolder };
 }

@@ -1,0 +1,75 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import useGaleryImageGet from "../Hooks/useGaleryImageGet";
+import Loader from "../Components/GlobalComponents/Loader";
+import ErrorMsg from "../Components/GlobalComponents/ErrorMsg";
+import EmptyData from "../Components/GlobalComponents/EmptyData";
+import DeleteImageBtn from "../Components/GaleryPageComp/DeleteImageBtn";
+import ImageNavBtn from "../Components/GaleryPageComp/ImageNavBtn";
+import ImagePagination from "../Components/GaleryPageComp/ImagePagination";
+
+export default function GaleryImageViewerPage() {
+  const params = useParams();
+  const urlParams = params["url-params"]!;
+  const [index, setIndex] = useState(0);
+
+  // galéria képek lekérése
+  const { data, isLoading, isError, error } = useGaleryImageGet({ urlParams });
+
+  // galéria képek tömbje
+  const galeryImagesArray = data?.data || [];
+
+  // biztonsági ellenőrzés az indexre, ha a képek száma változik
+  useEffect(() => {
+    if (index >= galeryImagesArray.length) {
+      setIndex(0);
+    }
+  }, [galeryImagesArray.length, index]);
+
+  // biztonságos index a képekhez
+  const safeIndex = Math.min(index, galeryImagesArray.length - 1);
+  // aktuális kép
+  const imageObj = galeryImagesArray[safeIndex];
+
+  if (isLoading) return <Loader />;
+
+  if (isError) return <ErrorMsg error={error} />;
+
+  if (galeryImagesArray.length === 0)
+    return <EmptyData text="Nincsenek elérhető képek a galériában!" />;
+
+  /*-----------------------------------------------
+    | todo : kép megjelenítés magasság beállítása |
+    ----------------------------------------------- */
+
+  return (
+    <div className="relative flex flex-1 items-center justify-center">
+      <div className="h-80 group relative">
+        <img
+          src={`http://localhost:8000${imageObj.url}`}
+          alt={imageObj.filename}
+          className="h-full w-auto object-contain"
+        />
+        <DeleteImageBtn imageObj={imageObj} urlParams={urlParams} />
+      </div>
+
+      <ImageNavBtn
+        galeryImagesArray={galeryImagesArray}
+        setIndex={setIndex}
+        direction="next"
+      />
+
+      <ImageNavBtn
+        galeryImagesArray={galeryImagesArray}
+        setIndex={setIndex}
+        direction="prev"
+      />
+
+      <ImagePagination
+        galeryImagesArray={galeryImagesArray}
+        setIndex={setIndex}
+        index={index}
+      />
+    </div>
+  );
+}

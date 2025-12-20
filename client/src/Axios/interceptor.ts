@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { api, refreshApi } from "./api";
 import { useContextProvider } from "../Hooks/useContextProvider";
@@ -30,16 +30,22 @@ const processQueue = (error: unknown, token: string | null = null) => {
 export function useAxiosInterceptor() {
   const { accessToken, setAccessToken, setUser } = useContextProvider();
   const navigate = useNavigate();
+  const accessTokenRef = useRef<string | null>(accessToken);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    accessTokenRef.current = accessToken;
+  }, [accessToken]);
+
+  useLayoutEffect(() => {
     /** REQUEST INTERCEPTOR */
     const requestInterceptor = api.interceptors.request.use(
       (config: AxiosRequestConfig) => {
         const headers: AxiosHeaders =
           (config.headers as AxiosHeaders) ?? new AxiosHeaders();
 
-        if (accessToken) {
-          headers.set("Authorization", `Bearer ${accessToken}`);
+        const token = accessTokenRef.current;
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
         }
 
         return { ...config, headers };
@@ -81,6 +87,10 @@ export function useAxiosInterceptor() {
 
             const { accessToken: newToken, username } = refreshed;
 
+            // Make the new token available immediately for any in-flight requests
+            // before React state propagation completes.
+            accessTokenRef.current = newToken;
+
             setAccessToken(newToken);
             setUser(username);
 
@@ -114,5 +124,5 @@ export function useAxiosInterceptor() {
       api.interceptors.request.eject(requestInterceptor);
       api.interceptors.response.eject(responseInterceptor);
     };
-  }, [accessToken, setAccessToken, setUser, navigate]);
+  }, [setAccessToken, setUser, navigate]);
 }

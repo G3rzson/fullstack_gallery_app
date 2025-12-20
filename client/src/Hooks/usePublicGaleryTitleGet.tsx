@@ -1,17 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../Axios/api";
 import type { BackendResponseType, GaleryTitleType } from "../Types/types";
-import { useContextProvider } from "./useContextProvider";
 
-export default function useGaleryTitleGet() {
-  const { user, isAuthLoading } = useContextProvider();
-
+export default function usePublicGaleryTitleGet() {
   return useQuery<BackendResponseType<GaleryTitleType[]>>({
-    queryKey: ["galeryTitles", user ?? "guest"],
-    enabled: !isAuthLoading,
+    queryKey: ["galeryTitles"],
+
     queryFn: async () => {
       const res = await api.get<BackendResponseType<GaleryTitleType[]>>(
-        "/api/galery/title/get"
+        "/api/galery/title/public"
       );
       return res.data;
     },

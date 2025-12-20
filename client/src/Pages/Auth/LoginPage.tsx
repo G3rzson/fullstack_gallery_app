@@ -36,7 +36,7 @@ export default function Login() {
       setAccessToken(res.data.accessToken);
       setUser(res.data.username);
       toast.success(res.message ?? "Sikeres bejelentkezés!");
-      navigate("/");
+      navigate("/my-galery-titles", { replace: true });
     } catch (error) {
       toast.error(handleAxiosError(error));
     }
@@ -47,7 +47,7 @@ export default function Login() {
       <h1 className="text-3xl">Bejelentkezés</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-6 dark:bg-zinc-900 bg-zinc-200 rounded-lg w-80 mx-auto p-4"
+        className="flex flex-col gap-6 dark:bg-zinc-900 bg-zinc-200 rounded-lg sm:w-80 w-full mx-auto p-4"
       >
         <div className="relative">
           <InputField

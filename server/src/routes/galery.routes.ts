@@ -25,10 +25,10 @@ galeryRouter.post(
   galeryTitleCreateController
 );
 
-galeryRouter.get("/title/get", galeryTitleGetController);
+galeryRouter.get("/title/public", galeryTitleGetController);
 
 galeryRouter.get(
-  "/title/me/get",
+  "/title/private",
   verifyAccessTokenMW(),
   myGaleryTitleGetController
 );
@@ -40,13 +40,14 @@ galeryRouter.delete(
   galeryTitleDeleteController
 );
 
+/*
 // update galery title
 galeryRouter.put(
   "/title/update/:id",
   validateObjectIdMW("id"),
   validateDataMW(galeryTitleFormSchema),
   galeryTitleUpdateController
-);
+);*/
 
 // Galery Image Routes
 galeryRouter.post(

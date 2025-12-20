@@ -7,6 +7,8 @@ import HomePage from "./Pages/HomePage";
 import GaleryImagePage from "./Pages/GaleryImagePage";
 import LoginPage from "./Pages/Auth/LoginPage";
 import RegisterPage from "./Pages/Auth/RegisterPage";
+import MyGaleries from "./Pages/MyGaleries";
+import GaleryImageViewerPage from "./Pages/GaleryImageViewerPage";
 
 export default function App() {
   return (
@@ -33,8 +35,9 @@ export default function App() {
 const ROUTES = [
   { path: "*", element: <NotFoundPage /> },
   { path: "/", element: <HomePage /> },
-  { path: "/my-galery-titles", element: <HomePage /> },
-  { path: "/galery/:url-params", element: <GaleryImagePage /> },
+  { path: "/my-galery-titles", element: <MyGaleries /> },
+  { path: "/public/galery/:url-params", element: <GaleryImageViewerPage /> },
+  { path: "/private/galery/:url-params", element: <GaleryImagePage /> },
   { path: "/auth/login", element: <LoginPage /> },
   { path: "/auth/register", element: <RegisterPage /> },
 ];

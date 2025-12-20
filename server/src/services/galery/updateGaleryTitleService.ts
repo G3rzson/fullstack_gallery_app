@@ -1,4 +1,5 @@
 import path from "path";
+import sanitize from "sanitize-filename";
 import { findGaleryTitleById } from "../../db/repositories/galery.repository";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { createSafeGaleryNames } from "../../utils/createSafeGaleryNames";
@@ -19,10 +20,20 @@ export async function updateGaleryTitleService(
   const { safeFolderName, safeUrl } = createSafeGaleryNames(newTitle);
   const slug = await findUniqueSlug(safeUrl, galeryId);
 
-  const newPath = path.join("uploads", safeFolderName);
+  const safeUserFolder = sanitize(galery.createdBy) || "user";
+  const newPath = path.join("uploads", safeUserFolder, safeFolderName);
+
+  const oldRelativeDir = path
+    .relative("uploads", galery.path)
+    .split(path.sep)
+    .join("/");
+  const newRelativeDir = path
+    .relative("uploads", newPath)
+    .split(path.sep)
+    .join("/");
 
   await renameGaleryFolder(galery.path, newPath);
-  await updateGaleryImages(galery.url, slug, safeFolderName);
+  await updateGaleryImages(galery.url, slug, oldRelativeDir, newRelativeDir);
 
   galery.galeryTitle = newTitle;
   galery.url = slug;

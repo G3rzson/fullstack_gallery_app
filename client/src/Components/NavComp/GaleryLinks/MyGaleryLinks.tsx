@@ -6,7 +6,7 @@ import Loader from "../../GlobalComponents/Loader";
 import EmptyData from "../../GlobalComponents/EmptyData";
 import useMyGaleryTitleGet from "../../../Hooks/useMyGaleryTitleGet";
 import GaleryUpdateForm from "./GaleryUpdateForm";
-import GaleryLinkItem from "./GaleryLinkItem";
+import GaleryLinkItem from "./PublicGaleryLinkItem";
 
 export default function MyGaleryLinks() {
   const navigate = useNavigate();

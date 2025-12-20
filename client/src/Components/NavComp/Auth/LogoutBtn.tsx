@@ -15,13 +15,16 @@ export default function LogoutBtn({ setShowAuthMenu }: Props) {
 
   async function handleLogout() {
     try {
+      // Navigate away from protected pages first to prevent auth-guard redirects
+      // (e.g. MyGaleries redirecting to /auth/login when user becomes null).
+      navigate("/", { replace: true });
+
       const res = await mutateAsync();
 
       toast.success(res.message ?? "Sikeres kijelentkezés!");
+      setShowAuthMenu(false);
       setAccessToken(null);
       setUser(null);
-      setShowAuthMenu(false);
-      navigate("/");
     } catch (error) {
       toast.error(handleAxiosError(error));
     }

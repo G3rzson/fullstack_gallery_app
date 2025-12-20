@@ -3,11 +3,10 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import GlobalContextProvider from "./GlobalContext/GlobalContextProvider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import AxiosInterceptorProvider from "./Hooks/AxiosInterceptorProvider";
 import { BrowserRouter as Router } from "react-router-dom";
-
-const queryClient = new QueryClient();
+import { queryClient } from "./ReactQuery/queryClient";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

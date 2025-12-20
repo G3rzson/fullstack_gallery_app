@@ -1,18 +1,11 @@
-import GaleryLinks from "./GaleryLinks/GaleryLinks";
-import GaleryTitleForm from "./GaleryTitleForm/GaleryTitleForm";
 import { useState } from "react";
 import AuthComp from "./Auth/AuthComp";
 import { IoExitOutline } from "react-icons/io5";
-import { Link, useMatch } from "react-router-dom";
-import { useContextProvider } from "../../Hooks/useContextProvider";
-import MyGaleryLinks from "./GaleryLinks/MyGaleryLinks";
+import { Link, useLocation } from "react-router-dom";
 
 export default function NavComp() {
   const [isNavOpen, setIsNavOpen] = useState(true);
-
-  const { user } = useContextProvider();
-  const homeActive = !!useMatch("/");
-  const myGaleryTitlesActive = !!useMatch("/my-galery-titles");
+  const { pathname } = useLocation();
 
   return (
     <section
@@ -34,32 +27,27 @@ export default function NavComp() {
         </button>
 
         {isNavOpen && (
-          <div className=" h-screen flex flex-col justify-between">
-            <Link
-              className={`${
-                homeActive
-                  ? "dark:bg-zinc-700 bg-zinc-400"
-                  : "dark:hover:bg-zinc-600 hover:bg-zinc-300"
-              } block p-4 duration-300`}
-              to="/"
-            >
-              Főoldal
-            </Link>
-
-            <Link
-              className={`${
-                myGaleryTitlesActive
-                  ? "dark:bg-zinc-700 bg-zinc-400"
-                  : "dark:hover:bg-zinc-600 hover:bg-zinc-300"
-              } block p-4 duration-300`}
-              to="/my-galery-titles"
-            >
-              Saját galériák
-            </Link>
-
-            {user && <GaleryTitleForm />}
-
-            {homeActive ? <GaleryLinks /> : <MyGaleryLinks />}
+          <div className="h-screen flex flex-col justify-between">
+            <ul>
+              {NAV_LINKS.map(({ to, label }) => {
+                const isActive = pathname === to;
+                return (
+                  <li key={to}>
+                    <Link
+                      key={to}
+                      className={`${
+                        isActive
+                          ? "dark:bg-zinc-700 bg-zinc-400"
+                          : "dark:hover:bg-zinc-600 hover:bg-zinc-300"
+                      } block p-4 duration-300`}
+                      to={to}
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
 
             <AuthComp />
           </div>
@@ -68,3 +56,8 @@ export default function NavComp() {
     </section>
   );
 }
+
+const NAV_LINKS = [
+  { to: "/", label: "Főoldal" },
+  { to: "/my-galery-titles", label: "Saját galériák" },
+];
