@@ -1,75 +1,42 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import useGaleryImageGet from "../Hooks/useGaleryImageGet";
-import Loader from "../Components/GlobalComponents/Loader";
-import ErrorMsg from "../Components/GlobalComponents/ErrorMsg";
-import EmptyData from "../Components/GlobalComponents/EmptyData";
-import DeleteImageBtn from "../Components/GaleryPageComp/DeleteImageBtn";
-import ImageNavBtn from "../Components/GaleryPageComp/ImageNavBtn";
-import ImagePagination from "../Components/GaleryPageComp/ImagePagination";
+import { Link, useParams } from "react-router-dom";
+import { useContextProvider } from "../Hooks/useContextProvider";
+import useGaleryTitleGet from "../Hooks/useGaleryTitleGet";
+import ImageSlider from "../Components/GlobalComponents/ImageSlider";
 
 export default function GaleryImageViewerPage() {
   const params = useParams();
   const urlParams = params["url-params"]!;
-  const [index, setIndex] = useState(0);
 
-  // galéria képek lekérése
-  const { data, isLoading, isError, error } = useGaleryImageGet({ urlParams });
+  const { userObj, isAuthLoading } = useContextProvider();
 
-  // galéria képek tömbje
-  const galeryImagesArray = data?.data || [];
+  const { data: publicTitlesData } = useGaleryTitleGet("public");
+  const { data: privateTitlesData } = useGaleryTitleGet("private");
 
-  // biztonsági ellenőrzés az indexre, ha a képek száma változik
-  useEffect(() => {
-    if (index >= galeryImagesArray.length) {
-      setIndex(0);
-    }
-  }, [galeryImagesArray.length, index]);
+  const galeryTitleArray = [
+    ...(publicTitlesData?.data ?? []),
+    ...(privateTitlesData?.data ?? []),
+  ];
+  const activeGalery = galeryTitleArray.find((g) => g.url === urlParams);
 
-  // biztonságos index a képekhez
-  const safeIndex = Math.min(index, galeryImagesArray.length - 1);
-  // aktuális kép
-  const imageObj = galeryImagesArray[safeIndex];
-
-  if (isLoading) return <Loader />;
-
-  if (isError) return <ErrorMsg error={error} />;
-
-  if (galeryImagesArray.length === 0)
-    return <EmptyData text="Nincsenek elérhető képek a galériában!" />;
-
-  /*-----------------------------------------------
-    | todo : kép megjelenítés magasság beállítása |
-    ----------------------------------------------- */
+  const canUploadImages =
+    !isAuthLoading &&
+    !!userObj &&
+    (userObj.role === "admin" || activeGalery?.createdBy === userObj.username);
 
   return (
-    <div className="relative flex flex-1 items-center justify-center">
-      <div className="h-80 group relative">
-        <img
-          src={`http://localhost:8000${imageObj.url}`}
-          alt={imageObj.filename}
-          className="h-full w-auto object-contain"
-        />
-        <DeleteImageBtn imageObj={imageObj} urlParams={urlParams} />
-      </div>
+    <div className="flex flex-1 flex-col items-center gap-4 p-4">
+      <h1 className="text-3xl text-center">{urlParams}</h1>
 
-      <ImageNavBtn
-        galeryImagesArray={galeryImagesArray}
-        setIndex={setIndex}
-        direction="next"
-      />
+      {canUploadImages ? (
+        <Link
+          to={`/galery/image/upload/${urlParams}`}
+          className="dark:hover:bg-zinc-700 text-center dark:bg-zinc-900 rounded bg-zinc-200 hover:bg-zinc-300 w-full py-2 duration-300 cursor-pointer"
+        >
+          Képek feltöltése a galériába
+        </Link>
+      ) : null}
 
-      <ImageNavBtn
-        galeryImagesArray={galeryImagesArray}
-        setIndex={setIndex}
-        direction="prev"
-      />
-
-      <ImagePagination
-        galeryImagesArray={galeryImagesArray}
-        setIndex={setIndex}
-        index={index}
-      />
+      <ImageSlider />
     </div>
   );
 }

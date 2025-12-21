@@ -1,11 +1,11 @@
 import { QueryClient } from "@tanstack/react-query";
+import { isAxios401Error } from "../Utils/isAxios401Error";
 
-// React Query client creat and export
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: (failureCount, error: any) => {
-        if (error?.response?.status === 401) return false;
+      retry: (failureCount, error: unknown) => {
+        if (isAxios401Error(error)) return false;
         return failureCount < 3;
       },
       refetchOnWindowFocus: false,

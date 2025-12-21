@@ -6,14 +6,13 @@ type Props = {
   index: number;
 };
 
-// kép alsó lapozó gomb komponens
 export default function ImagePagination({
   galeryImagesArray,
   setIndex,
   index,
 }: Props) {
   return (
-    <div className="flex items-center justify-center gap-2 absolute bottom-4 left-1/2 transform -translate-x-1/2">
+    <div className="flex items-center justify-center gap-2 absolute bottom-0 left-1/2 transform -translate-x-1/2">
       {galeryImagesArray.map((_, i) => (
         <button
           key={i}

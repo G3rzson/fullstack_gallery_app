@@ -1,45 +1,62 @@
 import path from "path";
-import sanitize from "sanitize-filename";
 import { findGaleryTitleById } from "../../db/repositories/galery.repository";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { createSafeGaleryNames } from "../../utils/createSafeGaleryNames";
 import { findUniqueSlug } from "../../utils/findUniqueSlug";
 import { renameGaleryFolder } from "../../utils/renameGaleryFolder";
 import { updateGaleryImages } from "../../utils/updateGaleryImages";
+import { UPLOADS_DIR, resolveFromRepo, toPosixPath } from "../../config/paths";
 
-// rename galery folder
 export async function updateGaleryTitleService(
   galeryId: string,
-  newTitle: string
+  newTitle: string,
+  isPrivate: boolean,
+  username: string
 ) {
-  const galery = await findGaleryTitleById(galeryId);
-  if (!galery) {
+  const galeryObj = await findGaleryTitleById(galeryId);
+
+  if (!galeryObj) {
     throw new NotFoundError("Galéria nem található");
   }
 
-  const { safeFolderName, safeUrl } = createSafeGaleryNames(newTitle);
-  const slug = await findUniqueSlug(safeUrl, galeryId);
+  const titleChanged = newTitle !== galeryObj.galeryTitle;
 
-  const safeUserFolder = sanitize(galery.createdBy) || "user";
-  const newPath = path.join("uploads", safeUserFolder, safeFolderName);
+  if (titleChanged) {
+    const { safeGaleryTitleFolder, safeUrl, safeUserFolder } =
+      createSafeGaleryNames(newTitle, username);
 
-  const oldRelativeDir = path
-    .relative("uploads", galery.path)
-    .split(path.sep)
-    .join("/");
-  const newRelativeDir = path
-    .relative("uploads", newPath)
-    .split(path.sep)
-    .join("/");
+    const slug = await findUniqueSlug(safeUrl, galeryId);
 
-  await renameGaleryFolder(galery.path, newPath);
-  await updateGaleryImages(galery.url, slug, oldRelativeDir, newRelativeDir);
+    const newPath = path.join("uploads", safeUserFolder, safeGaleryTitleFolder);
+    const oldAbsolutePath = resolveFromRepo(galeryObj.path);
+    const newAbsolutePath = path.join(
+      UPLOADS_DIR,
+      safeUserFolder,
+      safeGaleryTitleFolder
+    );
 
-  galery.galeryTitle = newTitle;
-  galery.url = slug;
-  galery.path = newPath;
+    const oldRelativeDir = toPosixPath(
+      path.relative(UPLOADS_DIR, oldAbsolutePath)
+    );
+    const newRelativeDir = toPosixPath(
+      path.relative(UPLOADS_DIR, newAbsolutePath)
+    );
 
-  await galery.save();
+    await renameGaleryFolder(oldAbsolutePath, newAbsolutePath);
+    await updateGaleryImages(
+      galeryObj.url,
+      slug,
+      oldRelativeDir,
+      newRelativeDir
+    );
 
-  return galery.toObject();
+    galeryObj.galeryTitle = newTitle;
+    galeryObj.url = slug;
+    galeryObj.path = newPath;
+  }
+
+  galeryObj.isPrivate = isPrivate;
+
+  const saved = await galeryObj.save();
+  return saved.toObject();
 }

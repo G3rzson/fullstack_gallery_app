@@ -5,6 +5,7 @@ import {
   findGaleryImageById,
 } from "../../db/repositories/galery.repository";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { REPO_ROOT_DIR } from "../../config/paths";
 
 export async function deleteGaleryImageService(imageId: string) {
   const image = await findGaleryImageById(imageId);
@@ -14,7 +15,7 @@ export async function deleteGaleryImageService(imageId: string) {
   }
 
   const relativePath = image.url.replace(/^\/+/, "");
-  const filePath = path.join(process.cwd(), relativePath);
+  const filePath = path.join(REPO_ROOT_DIR, relativePath);
 
   try {
     await fs.rm(filePath);

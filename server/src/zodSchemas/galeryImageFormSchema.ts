@@ -1,7 +1,12 @@
 import { z } from "zod";
 
+/* ----------------------------------------------
+   | todo: max darabszám ellenőrzés hozzáadása  |
+   ---------------------------------------------- */
+
 export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 export const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+export const MAX_FILES_COUNT_AT_THE_SAME_TIME = 10;
 
 export const galeryImagesFormSchema = z.object({
   galeryImages: z

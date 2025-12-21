@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 import { useAxiosInterceptor } from "../Axios/interceptor";
 
-type Props = {
+export default function AxiosInterceptorProvider({
+  children,
+}: {
   children: ReactNode;
-};
-
-export default function AxiosInterceptorProvider({ children }: Props) {
+}) {
   useAxiosInterceptor();
   return <>{children}</>;
 }

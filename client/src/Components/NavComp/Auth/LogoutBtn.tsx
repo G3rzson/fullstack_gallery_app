@@ -9,14 +9,12 @@ type Props = {
 };
 
 export default function LogoutBtn({ setShowAuthMenu }: Props) {
-  const { setAccessToken, setUser } = useContextProvider();
+  const { setAccessToken, setUserObj } = useContextProvider();
   const navigate = useNavigate();
   const { mutateAsync, isPending } = useAuthLogout();
 
   async function handleLogout() {
     try {
-      // Navigate away from protected pages first to prevent auth-guard redirects
-      // (e.g. MyGaleries redirecting to /auth/login when user becomes null).
       navigate("/", { replace: true });
 
       const res = await mutateAsync();
@@ -24,7 +22,7 @@ export default function LogoutBtn({ setShowAuthMenu }: Props) {
       toast.success(res.message ?? "Sikeres kijelentkezés!");
       setShowAuthMenu(false);
       setAccessToken(null);
-      setUser(null);
+      setUserObj(null);
     } catch (error) {
       toast.error(handleAxiosError(error));
     }

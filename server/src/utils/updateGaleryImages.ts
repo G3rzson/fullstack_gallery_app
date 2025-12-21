@@ -1,4 +1,7 @@
-import GaleryImageModel from "../db/models/galeryImage.model";
+import {
+  bulkWriteGaleryImages,
+  findGaleryImagesByUrl,
+} from "../db/repositories/galery.repository";
 
 export async function updateGaleryImages(
   oldSlug: string,
@@ -6,14 +9,14 @@ export async function updateGaleryImages(
   oldRelativeDir: string,
   newRelativeDir: string
 ) {
-  const images = await GaleryImageModel.find({ galeryUrl: oldSlug });
+  const imagesArray = await findGaleryImagesByUrl(oldSlug);
 
-  if (!images.length) return;
+  if (!imagesArray.length) return;
 
   const oldPrefix = `/uploads/${oldRelativeDir}/`;
   const newPrefix = `/uploads/${newRelativeDir}/`;
 
-  const bulkOps = images.map((img) => {
+  const bulkOps = imagesArray.map((img) => {
     const newUrl = img.url.startsWith(oldPrefix)
       ? img.url.replace(oldPrefix, newPrefix)
       : img.url;
@@ -26,5 +29,5 @@ export async function updateGaleryImages(
     };
   });
 
-  await GaleryImageModel.bulkWrite(bulkOps);
+  await bulkWriteGaleryImages(bulkOps);
 }

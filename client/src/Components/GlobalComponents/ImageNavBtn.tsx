@@ -13,7 +13,6 @@ export default function ImageNavBtn({
   setIndex,
   direction,
 }: Props) {
-  // figyeli a billentyűzet eseményeket
   function handleKeyDown(event: KeyboardEvent) {
     if (direction === "prev" && event.key === "ArrowLeft") {
       prevImage();
@@ -22,7 +21,6 @@ export default function ImageNavBtn({
     }
   }
 
-  // billentyűzet események kezelése
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => {
@@ -30,7 +28,6 @@ export default function ImageNavBtn({
     };
   }, [direction, galeryImagesArray.length, setIndex]);
 
-  // gomb kattintás kezelése
   function handleClick(direction: "prev" | "next") {
     if (direction === "prev") {
       prevImage();
@@ -39,14 +36,12 @@ export default function ImageNavBtn({
     }
   }
 
-  // előző kép
   function prevImage() {
     setIndex(
       (i) => (i - 1 + galeryImagesArray.length) % galeryImagesArray.length
     );
   }
 
-  // következő kép
   function nextImage() {
     setIndex((i) => (i + 1) % galeryImagesArray.length);
   }
@@ -56,7 +51,7 @@ export default function ImageNavBtn({
       onClick={() => handleClick(direction)}
       aria-label={direction === "next" ? "Következő kép" : "Előző kép"}
       className={`absolute top-1/2 -translate-y-1/2 bg-transparent cursor-pointer border-none outline-none ${
-        direction === "prev" ? "left-5" : "right-5"
+        direction === "prev" ? "left-0" : "right-0"
       }`}
     >
       {direction === "next" ? (

@@ -1,18 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../Axios/api";
-import { handleAxiosError } from "../Utils/handleAxiosError";
-import toast from "react-hot-toast";
+import type { BackendResponseType, GaleryImageType } from "../Types/types";
 
-type Props = {
+export default function useGaleryImageCreate({
+  urlParams,
+}: {
   urlParams: string | undefined;
-};
-
-export default function useGaleryImageCreate({ urlParams }: Props) {
+}) {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<BackendResponseType<GaleryImageType>, unknown, FormData>({
     mutationFn: async (data: FormData) => {
-      const response = await api.post(
+      const response = await api.post<BackendResponseType<GaleryImageType>>(
         `/api/galery/image/upload/${urlParams}`,
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
@@ -20,16 +19,10 @@ export default function useGaleryImageCreate({ urlParams }: Props) {
       return response.data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["galeryImages", urlParams],
       });
-
-      toast.success(data.message || "Képek sikeresen feltöltve!");
-    },
-
-    onError: (error) => {
-      toast.error(handleAxiosError(error));
     },
   });
 }

@@ -31,7 +31,7 @@ export default function AuthComp() {
   return (
     <div
       ref={authRef}
-      className="relative dark:bg-zinc-800 bg-zinc-100 hover:dark:bg-zinc-700 hover:bg-zinc-300 duration-300 m-4 rounded"
+      className="fixed bottom-0 w-40 dark:bg-zinc-800 bg-zinc-100 hover:dark:bg-zinc-700 hover:bg-zinc-300 duration-300 m-4 rounded"
     >
       {showAuthMenu && <AuthMenu setShowAuthMenu={setShowAuthMenu} />}
 

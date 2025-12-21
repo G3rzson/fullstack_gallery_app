@@ -2,6 +2,8 @@ import { FaTrash } from "react-icons/fa";
 import type { GaleryImageType } from "../../Types/types";
 import useGaleryImageDelete from "../../Hooks/useGaleryImageDelete";
 import { useEffect } from "react";
+import { handleAxiosError } from "../../Utils/handleAxiosError";
+import toast from "react-hot-toast";
 
 type Props = {
   imageObj: GaleryImageType;
@@ -9,17 +11,14 @@ type Props = {
 };
 
 export default function DeleteImageBtn({ imageObj, urlParams }: Props) {
-  // ha nincs kép, ne jelenítsen meg semmit
   if (!imageObj) return null;
 
-  // figyeli a billentyűzet eseményeket
   function handleKeyDown(event: KeyboardEvent) {
     if (event.key === "Delete") {
       handleDelete();
     }
   }
 
-  // billentyűzet események kezelése
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => {
@@ -27,22 +26,27 @@ export default function DeleteImageBtn({ imageObj, urlParams }: Props) {
     };
   }, [handleDelete]);
 
-  // törlés hook definíció
-  const deleteMutation = useGaleryImageDelete({
-    imageId: imageObj._id,
-    urlParams,
-  });
+  const { mutateAsync, isPending } = useGaleryImageDelete(
+    imageObj._id,
+    urlParams
+  );
 
-  // kép törlése függvény
-  function handleDelete() {
-    deleteMutation.mutate();
+  async function handleDelete() {
+    try {
+      const res = await mutateAsync();
+      if (res) {
+        toast.success(res.message || "Sikeresen törölve!");
+      }
+    } catch (error) {
+      toast.error(handleAxiosError(error));
+    }
   }
 
   return (
-    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 duration-300 bg-zinc-900/70 w-full flex items-center justify-center gap-4 p-4">
+    <div className="absolute rounded-b-xl bottom-0 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 duration-300 bg-zinc-900/70 w-full flex items-center justify-center gap-4 p-4">
       <button
         onClick={handleDelete}
-        disabled={deleteMutation.isPending}
+        disabled={isPending}
         className="cursor-pointer flex items-center gap-2 disabled:cursor-not-allowed"
         aria-label="Kép Törlése"
       >

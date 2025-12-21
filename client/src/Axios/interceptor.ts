@@ -28,7 +28,7 @@ const processQueue = (error: unknown, token: string | null = null) => {
 };
 
 export function useAxiosInterceptor() {
-  const { accessToken, setAccessToken, setUser } = useContextProvider();
+  const { accessToken, setAccessToken, setUserObj } = useContextProvider();
   const navigate = useNavigate();
   const accessTokenRef = useRef<string | null>(accessToken);
 
@@ -81,18 +81,18 @@ export function useAxiosInterceptor() {
             >("/api/auth/refresh");
 
             const refreshed = response.data.data;
-            if (!refreshed?.accessToken || !refreshed?.username) {
+            if (!refreshed?.accessToken || !refreshed?.userObj) {
               throw new Error("Invalid refresh response payload");
             }
 
-            const { accessToken: newToken, username } = refreshed;
+            const { accessToken: newToken, userObj } = refreshed;
 
             // Make the new token available immediately for any in-flight requests
             // before React state propagation completes.
             accessTokenRef.current = newToken;
 
             setAccessToken(newToken);
-            setUser(username);
+            setUserObj(userObj);
 
             processQueue(null, newToken);
 
@@ -106,7 +106,7 @@ export function useAxiosInterceptor() {
 
             queryClient.clear();
 
-            setUser(null);
+            setUserObj(null);
             setAccessToken(null);
             navigate("/auth/login", { replace: true });
 
@@ -124,5 +124,5 @@ export function useAxiosInterceptor() {
       api.interceptors.request.eject(requestInterceptor);
       api.interceptors.response.eject(responseInterceptor);
     };
-  }, [setAccessToken, setUser, navigate]);
+  }, [setAccessToken, setUserObj, navigate]);
 }

@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
 import {
   generateAccessToken,
-  RefreshTokenPayload,
   verifyRefreshToken,
+  AuthTokenPayload,
 } from "../../utils/token";
 
 export async function refreshTokenController(
@@ -15,16 +15,19 @@ export async function refreshTokenController(
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) throw new UnauthorizedError("Refresh token not found");
 
-    const decoded = verifyRefreshToken(refreshToken) as RefreshTokenPayload;
+    const decoded = verifyRefreshToken(refreshToken) as AuthTokenPayload;
 
-    const newAccessToken = generateAccessToken(decoded.username);
+    const newAccessToken = generateAccessToken({
+      username: decoded.username,
+      role: decoded.role,
+    });
 
     res.json({
       success: true,
       message: "Access token refreshed successfully",
       data: {
         accessToken: newAccessToken,
-        username: decoded.username,
+        userObj: { username: decoded.username, role: decoded.role },
       },
     });
   } catch (error) {

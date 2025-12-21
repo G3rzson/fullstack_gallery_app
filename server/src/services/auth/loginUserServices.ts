@@ -10,7 +10,7 @@ export async function loginUserService({
   password,
 }: LoginFormType): Promise<{
   accessToken: string;
-  userObj: { username: string };
+  userObj: { username: string; role: "admin" | "user" };
   refreshToken: string;
 }> {
   try {
@@ -25,12 +25,18 @@ export async function loginUserService({
       throw new UnauthorizedError("Érvénytelen jelszó.");
     }
 
-    const accessToken = generateAccessToken(userObj.username);
-    const refreshToken = generateRefreshToken(userObj.username);
+    const accessToken = generateAccessToken({
+      username: userObj.username,
+      role: userObj.role,
+    });
+    const refreshToken = generateRefreshToken({
+      username: userObj.username,
+      role: userObj.role,
+    });
 
     return {
       accessToken,
-      userObj: { username: userObj.username },
+      userObj: { username: userObj.username, role: userObj.role },
       refreshToken,
     };
   } catch (error) {

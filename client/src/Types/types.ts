@@ -4,6 +4,7 @@ export type GaleryTitleType = {
   path: string;
   url: string;
   createdBy: string;
+  isPrivate: boolean;
 };
 
 export type GaleryImageType = {
@@ -11,7 +12,7 @@ export type GaleryImageType = {
   filename: string;
   url: string;
   galeryUrl: string;
-  createdAt?: Date;
+  createdBy: string;
 };
 
 type BaseResponseType = {
@@ -19,9 +20,14 @@ type BaseResponseType = {
   message: string;
 };
 
+export type UserObjType = {
+  username: string;
+  role: "admin" | "user";
+};
+
 export type WithAuthDataType = {
   accessToken: string;
-  username: string;
+  userObj: UserObjType;
 };
 
 export type BackendResponseType<T = undefined> = BaseResponseType &

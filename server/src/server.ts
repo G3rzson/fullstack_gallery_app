@@ -7,6 +7,7 @@ import galeryRouter from "./routes/galery.routes";
 import authRouter from "./routes/auth.routes";
 import { errorHandlerMW } from "./middlewares/errorHandler.mw";
 import { invalidUrlMW } from "./middlewares/invalidUrl.mw";
+import { UPLOADS_DIR } from "./config/paths";
 
 dotenv.config();
 const app = express();
@@ -31,7 +32,7 @@ app.use(
   })
 );
 
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(UPLOADS_DIR));
 
 app.use("/api/galery", galeryRouter);
 app.use("/api/auth", authRouter);

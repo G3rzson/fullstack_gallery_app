@@ -10,7 +10,6 @@ import { validateDataMW } from "../middlewares/validateData.mw";
 import { galeryTitleFormSchema } from "../zodSchemas/galeryTitleFormSchema";
 import { validateObjectIdMW } from "../middlewares/validateUrlObjectId.mw";
 import { validateUrlParam } from "../middlewares/validateUrlParams.mw";
-import { validateGaleryTitleExistsMW } from "../middlewares/validateGaleryTitleExists.mw";
 import { uploadGaleryImagesMW } from "../middlewares/uploadGaleryImages.mw";
 import { verifyAccessTokenMW } from "../middlewares/verifyAccessTokenMW";
 import { getUserFromTokenMW } from "../middlewares/getUserFromToken.mw";
@@ -33,27 +32,25 @@ galeryRouter.get(
   myGaleryTitleGetController
 );
 
-// delete galery title
 galeryRouter.delete(
   "/title/delete/:id",
+  verifyAccessTokenMW(),
   validateObjectIdMW("id"),
   galeryTitleDeleteController
 );
 
-/*
-// update galery title
 galeryRouter.put(
   "/title/update/:id",
+  verifyAccessTokenMW(),
   validateObjectIdMW("id"),
   validateDataMW(galeryTitleFormSchema),
   galeryTitleUpdateController
-);*/
+);
 
-// Galery Image Routes
 galeryRouter.post(
   "/image/upload/:url",
+  verifyAccessTokenMW(),
   validateUrlParam("url"),
-  validateGaleryTitleExistsMW,
   uploadGaleryImagesMW,
   galeryImageCreateController
 );
@@ -69,6 +66,7 @@ galeryRouter.get(
 // delete galery image
 galeryRouter.delete(
   "/image/delete/:id",
+  verifyAccessTokenMW(),
   validateObjectIdMW("id"),
   galeryImageDeleteController
 );

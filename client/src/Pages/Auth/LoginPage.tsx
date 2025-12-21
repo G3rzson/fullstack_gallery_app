@@ -17,7 +17,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const { setAccessToken, setUser } = useContextProvider();
+  const { setAccessToken, setUserObj } = useContextProvider();
   const { mutateAsync, isPending } = useAuthLogin();
   const navigate = useNavigate();
   const {
@@ -34,7 +34,7 @@ export default function Login() {
       const res = await mutateAsync(data);
       reset();
       setAccessToken(res.data.accessToken);
-      setUser(res.data.username);
+      setUserObj(res.data.userObj);
       toast.success(res.message ?? "Sikeres bejelentkezés!");
       navigate("/my-galery-titles", { replace: true });
     } catch (error) {

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { GaleryTitleFormType } from "../../zodSchemas/galeryTitleFormSchema";
 import { updateGaleryTitleService } from "../../services/galery/updateGaleryTitleService";
+import { UnauthorizedError } from "../../errors/UnauthorizedError";
 
 type GaleryParams = {
   id: string;
@@ -13,9 +14,19 @@ export async function galeryTitleUpdateController(
 ) {
   try {
     const { id } = req.params;
-    const { galeryTitle } = req.body;
+    const { galeryTitle, isPrivate } = req.body;
+    const username = req.username;
 
-    const updatedGalery = await updateGaleryTitleService(id, galeryTitle);
+    if (!username) {
+      throw new UnauthorizedError("Missing username");
+    }
+
+    const updatedGalery = await updateGaleryTitleService(
+      id,
+      galeryTitle,
+      isPrivate,
+      username
+    );
 
     res.json({
       success: true,

@@ -1,7 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import GaleryImageModel from "../../db/models/galeryImage.model";
-import path from "path";
 import { BadRequestError } from "../../errors/BadRequestError";
+import { NotFoundError } from "../../errors/NotFoundError";
+import { UnauthorizedError } from "../../errors/UnauthorizedError";
+import {
+  createGaleryImage,
+  findGaleryTitleByUrl,
+} from "../../db/repositories/galery.repository";
+import path from "path";
+import { UPLOADS_DIR, resolveFromRepo, toPosixPath } from "../../config/paths";
 
 export async function galeryImageCreateController(
   req: Request,
@@ -10,30 +17,47 @@ export async function galeryImageCreateController(
 ) {
   try {
     const files = req.files as Express.Multer.File[];
-    const gal = (req as any).galery;
+
+    const slug = req.params.url;
+    const username = req.username;
+
+    if (!username) {
+      throw new UnauthorizedError("Missing username");
+    }
+
+    if (!slug) {
+      throw new NotFoundError("Galéria nem található");
+    }
 
     if (!files || files.length === 0) {
       throw new BadRequestError("Nincsenek feltöltött fájlok");
     }
 
-    const relativeDir = path
-      .relative("uploads", gal.path)
-      .split(path.sep)
-      .join("/");
+    const galery = await findGaleryTitleByUrl(slug);
+    if (!galery) throw new NotFoundError("Galéria nem található");
+    if (galery.createdBy !== username) {
+      throw new UnauthorizedError("Nincs jogosultságod ehhez a galériához");
+    }
+
+    const absoluteGaleryDir = resolveFromRepo(galery.path);
+    const relativeDir = toPosixPath(
+      path.relative(UPLOADS_DIR, absoluteGaleryDir)
+    ).replace(/^\/+/, "");
 
     const saved = files.map((f) => ({
       filename: f.filename,
       url: `/uploads/${relativeDir}/${f.filename}`,
-      galeryUrl: gal.url,
+      galeryUrl: slug,
+      createdBy: username,
       createdAt: new Date(),
     }));
 
-    await GaleryImageModel.insertMany(saved);
+    const savedImages = await createGaleryImage(saved);
 
     res.json({
       success: true,
       message: "Képek sikeresen feltöltve",
-      data: saved,
+      data: savedImages,
     });
   } catch (error) {
     next(error);

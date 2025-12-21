@@ -1,10 +1,14 @@
-import GaleryImageModel from "../models/galeryImage.model";
+import GaleryImageModel, {
+  GaleryImageSchemaType,
+  GaleryImageLeanType,
+} from "../models/galeryImage.model";
 import GaleryTitleModel, {
   GaleryTitleSchemaType,
 } from "../models/galeryTitle.model";
+import type { HydratedDocument } from "mongoose";
+import { Types } from "mongoose";
 import { BadRequestError } from "../../errors/BadRequestError";
 import { MongoServerError } from "mongodb";
-import { GaleryImageType } from "../../types/types";
 
 export async function createGaleryTitle(
   data: GaleryTitleSchemaType
@@ -40,35 +44,60 @@ export async function findGaleryTitleByUrl(url: string) {
 }
 
 // find galery title by ID
-export async function findGaleryTitleById(id: string) {
+export async function findGaleryTitleById(
+  id: string
+): Promise<HydratedDocument<GaleryTitleSchemaType> | null> {
   return await GaleryTitleModel.findById(id);
 }
 
-// delete galery title by ID
-export async function deleteGaleryTitleById(id: string) {
+export async function deleteGaleryTitleById(
+  id: string
+): Promise<GaleryTitleSchemaType | null> {
   return await GaleryTitleModel.findByIdAndDelete(id);
 }
 
-// delete galery images by galery URL
-export async function deleteGaleryImagesByUrl(url: string) {
+export async function deleteGaleryImagesByUrl(url: string): Promise<{
+  deletedCount?: number;
+}> {
   return await GaleryImageModel.deleteMany({ galeryUrl: url });
 }
 
-// find images by galery URL
 export async function findGaleryImagesByUrl(
   url: string
-): Promise<GaleryImageType[]> {
-  return GaleryImageModel.find({ galeryUrl: url })
+): Promise<GaleryImageLeanType[]> {
+  return await GaleryImageModel.find({ galeryUrl: url })
     .sort({ createdAt: -1 })
     .lean();
 }
 
-// find galery image by ID
 export async function findGaleryImageById(id: string) {
-  return GaleryImageModel.findById(id);
+  return await GaleryImageModel.findById(id);
 }
 
-// delete galery image by ID
 export async function deleteGaleryImageById(id: string) {
-  return GaleryImageModel.findByIdAndDelete(id);
+  return await GaleryImageModel.findByIdAndDelete(id);
+}
+
+export async function bulkWriteGaleryImages(
+  bulkOps: {
+    updateOne: {
+      filter: {
+        _id: Types.ObjectId | string;
+      };
+      update: {
+        $set: {
+          galeryUrl: string;
+          url: string;
+        };
+      };
+    };
+  }[]
+) {
+  return GaleryImageModel.bulkWrite(bulkOps);
+}
+
+export async function createGaleryImage(
+  saved: GaleryImageSchemaType[]
+): Promise<GaleryImageSchemaType[]> {
+  return await GaleryImageModel.insertMany(saved);
 }

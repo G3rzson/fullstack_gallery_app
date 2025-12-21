@@ -1,31 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../Axios/api";
-import toast from "react-hot-toast";
-import { handleAxiosError } from "../Utils/handleAxiosError";
+import type { BackendResponseType } from "../Types/types";
 
-type Props = {
-  galeryTitleId: string;
-};
-
-export default function useGaleryTitleDelete({ galeryTitleId }: Props) {
+export default function useGaleryTitleDelete(galeryTitleId: string) {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<BackendResponseType>({
     mutationFn: async () => {
-      const response = await api.delete(
+      const response = await api.delete<BackendResponseType>(
         `/api/galery/title/delete/${galeryTitleId}`
       );
       return response.data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["galeryTitles"] });
-
-      toast.success(data.message || "Sikeresen törölve!");
-    },
-
-    onError: (error) => {
-      toast.error(handleAxiosError(error));
     },
   });
 }

@@ -23,6 +23,6 @@ export async function loginUserController(
     .json({
       success: true,
       message: "Sikeres bejelentkezés!",
-      data: { accessToken, username: userObj.username },
+      data: { accessToken, userObj },
     });
 }

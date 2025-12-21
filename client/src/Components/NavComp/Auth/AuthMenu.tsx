@@ -2,18 +2,22 @@ import { useContextProvider } from "../../../Hooks/useContextProvider";
 import { Link } from "react-router-dom";
 import LogoutBtn from "./LogoutBtn";
 
+/*---------------------------------------
+  | todo: fiók törlése fejlesztése      |
+  ---------------------------------------*/
+
 type Props = {
   setShowAuthMenu: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function AuthMenu({ setShowAuthMenu }: Props) {
-  const { user } = useContextProvider();
+  const { userObj } = useContextProvider();
 
   return (
     <div className="absolute text-center bottom-12 w-full shadow-lg dark:bg-zinc-800 bg-zinc-100 rounded overflow-hidden">
-      {user ? (
+      {userObj ? (
         <>
-          <p className="p-4 ">{user}</p>
+          <p className="p-4 ">{userObj.username}</p>
 
           <LogoutBtn setShowAuthMenu={setShowAuthMenu} />
 

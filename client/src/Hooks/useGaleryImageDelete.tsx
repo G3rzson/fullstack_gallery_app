@@ -1,32 +1,25 @@
-import toast from "react-hot-toast";
-import { handleAxiosError } from "../Utils/handleAxiosError";
 import { api } from "../Axios/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { BackendResponseType } from "../Types/types";
 
-type Props = {
-  imageId: string;
-  urlParams: string | undefined;
-};
-
-export default function useGaleryImageDelete({ imageId, urlParams }: Props) {
+export default function useGaleryImageDelete(
+  imageId: string,
+  urlParams: string | undefined
+) {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<BackendResponseType>({
     mutationFn: async () => {
-      const response = await api.delete(`/api/galery/image/delete/${imageId}`);
+      const response = await api.delete<BackendResponseType>(
+        `/api/galery/image/delete/${imageId}`
+      );
       return response.data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["galeryImages", urlParams],
       });
-
-      toast.success(data.message || "Sikeresen törölve!");
-    },
-
-    onError: (error) => {
-      toast.error(handleAxiosError(error));
     },
   });
 }
