@@ -35,13 +35,13 @@ export default function DropdownMenu({ galeryTitleObj, onClose }: Props) {
 
   return (
     <div
-      className={`absolute top-0 right-0 w-full sm:text-[16px] text-sm bg-zinc-100/70 dark:bg-zinc-800/70 backdrop-blur-xs border border-zinc-300 dark:border-zinc-700 rounded z-10`}
+      className={`absolute top-0 right-0 w-full sm:text-[16px] text-sm backdrop-blur-lg rounded z-10`}
     >
       <button
         onClick={() => handleClick("edit")}
         aria-label="Galéria cím szerkesztése"
         disabled={isPending}
-        className="w-full flex items-center justify-start gap-2 cursor-pointer disabled:cursor-not-allowed p-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 duration-300"
+        className="w-full flex items-center justify-start gap-2 cursor-pointer disabled:cursor-not-allowed hover:bg-indigo-300/60 dark:hover:bg-indigo-800/60 p-2 duration-300"
       >
         <FaRegEdit color="orange" /> Szerkesztés
       </button>
@@ -50,7 +50,7 @@ export default function DropdownMenu({ galeryTitleObj, onClose }: Props) {
         onClick={() => handleClick("delete")}
         disabled={isPending}
         aria-label="Galéria cím törlése"
-        className="w-full flex items-center justify-start gap-2 cursor-pointer disabled:cursor-not-allowed p-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 duration-300"
+        className="w-full flex items-center justify-start gap-2 cursor-pointer disabled:cursor-not-allowed p-2 hover:bg-indigo-300/60 dark:hover:bg-indigo-800/60 duration-300"
       >
         <FaTrash color="orangered" /> Törlés
       </button>

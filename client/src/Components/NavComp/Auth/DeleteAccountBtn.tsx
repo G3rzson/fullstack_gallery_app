@@ -32,7 +32,7 @@ export default function DeleteAccountBtn({ setShowAuthMenu }: Props) {
       onClick={handleDeleteAccount}
       disabled={isPending}
       aria-label="Fiók törlése"
-      className="dark:hover:bg-zinc-600 hover:bg-zinc-300 disabled:cursor-not-allowed w-full p-4 duration-300 cursor-pointer"
+      className="bg-zinc-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-300 disabled:cursor-not-allowed w-full p-4 cursor-pointer"
     >
       Fiók törlése
     </button>

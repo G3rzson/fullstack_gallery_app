@@ -32,7 +32,7 @@ export default function LogoutBtn({ setShowAuthMenu }: Props) {
       onClick={handleLogout}
       disabled={isPending}
       aria-label="Kijelentkezés"
-      className="dark:hover:bg-zinc-600 hover:bg-zinc-300 disabled:cursor-not-allowed w-full p-4 duration-300 cursor-pointer"
+      className="bg-zinc-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 disabled:cursor-not-allowed w-full p-4 duration-300 cursor-pointer"
     >
       Kijelentkezés
     </button>

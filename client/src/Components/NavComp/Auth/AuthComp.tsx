@@ -30,15 +30,12 @@ export default function AuthComp() {
 
   return (
     <>
-      <div
-        ref={authRef}
-        className="fixed bottom-0 w-40 dark:bg-zinc-800 bg-zinc-100 hover:dark:bg-zinc-700 hover:bg-zinc-300 duration-300 m-4 rounded"
-      >
+      <div ref={authRef} className="fixed bottom-4 left-4 z-50 w-40 rounded">
         {showAuthMenu && <AuthMenu setShowAuthMenu={setShowAuthMenu} />}
         <button
           onClick={() => setShowAuthMenu((prev) => !prev)}
           aria-label="User menu"
-          className="cursor-pointer text-zinc-800 dark:text-zinc-200 w-full flex items-center justify-center p-2"
+          className="cursor-pointer w-full rounded flex items-center justify-center p-2 bg-zinc-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-300"
         >
           <IoMdPerson size={24} />
         </button>

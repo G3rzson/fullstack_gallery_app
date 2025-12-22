@@ -11,10 +11,12 @@ export default function AuthMenu({ setShowAuthMenu }: Props) {
   const { userObj } = useContextProvider();
 
   return (
-    <div className="absolute text-center bottom-12 w-full shadow-lg dark:bg-zinc-800 bg-zinc-100 rounded overflow-hidden">
+    <div className="fixed text-center left-4 w-40 bottom-16 rounded overflow-hidden">
       {userObj ? (
         <>
-          <p className="p-4 ">{userObj.username}</p>
+          <p className="p-4 bg-zinc-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-300">
+            {userObj.username}
+          </p>
 
           <LogoutBtn setShowAuthMenu={setShowAuthMenu} />
           <DeleteAccountBtn setShowAuthMenu={setShowAuthMenu} />
@@ -22,13 +24,13 @@ export default function AuthMenu({ setShowAuthMenu }: Props) {
       ) : (
         <>
           <Link
-            className="block dark:hover:bg-zinc-600 hover:bg-zinc-300 w-full p-4 duration-300"
+            className="block w-full p-4 bg-zinc-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-300"
             to="/auth/login"
           >
             Bejelentkezés
           </Link>
           <Link
-            className="block dark:hover:bg-zinc-600 hover:bg-zinc-300 w-full p-4 duration-300"
+            className="block w-full p-4 bg-zinc-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-300"
             to="/auth/register"
           >
             Regisztráció

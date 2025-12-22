@@ -53,22 +53,22 @@ export default function GaleryLinkArray({ mode }: Props) {
         <li
           key={galeryTitleObj._id}
           ref={openMenuId === galeryTitleObj._id ? menuRef : null}
-          className="relative sm:w-40 w-30 sm:h-40 h-30 dark:bg-zinc-900 bg-zinc-200 rounded-[5px] overflow-hidden"
+          className="relative sm:w-50 w-40 sm:h-50 h-40 dark:bg-indigo-950 bg-indigo-200 rounded overflow-hidden"
         >
           <Link
             className="w-full h-full block"
             to={`/galery/${galeryTitleObj.url}`}
           >
-            <CiImageOn className="sm:w-40 w-30 sm:h-40 h-30" />
-            <div className="p-2 absolute bottom-0 w-full dark:bg-zinc-900/70 bg-zinc-200/70 backdrop-blur-xs">
-              <p className="text-sm text-left">{galeryTitleObj.galeryTitle}</p>
-              <p className="text-sm text-right">{galeryTitleObj.createdBy}</p>
+            <CiImageOn className="sm:w-50 w-40 sm:h-50 h-40" />
+            <div className="sm:text text-sm absolute bottom-0 p-2 w-full backdrop-blur-lg">
+              <p className="text-left">{galeryTitleObj.galeryTitle}</p>
+              <p className="text-right">{galeryTitleObj.createdBy}</p>
             </div>
           </Link>
 
           {showDropdown && (
             <button
-              className="absolute top-0 right-0 z-20 cursor-pointer py-2 px-1 dark:hover:text-green-300 hover:text-green-500 duration-300"
+              className="absolute top-2 right-0 z-20 cursor-pointer duration-300  text-zinc-500 hover:text-black dark:hover:text-white"
               aria-label="Galéria műveletek megjelenítése"
               onClick={(e) => {
                 e.stopPropagation();
@@ -77,7 +77,7 @@ export default function GaleryLinkArray({ mode }: Props) {
                 );
               }}
             >
-              <HiDotsVertical size={16} />
+              <HiDotsVertical size={20} />
             </button>
           )}
 

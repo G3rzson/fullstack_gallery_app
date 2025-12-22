@@ -25,7 +25,7 @@ export default function MyGaleries() {
       <h1 className="text-3xl text-center">Galériák kezelése</h1>
       <Link
         to="/galery-title"
-        className="dark:hover:bg-zinc-700 text-center dark:bg-zinc-900 rounded bg-zinc-200 hover:bg-zinc-300 w-full py-2 duration-300 cursor-pointer"
+        className="text-center rounded bg-zinc-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 w-full py-2 duration-300 cursor-pointer"
       >
         Galéria létrehozása
       </Link>

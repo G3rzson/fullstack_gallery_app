@@ -19,7 +19,9 @@ export default function ImagePagination({
           onClick={() => setIndex(i)}
           aria-label="alsó lapozó gomb"
           className={`w-2 h-2 rounded-full cursor-pointer ${
-            i === index ? "bg-zinc-900" : "bg-zinc-100"
+            i === index
+              ? "bg-black dark:bg-white"
+              : "bg-indigo-300 dark:bg-indigo-700"
           }`}
         />
       ))}

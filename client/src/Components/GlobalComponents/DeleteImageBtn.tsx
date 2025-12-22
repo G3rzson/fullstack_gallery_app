@@ -34,24 +34,20 @@ export default function DeleteImageBtn({ imageObj, urlParams }: Props) {
   async function handleDelete() {
     try {
       const res = await mutateAsync();
-      if (res) {
-        toast.success(res.message || "Sikeresen törölve!");
-      }
+      toast.success(res.message || "Sikeresen törölve!");
     } catch (error) {
       toast.error(handleAxiosError(error));
     }
   }
 
   return (
-    <div className="absolute rounded-b-xl bottom-0 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 duration-300 bg-zinc-900/70 w-full flex items-center justify-center gap-4 p-4">
-      <button
-        onClick={handleDelete}
-        disabled={isPending}
-        className="cursor-pointer flex items-center gap-2 disabled:cursor-not-allowed"
-        aria-label="Kép Törlése"
-      >
-        Kép törlése <FaTrash color="orangered" />
-      </button>
-    </div>
+    <button
+      onClick={handleDelete}
+      disabled={isPending}
+      className="cursor-pointer disabled:cursor-not-allowed absolute rounded-b-xl bottom-0 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 duration-300 bg-zinc-900/50 text-zinc-100 w-full flex items-center justify-center gap-2 p-2"
+      aria-label="Kép Törlése"
+    >
+      Kép törlése <FaTrash color="orangered" />
+    </button>
   );
 }
