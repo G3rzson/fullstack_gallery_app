@@ -53,14 +53,14 @@ export default function GaleryLinkArray({ mode }: Props) {
         <li
           key={galeryTitleObj._id}
           ref={openMenuId === galeryTitleObj._id ? menuRef : null}
-          className="relative sm:w-50 w-40 sm:h-50 h-40 dark:bg-indigo-950 bg-indigo-200 rounded overflow-hidden"
+          className="relative lg:w-60 lg:h-60 sm:h-45 sm:w-45 w-30 h-30 dark:bg-indigo-950 bg-indigo-200 rounded overflow-hidden"
         >
           <Link
             className="w-full h-full block"
             to={`/galery/${galeryTitleObj.url}`}
           >
-            <CiImageOn className="sm:w-50 w-40 sm:h-50 h-40" />
-            <div className="sm:text text-sm absolute bottom-0 p-2 w-full backdrop-blur-lg">
+            <CiImageOn className="lg:w-60 lg:h-60 sm:h-45 sm:w-45 w-30 h-30" />
+            <div className="absolute bottom-0 lg:p-4 sm:p-3 p-2 text-[10px] sm:text-sm lg:text-[16px] w-full backdrop-blur-lg">
               <p className="text-left">{galeryTitleObj.galeryTitle}</p>
               <p className="text-right">{galeryTitleObj.createdBy}</p>
             </div>

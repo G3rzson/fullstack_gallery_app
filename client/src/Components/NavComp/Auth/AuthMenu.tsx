@@ -11,7 +11,7 @@ export default function AuthMenu({ setShowAuthMenu }: Props) {
   const { userObj } = useContextProvider();
 
   return (
-    <div className="fixed text-center left-4 w-40 bottom-16 rounded overflow-hidden">
+    <div className="text-center rounded mb-2 overflow-hidden">
       {userObj ? (
         <>
           <p className="p-4 bg-zinc-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-300">

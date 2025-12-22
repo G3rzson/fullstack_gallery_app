@@ -11,22 +11,22 @@ export default function NavComp() {
   const [isNavOpen, setIsNavOpen] = useState(true);
 
   return (
-    <nav
+    <section
       className={`${
-        isNavOpen ? "w-48" : "w-0"
-      } h-dvh sm:h-auto sm:static fixed sm:z-0 z-30 dark:bg-indigo-950/70 bg-indigo-200/70 backdrop-blur-md`}
+        isNavOpen ? "w-48" : "w-12"
+      } dark:bg-indigo-950/70 bg-indigo-200/70 backdrop-blur-md h-dvh sm:h-auto sm:static fixed sm:z-0 z-30`}
     >
-      <SidebarBtn
-        isNavOpen={isNavOpen}
-        onToggle={() => setIsNavOpen((prev) => !prev)}
-      />
+      <div className="flex flex-col justify-between h-dvh sticky top-0">
+        <nav className="relative">
+          <SidebarBtn
+            isNavOpen={isNavOpen}
+            onToggle={() => setIsNavOpen((prev) => !prev)}
+          />
 
-      {isNavOpen && (
-        <div>
-          <NavLinks />
-          <AuthComp />
-        </div>
-      )}
-    </nav>
+          {isNavOpen && <NavLinks />}
+        </nav>
+        {isNavOpen && <AuthComp />}
+      </div>
+    </section>
   );
 }

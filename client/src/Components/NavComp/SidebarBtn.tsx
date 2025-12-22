@@ -11,7 +11,7 @@ export default function SidebarBtn({ isNavOpen, onToggle }: Props) {
       aria-label={isNavOpen ? "Oldalsáv bezárása" : "Oldalsáv megnyitása"}
       className={`${
         isNavOpen ? "rotate-y-180 left-39" : "rotate-y-0 left-4"
-      } border-none outline-none cursor-pointer fixed top-4 z-50 transition-transform`}
+      } border-none outline-none cursor-pointer absolute top-4 z-50 transition-transform`}
       onClick={onToggle}
     >
       <abbr title={isNavOpen ? "Oldalsáv bezárása" : "Oldalsáv megnyitása"}>

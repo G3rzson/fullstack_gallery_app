@@ -29,17 +29,15 @@ export default function AuthComp() {
   }, [showAuthMenu]);
 
   return (
-    <>
-      <div ref={authRef} className="fixed bottom-4 left-4 z-50 w-40 rounded">
-        {showAuthMenu && <AuthMenu setShowAuthMenu={setShowAuthMenu} />}
-        <button
-          onClick={() => setShowAuthMenu((prev) => !prev)}
-          aria-label="User menu"
-          className="cursor-pointer w-full rounded flex items-center justify-center p-2 bg-zinc-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-300"
-        >
-          <IoMdPerson size={24} />
-        </button>
-      </div>{" "}
-    </>
+    <div ref={authRef} className="rounded w-full p-4">
+      {showAuthMenu && <AuthMenu setShowAuthMenu={setShowAuthMenu} />}
+      <button
+        onClick={() => setShowAuthMenu((prev) => !prev)}
+        aria-label="User menu"
+        className="cursor-pointer w-full rounded flex items-center justify-center p-2 bg-zinc-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-300"
+      >
+        <IoMdPerson size={24} />
+      </button>
+    </div>
   );
 }
