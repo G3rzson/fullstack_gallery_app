@@ -29,3 +29,9 @@ export async function findUserByUsername(
 ): Promise<RegisterUserSchemaType | null> {
   return await RegisterUserModel.findOne({ username }).exec();
 }
+
+export async function deleteUserByUsername(
+  username: string
+): Promise<RegisterUserSchemaType | null> {
+  return await RegisterUserModel.findOneAndDelete({ username }).exec();
+}

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useAxiosInterceptor } from "../Axios/interceptor";
+import { useAxiosInterceptor } from "./interceptor";
 
 export default function AxiosInterceptorProvider({
   children,

@@ -1,10 +1,7 @@
 import { useContextProvider } from "../../../Hooks/useContextProvider";
 import { Link } from "react-router-dom";
 import LogoutBtn from "./LogoutBtn";
-
-/*---------------------------------------
-  | todo: fiók törlése fejlesztése      |
-  ---------------------------------------*/
+import DeleteAccountBtn from "./DeleteAccountBtn";
 
 type Props = {
   setShowAuthMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,13 +17,7 @@ export default function AuthMenu({ setShowAuthMenu }: Props) {
           <p className="p-4 ">{userObj.username}</p>
 
           <LogoutBtn setShowAuthMenu={setShowAuthMenu} />
-
-          <button
-            aria-label="Fiók törlése"
-            className="dark:hover:bg-zinc-600 hover:bg-zinc-300 disabled:cursor-not-allowed w-full p-4 duration-300 cursor-pointer"
-          >
-            Fiók törlése
-          </button>
+          <DeleteAccountBtn setShowAuthMenu={setShowAuthMenu} />
         </>
       ) : (
         <>

@@ -19,7 +19,7 @@ export default function App() {
       <div className="flex flex-row items-stretch min-h-dvh">
         <NavComp />
 
-        <div className="flex-1 flex flex-col min-h-0 sm:ml-0 ml-12">
+        <div className="flex-1 flex flex-col min-h-0">
           <Routes>
             {ROUTES.map(({ path, element }) => (
               <Route key={path} path={path} element={element} />

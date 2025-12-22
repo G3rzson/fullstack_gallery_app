@@ -18,8 +18,8 @@ export default function NavComp() {
   return (
     <section
       className={`${
-        isNavOpen ? "w-48" : "w-12"
-      } h-dvh sm:h-auto sm:static fixed sm:z-0 z-10`}
+        isNavOpen ? "w-48" : "w-0"
+      } h-dvh sm:h-auto sm:static fixed sm:z-0 z-30`}
     >
       <nav className="h-full relative dark:bg-zinc-900/90 bg-zinc-200 flex flex-col justify-between">
         <button

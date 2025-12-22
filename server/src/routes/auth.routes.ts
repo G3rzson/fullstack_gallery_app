@@ -6,6 +6,8 @@ import { refreshTokenController } from "../controllers/auth/refreshTokenControll
 import { validateDataMW } from "../middlewares/validateData.mw";
 import { registerFormSchema } from "../zodSchemas/registerFormSchema";
 import { loginFormSchema } from "../zodSchemas/loginFormSchema";
+import { deleteAccountController } from "../controllers/auth/deleteAccountController";
+import { verifyAccessTokenMW } from "../middlewares/verifyAccessTokenMW";
 
 const authRouter = Router();
 
@@ -20,5 +22,11 @@ authRouter.post("/login", validateDataMW(loginFormSchema), loginUserController);
 authRouter.post("/logout", logoutUserController);
 
 authRouter.post("/refresh", refreshTokenController);
+
+authRouter.delete(
+  "/delete-account",
+  verifyAccessTokenMW(),
+  deleteAccountController
+);
 
 export default authRouter;

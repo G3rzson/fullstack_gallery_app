@@ -62,6 +62,18 @@ export async function deleteGaleryImagesByUrl(url: string): Promise<{
   return await GaleryImageModel.deleteMany({ galeryUrl: url });
 }
 
+export async function deleteGaleryTitlesByCreatedBy(username: string): Promise<{
+  deletedCount?: number;
+}> {
+  return await GaleryTitleModel.deleteMany({ createdBy: username });
+}
+
+export async function deleteGaleryImagesByCreatedBy(username: string): Promise<{
+  deletedCount?: number;
+}> {
+  return await GaleryImageModel.deleteMany({ createdBy: username });
+}
+
 export async function findGaleryImagesByUrl(
   url: string
 ): Promise<GaleryImageLeanType[]> {
