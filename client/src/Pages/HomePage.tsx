@@ -1,4 +1,4 @@
-import GaleryLinkArray from "../Components/GlobalComponents/GaleryLinkArray";
+import GaleryLinkArray from "../Components/GaleryTitles/GaleryLinkArray";
 
 /*---------------------------------------
   | todo: szűrés a galéria címek között |

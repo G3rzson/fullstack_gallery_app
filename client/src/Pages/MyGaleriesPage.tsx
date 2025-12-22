@@ -3,7 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useContextProvider } from "../Hooks/useContextProvider";
 import toast from "react-hot-toast";
 import Loader from "../Components/GlobalComponents/Loader";
-import GaleryLinkArray from "../Components/GlobalComponents/GaleryLinkArray";
+import GaleryLinkArray from "../Components/GaleryTitles/GaleryLinkArray";
 
 export default function MyGaleries() {
   const { userObj, isAuthLoading } = useContextProvider();

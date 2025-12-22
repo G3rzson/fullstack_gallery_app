@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useContextProvider } from "../Hooks/useContextProvider";
 import useGaleryTitleGet from "../Hooks/useGaleryTitleGet";
-import ImageSlider from "../Components/GlobalComponents/ImageSlider";
+import ImageSlider from "../Components/ImageSlider/ImageSlider";
 
 export default function GaleryImageViewerPage() {
   const params = useParams();

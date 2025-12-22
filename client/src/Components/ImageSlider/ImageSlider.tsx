@@ -8,12 +8,18 @@ import { useContextProvider } from "../../Hooks/useContextProvider";
 import DeleteImageBtn from "./DeleteImageBtn";
 import ImageNavBtn from "./ImageNavBtn";
 import ImagePagination from "./ImagePagination";
+import ImageModal from "./ImageModal";
 
 export default function ImageSlider() {
   const params = useParams();
-  const urlParams = params["url-params"]!;
+  const { "url-params": urlParams } = params;
   const [index, setIndex] = useState(0);
   const { userObj, isAuthLoading } = useContextProvider();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  if (!urlParams) {
+    return <ErrorMsg error="Hiányzó URL paraméter" />;
+  }
 
   const { data, isLoading, isError, error } = useGaleryImageGet({ urlParams });
 
@@ -23,9 +29,12 @@ export default function ImageSlider() {
     if (index >= galeryImagesArray.length) {
       setIndex(0);
     }
-  }, [galeryImagesArray.length, index]);
+  }, [galeryImagesArray.length]);
 
-  const safeIndex = Math.min(index, galeryImagesArray.length - 1);
+  const safeIndex =
+    galeryImagesArray.length > 0
+      ? Math.min(index, galeryImagesArray.length - 1)
+      : 0;
 
   const imageObj = galeryImagesArray[safeIndex];
 
@@ -38,11 +47,16 @@ export default function ImageSlider() {
 
   return (
     <div className="relative flex flex-1 w-full items-center justify-center">
+      {isModalOpen && (
+        <ImageModal onClose={() => setIsModalOpen(false)} imageObj={imageObj} />
+      )}
+
       <div className="h-96 relative overflow-hidden rounded-xl group">
         <img
           src={`http://localhost:8000${imageObj.url}`}
           alt={imageObj.filename}
-          className="h-full w-auto object-cover object-center rounded-xl mx-auto "
+          onClick={() => setIsModalOpen(true)}
+          className="h-full w-auto object-cover object-center rounded-xl mx-auto cursor-zoom-in"
         />
         {!isAuthLoading && imageObj.createdBy === userObj?.username ? (
           <DeleteImageBtn imageObj={imageObj} urlParams={urlParams} />
