@@ -67,7 +67,7 @@ galeryRouter.post(
 galeryRouter.get(
   "/image/get/:url",
   validateUrlParam("url"),
-  getUserFromTokenMW(),
+  getUserFromTokenMW({ strict: true }),
   galeryImageGetController
 );
 

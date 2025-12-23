@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/token";
+import { UnauthorizedError } from "../errors/UnauthorizedError";
 
-export function getUserFromTokenMW() {
+export function getUserFromTokenMW(options?: { strict?: boolean }) {
   return (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
 
@@ -16,7 +17,9 @@ export function getUserFromTokenMW() {
       const decoded = verifyAccessToken(token);
       req.username = decoded.username;
     } catch {
-      // hibás token → úgy kezeljük, mintha nem lenne bejelentkezve
+      if (options?.strict) {
+        return next(new UnauthorizedError("Invalid token"));
+      }
     }
 
     next();

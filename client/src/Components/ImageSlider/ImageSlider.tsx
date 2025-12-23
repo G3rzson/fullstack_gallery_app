@@ -21,10 +21,6 @@ export default function ImageSlider() {
   const { userObj, isAuthLoading } = useContextProvider();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  if (!urlParams) {
-    return <ErrorMsg error="Hiányzó URL paraméter" />;
-  }
-
   const { data, isLoading, isError, error } = useGaleryImageGet({ urlParams });
 
   const galeryImagesArray = data?.data || [];
@@ -55,6 +51,10 @@ export default function ImageSlider() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isModalOpen, galeryImagesArray.length]);
+
+  if (!urlParams) {
+    return <ErrorMsg error="Hiányzó URL paraméter" />;
+  }
 
   if (isLoading) return <Loader />;
 
