@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { GlobalContext } from "./Context";
-import type { GaleryTitleType, UserObjType } from "../Types/types";
+import type { UserObjType } from "../Types/types";
 import { refreshApi } from "../Axios/api";
 import type { BackendResponseType, WithAuthDataType } from "../Types/types";
 
 export type ContextType = {
-  editingGaleryTitleObj: GaleryTitleType | null;
-  setEditingGaleryTitleObj: React.Dispatch<
-    React.SetStateAction<GaleryTitleType | null>
-  >;
   accessToken: string | null;
   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
   userObj: UserObjType | null;
@@ -22,9 +18,6 @@ export default function GlobalContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [editingGaleryTitleObj, setEditingGaleryTitleObj] =
-    useState<GaleryTitleType | null>(null);
-
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [userObj, setUserObj] = useState<UserObjType | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
@@ -67,8 +60,6 @@ export default function GlobalContextProvider({
   return (
     <GlobalContext.Provider
       value={{
-        editingGaleryTitleObj,
-        setEditingGaleryTitleObj,
         accessToken,
         setAccessToken,
         userObj,

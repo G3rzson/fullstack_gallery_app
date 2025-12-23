@@ -10,6 +10,10 @@ import ImageNavBtn from "./ImageNavBtn";
 import ImagePagination from "./ImagePagination";
 import ImageModal from "./ImageModal";
 
+/*-------------------------------------------------------------------
+  | todo: oldal frissitéskor hamarabb kapok 404 hibát majd a képet  |
+  ------------------------------------------------------------------- */
+
 export default function ImageSlider() {
   const params = useParams();
   const { "url-params": urlParams } = params;
@@ -29,14 +33,28 @@ export default function ImageSlider() {
     if (index >= galeryImagesArray.length) {
       setIndex(0);
     }
-  }, [galeryImagesArray.length]);
+  }, [galeryImagesArray.length, index]);
 
-  const safeIndex =
-    galeryImagesArray.length > 0
-      ? Math.min(index, galeryImagesArray.length - 1)
-      : 0;
+  const imageObj = galeryImagesArray[index] ?? galeryImagesArray[0];
 
-  const imageObj = galeryImagesArray[safeIndex];
+  useEffect(() => {
+    if (isModalOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        setIndex(
+          (i) => (i - 1 + galeryImagesArray.length) % galeryImagesArray.length
+        );
+      }
+
+      if (event.key === "ArrowRight") {
+        setIndex((i) => (i + 1) % galeryImagesArray.length);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isModalOpen, galeryImagesArray.length]);
 
   if (isLoading) return <Loader />;
 
@@ -64,15 +82,17 @@ export default function ImageSlider() {
       </div>
 
       <ImageNavBtn
-        galeryImagesArray={galeryImagesArray}
-        setIndex={setIndex}
-        direction="next"
+        direction="prev"
+        onClick={() =>
+          setIndex(
+            (i) => (i - 1 + galeryImagesArray.length) % galeryImagesArray.length
+          )
+        }
       />
 
       <ImageNavBtn
-        galeryImagesArray={galeryImagesArray}
-        setIndex={setIndex}
-        direction="prev"
+        direction="next"
+        onClick={() => setIndex((i) => (i + 1) % galeryImagesArray.length)}
       />
 
       <ImagePagination

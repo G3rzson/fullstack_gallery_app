@@ -14,6 +14,7 @@ import { uploadGaleryImagesMW } from "../middlewares/uploadGaleryImages.mw";
 import { verifyAccessTokenMW } from "../middlewares/verifyAccessTokenMW";
 import { getUserFromTokenMW } from "../middlewares/getUserFromToken.mw";
 import { myGaleryTitleGetController } from "../controllers/galery/myGaleryTitleGetController";
+import { galeryTitleGetOneController } from "../controllers/galery/galeryTitleGetOneController";
 
 const galeryRouter = Router();
 
@@ -30,6 +31,13 @@ galeryRouter.get(
   "/title/private",
   verifyAccessTokenMW(),
   myGaleryTitleGetController
+);
+
+galeryRouter.get(
+  "/title/:id",
+  verifyAccessTokenMW(),
+  validateObjectIdMW("id"),
+  galeryTitleGetOneController
 );
 
 galeryRouter.delete(

@@ -1,5 +1,4 @@
 import { FaRegEdit, FaTrash } from "react-icons/fa";
-import { useContextProvider } from "../../Hooks/useContextProvider";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import useGaleryTitleDelete from "../../Hooks/useGaleryTitleDelete";
@@ -13,7 +12,6 @@ type Props = {
 };
 
 export default function DropdownMenu({ galeryTitleObj }: Props) {
-  const { setEditingGaleryTitleObj } = useContextProvider();
   const navigate = useNavigate();
   const { mutateAsync, isPending } = useGaleryTitleDelete(galeryTitleObj._id);
   const { openModal, closeModal } = useDeleteModal();
@@ -28,18 +26,13 @@ export default function DropdownMenu({ galeryTitleObj }: Props) {
     }
   }
 
-  function handleEdit() {
-    setEditingGaleryTitleObj(galeryTitleObj);
-    navigate(`/galery-title/update/${galeryTitleObj._id}`);
-  }
-
   return (
     <>
       <div
         className={`absolute top-0 right-0 w-full sm:text-[16px] text-sm backdrop-blur-lg rounded z-10`}
       >
         <button
-          onClick={handleEdit}
+          onClick={() => navigate(`/galery-title/update/${galeryTitleObj._id}`)}
           aria-label="Galéria cím szerkesztése"
           className="w-full flex items-center justify-start gap-2 lg:p-4 sm:p-3 text-[10px] sm:text-sm lg:text-[16px] p-2 cursor-pointer disabled:cursor-not-allowed hover:bg-indigo-300/60 dark:hover:bg-indigo-800/60 duration-300"
         >

@@ -10,25 +10,30 @@ import InputField from "../Components/GlobalComponents/InputField";
 import InputError from "../Components/GlobalComponents/InputError";
 import SubmitBtn from "../Components/GlobalComponents/SubmitBtn";
 import { FaCheck, FaFolderPlus } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useContextProvider } from "../Hooks/useContextProvider";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useGaleryTitle from "../Hooks/useGaleryTitle";
 import { useEffect, useRef } from "react";
-
-/* ----------------------------------------------------------------
-   |  todo: átalakitani hogy az url-ből vegye az update adatot    |
-   ----------------------------------------------------------------  */
+import ErrorMsg from "../Components/GlobalComponents/ErrorMsg";
+import Loader from "../Components/GlobalComponents/Loader";
+import EmptyData from "../Components/GlobalComponents/EmptyData";
+import { useGaleryTitleGetOne } from "../Hooks/useGaleryTitleGetOne";
 
 export default function GaleryTitlePage() {
-  const { editingGaleryTitleObj, setEditingGaleryTitleObj } =
-    useContextProvider();
   const { pathname } = useLocation();
+  const galeryTitleID = useParams().id;
+  const isUpdateMode = pathname.includes("update") && !!galeryTitleID;
 
-  const { mutateAsync, isPending } = useGaleryTitle(
-    editingGaleryTitleObj ? "update" : "create",
-    editingGaleryTitleObj?._id
+  const { data, isLoading, isError, error } = useGaleryTitleGetOne(
+    isUpdateMode ? galeryTitleID : undefined
   );
+
+  const editingGaleryTitleObj = isUpdateMode ? data?.data : undefined;
+
   const navigate = useNavigate();
+  const { mutateAsync, isPending } = useGaleryTitle(
+    isUpdateMode ? "update" : "create",
+    isUpdateMode ? galeryTitleID : undefined
+  );
   const {
     register,
     handleSubmit,
@@ -37,21 +42,20 @@ export default function GaleryTitlePage() {
   } = useForm<GaleryTitleFormType>({
     resolver: zodResolver(galeryTitleFormSchema),
     defaultValues: {
-      galeryTitle: editingGaleryTitleObj?.galeryTitle || "",
-      isPrivate: editingGaleryTitleObj?.isPrivate || false,
+      galeryTitle: "",
+      isPrivate: false,
     },
   });
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    if (pathname === "/galery-title/create") {
-      setEditingGaleryTitleObj(null);
+    if (!isUpdateMode) {
       reset({
         galeryTitle: "",
         isPrivate: false,
       });
     }
-  }, [pathname, setEditingGaleryTitleObj, reset]);
+  }, [isUpdateMode, reset]);
 
   useEffect(() => {
     if (editingGaleryTitleObj) {
@@ -75,17 +79,14 @@ export default function GaleryTitlePage() {
     try {
       const res = await mutateAsync(data);
       if (res.success) {
-        if (editingGaleryTitleObj) {
+        if (isUpdateMode) {
           navigate("/my-galery-titles");
-          setEditingGaleryTitleObj(null);
         } else {
           navigate(`/galery/${res.data?.url}`);
         }
         toast.success(
           res.message ??
-            (editingGaleryTitleObj
-              ? "Galéria frissítve!"
-              : "Galéria létrehozva!")
+            (isUpdateMode ? "Galéria frissítve!" : "Galéria létrehozva!")
         );
         reset();
       }
@@ -94,10 +95,19 @@ export default function GaleryTitlePage() {
     }
   }
 
+  if (isUpdateMode) {
+    if (isError) return <ErrorMsg error={error} />;
+
+    if (isLoading) return <Loader />;
+
+    if (!editingGaleryTitleObj)
+      return <EmptyData text={"Még nincsenek elérhető galériák!"} />;
+  }
+
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-8 p-4">
       <h1 className="text-3xl">
-        Galéria {editingGaleryTitleObj ? "szerkesztése" : "létrehozása"}
+        Galéria {isUpdateMode ? "szerkesztése" : "létrehozása"}
       </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -129,7 +139,7 @@ export default function GaleryTitlePage() {
         </div>
 
         <SubmitBtn disabled={isPending} ariaLabel="Űrlap beküldése">
-          {editingGaleryTitleObj ? (
+          {isUpdateMode ? (
             <>
               Mentés <FaCheck />
             </>

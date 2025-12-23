@@ -12,6 +12,14 @@ import toast from "react-hot-toast";
 import { handleAxiosError } from "../Utils/handleAxiosError";
 import InputField from "../Components/GlobalComponents/InputField";
 
+/*-------------------------------------------------
+  | todo: input mező lecserélése drag and drop-ra |
+  ------------------------------------------------- */
+
+/*-------------------------------------------------
+  | todo: csak egyedi nevek engedélyezése         |
+  ------------------------------------------------- */
+
 export default function GaleryImageUploadPage() {
   const params = useParams();
   const urlParams = params["url-params"]!;

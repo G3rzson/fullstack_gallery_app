@@ -8,9 +8,9 @@ import DropdownMenu from "./DropdownMenu";
 import { HiDotsVertical } from "react-icons/hi";
 import { useEffect, useRef, useState } from "react";
 
-/* ------------------------------------------------------
-   |  todo: átalakitani hogy a mode-ot url-ből vegye    |
-   ------------------------------------------------------  */
+/*---------------------------------------
+  | todo: szűrés a galéria címek között |
+  --------------------------------------- */
 
 type Props = {
   mode: "public" | "private";
