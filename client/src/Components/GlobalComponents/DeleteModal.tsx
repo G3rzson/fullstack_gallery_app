@@ -12,7 +12,7 @@ export default function DeleteModal({
   text,
 }: Props) {
   return (
-    <div className="fixed inset-0 dark:bg-zinc-900/90 bg-zinc-200/90 flex flex-col gap-8 items-center justify-center z-50">
+    <div className="fixed inset-0 dark:bg-zinc-800/50 bg-zinc-200/50 backdrop-blur-lg flex flex-col gap-8 items-center justify-center z-50">
       <p className="sm:text-2xl text-[16px]">{text} </p>
 
       <div className="flex items-center justify-center gap-6">
