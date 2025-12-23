@@ -37,7 +37,8 @@ const ROUTES = [
   { path: "*", element: <NotFoundPage /> },
   { path: "/", element: <HomePage /> },
   { path: "/my-galery-titles", element: <MyGaleries /> },
-  { path: "/galery-title", element: <GaleryTitlePage /> },
+  { path: "/galery-title/create", element: <GaleryTitlePage /> },
+  { path: "/galery-title/update/:id", element: <GaleryTitlePage /> },
   { path: "/galery/:url-params", element: <GaleryImageViewerPage /> },
   {
     path: "/galery/image/upload/:url-params",

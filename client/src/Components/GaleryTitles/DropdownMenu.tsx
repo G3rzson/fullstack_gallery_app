@@ -1,24 +1,47 @@
 import { FaRegEdit, FaTrash } from "react-icons/fa";
-import type { GaleryTitleType } from "../../Types/types";
 import { useContextProvider } from "../../Hooks/useContextProvider";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import DeleteGaleryTitleModal from "./DeleteGaleryTitleModal";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import useGaleryTitleDelete from "../../Hooks/useGaleryTitleDelete";
+import { handleAxiosError } from "../../Utils/handleAxiosError";
+import type { GaleryTitleType } from "../../Types/types";
+import DeleteModal from "../GlobalComponents/DeleteModal";
 
 type Props = {
   galeryTitleObj: GaleryTitleType;
-  onClose: () => void;
 };
 
-export default function DropdownMenu({ galeryTitleObj, onClose }: Props) {
+export default function DropdownMenu({ galeryTitleObj }: Props) {
   const { setEditingGaleryTitleObj } = useContextProvider();
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { mutateAsync, isPending } = useGaleryTitleDelete(galeryTitleObj._id);
+  useEffect(() => {
+    if (!isDeleteModalOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsDeleteModalOpen(false);
+      if (event.key === "Enter") handleDelete();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isDeleteModalOpen, handleDelete]);
+
+  async function handleDelete() {
+    try {
+      const res = await mutateAsync();
+      toast.success(res.message || "Sikeresen törölve!");
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      toast.error(handleAxiosError(error));
+    }
+  }
 
   function handleEdit() {
     setEditingGaleryTitleObj(galeryTitleObj);
-    onClose();
-    navigate("/galery-title");
+    navigate(`/galery-title/update/${galeryTitleObj._id}`);
   }
 
   return (
@@ -35,7 +58,7 @@ export default function DropdownMenu({ galeryTitleObj, onClose }: Props) {
         </button>
 
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsDeleteModalOpen(true)}
           aria-label="Galéria cím törlése"
           className="w-full flex items-center justify-start gap-2 lg:p-4 sm:p-3 text-[10px] sm:text-sm lg:text-[16px] p-2 cursor-pointer disabled:cursor-not-allowed hover:bg-indigo-300/60 dark:hover:bg-indigo-800/60 duration-300"
         >
@@ -43,11 +66,12 @@ export default function DropdownMenu({ galeryTitleObj, onClose }: Props) {
         </button>
       </div>
 
-      {isModalOpen && (
-        <DeleteGaleryTitleModal
-          galeryTitleId={galeryTitleObj._id}
-          onClose={onClose}
-          onModalClose={() => setIsModalOpen(false)}
+      {isDeleteModalOpen && (
+        <DeleteModal
+          isPending={isPending}
+          onModalClose={() => setIsDeleteModalOpen(false)}
+          handleDelete={handleDelete}
+          text="Biztosan törölni szeretnéd a galériát?"
         />
       )}
     </>

@@ -8,6 +8,10 @@ import DropdownMenu from "./DropdownMenu";
 import { HiDotsVertical } from "react-icons/hi";
 import { useEffect, useRef, useState } from "react";
 
+/* ------------------------------------------------------
+   |  todo: átalakitani hogy a mode-ot url-ből vegye    |
+   ------------------------------------------------------  */
+
 type Props = {
   mode: "public" | "private";
 };
@@ -82,10 +86,7 @@ export default function GaleryLinkArray({ mode }: Props) {
           )}
 
           {openMenuId === galeryTitleObj._id && (
-            <DropdownMenu
-              galeryTitleObj={galeryTitleObj}
-              onClose={() => setOpenMenuId(null)}
-            />
+            <DropdownMenu galeryTitleObj={galeryTitleObj} />
           )}
         </li>
       ))}

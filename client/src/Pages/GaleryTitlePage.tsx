@@ -10,14 +10,19 @@ import InputField from "../Components/GlobalComponents/InputField";
 import InputError from "../Components/GlobalComponents/InputError";
 import SubmitBtn from "../Components/GlobalComponents/SubmitBtn";
 import { FaCheck, FaFolderPlus } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContextProvider } from "../Hooks/useContextProvider";
 import useGaleryTitle from "../Hooks/useGaleryTitle";
 import { useEffect, useRef } from "react";
 
+/* ----------------------------------------------------------------
+   |  todo: átalakitani hogy az url-ből vegye az update adatot    |
+   ----------------------------------------------------------------  */
+
 export default function GaleryTitlePage() {
   const { editingGaleryTitleObj, setEditingGaleryTitleObj } =
     useContextProvider();
+  const { pathname } = useLocation();
 
   const { mutateAsync, isPending } = useGaleryTitle(
     editingGaleryTitleObj ? "update" : "create",
@@ -37,6 +42,16 @@ export default function GaleryTitlePage() {
     },
   });
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (pathname === "/galery-title/create") {
+      setEditingGaleryTitleObj(null);
+      reset({
+        galeryTitle: "",
+        isPrivate: false,
+      });
+    }
+  }, [pathname, setEditingGaleryTitleObj, reset]);
 
   useEffect(() => {
     if (editingGaleryTitleObj) {

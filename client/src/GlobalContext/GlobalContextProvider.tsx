@@ -15,6 +15,8 @@ export type ContextType = {
   setUserObj: React.Dispatch<React.SetStateAction<UserObjType | null>>;
   isAuthLoading: boolean;
   setIsAuthLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  isDeleteModalOpen: boolean;
+  setIsDeleteModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function GlobalContextProvider({
@@ -28,6 +30,7 @@ export default function GlobalContextProvider({
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [userObj, setUserObj] = useState<UserObjType | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -75,6 +78,8 @@ export default function GlobalContextProvider({
         setUserObj,
         isAuthLoading,
         setIsAuthLoading,
+        isDeleteModalOpen,
+        setIsDeleteModalOpen,
       }}
     >
       {children}

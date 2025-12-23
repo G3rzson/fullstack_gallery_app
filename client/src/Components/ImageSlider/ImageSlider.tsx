@@ -59,7 +59,7 @@ export default function ImageSlider() {
           className="h-full w-auto object-cover object-center rounded-xl mx-auto cursor-zoom-in"
         />
         {!isAuthLoading && imageObj.createdBy === userObj?.username ? (
-          <DeleteImageBtn imageObj={imageObj} urlParams={urlParams} />
+          <DeleteImageBtn imageID={imageObj._id} urlParams={urlParams} />
         ) : null}
       </div>
 
