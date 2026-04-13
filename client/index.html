@@ -1,16 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hu">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Galéria</title>
+    <script>
+      (function () {
+        var storedTheme = localStorage.getItem("theme");
+        var prefersDark =
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme =
+          storedTheme === "dark" || storedTheme === "light"
+            ? storedTheme
+            : prefersDark
+              ? "dark"
+              : "light";
+
+        document.documentElement.setAttribute("data-theme", theme);
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
+    <style>
+      html,
+      body,
+      #root {
+        min-height: 100%;
+        margin: 0;
+        background: rgb(241, 204, 255);
+        color: rgb(32, 0, 44);
+      }
+
+      html[data-theme="dark"] body,
+      html[data-theme="dark"] #root {
+        background: rgb(22, 0, 31);
+        color: rgb(245, 218, 255);
+      }
+    </style>
+    <title>Galéria app</title>
   </head>
   <body>
-    <div
-      id="root"
-      class="dark:bg-zinc-800 bg-zinc-100 dark:text-zinc-100 text-zinc-800"
-    ></div>
+    <div id="root" class="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

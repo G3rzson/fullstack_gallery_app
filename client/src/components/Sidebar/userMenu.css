@@ -1,0 +1,40 @@
+.user-menu-btn {
+  margin-top: auto;
+  padding: 0.75rem 0.5rem;
+  border-radius: 0.25rem;
+  height: 40px;
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.user-menu-btn:hover,
+.user-menu-btn:active {
+  background: var(--link-nav-bg-hover);
+}
+
+.user-title-open {
+  text-wrap: nowrap;
+  margin-left: 1rem;
+  width: 100%;
+  opacity: 1;
+  transition:
+    opacity 0.3s ease,
+    width 0.3s ease,
+    margin-left 0.3s ease;
+}
+
+.user-title-close {
+  text-wrap: nowrap;
+  width: 0;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    width 0.3s ease,
+    margin-left 0.3s ease;
+}

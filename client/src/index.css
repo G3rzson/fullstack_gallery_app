@@ -1,48 +1,102 @@
-@import "tailwindcss";
+@import "./components/PageTitle/pageTitle.css";
+@import "./components/ThemeSwitcher/themeSwitcher.css";
+@import "./components/Sidebar/sidebar.css";
+@import "./components/Sidebar/nav.css";
+@import "./components/Sidebar/userMenu.css";
+@import "./components/PageLoader/pageLoader.css";
 
-/* Scrollbar styling for WebKit and Firefox, using CSS variables for light/dark */
+/* CSS reset*/
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 :root {
-  --scrollbar-bg: rgba(0, 0, 0, 0.8);
-  --scrollbar-thumb: rgba(255, 255, 255, 0.5);
+  --bg: rgb(241, 204, 255);
+  --text: rgb(32, 0, 44);
+  --link-error-bg: rgb(255, 161, 161);
+  --link-error-border: rgb(255, 0, 0);
+  --link-error-bg-hover: rgba(255, 119, 119, 0.7);
+  --link-nav-bg: rgb(250, 198, 255);
+  --link-nav-border: rgb(238, 49, 255);
+  --link-nav-bg-hover: rgba(247, 161, 255, 0.7);
+  --sidebar-bg: rgb(255, 221, 255);
+  --loader-border: rgb(245, 166, 255);
+  --loader-border-top: rgb(238, 49, 255);
 }
 
-.dark {
-  --scrollbar-bg: rgba(255, 255, 255, 0.8);
-  --scrollbar-thumb: rgba(0, 0, 0, 0.3);
+[data-theme="dark"] {
+  --bg: rgb(22, 0, 31);
+  --text: rgb(245, 218, 255);
+  --link-error-bg: rgba(94, 0, 0, 0.7);
+  --link-error-border: rgb(187, 0, 0);
+  --link-error-bg-hover: rgb(94, 0, 0);
+  --link-nav-bg: rgb(83, 0, 90);
+  --link-nav-border: rgb(76, 0, 83);
+  --link-nav-bg-hover: rgba(104, 0, 114, 0.7);
+  --sidebar-bg: rgb(59, 1, 59);
+  --loader-border: rgb(78, 18, 88);
+  --loader-border-top: rgb(247, 161, 255);
 }
 
-/* WebKit browsers (Chrome, Edge, Safari) */
-*::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 }
 
-*::-webkit-scrollbar-track {
-  background: var(--scrollbar-bg);
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s ease;
 }
 
-*::-webkit-scrollbar-thumb {
-  background-color: var(--scrollbar-thumb);
-  border-radius: 9999px;
-  border: 3px solid transparent;
-  background-clip: padding-box;
+.root {
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
 }
 
-/* Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
+.app-content {
+  min-height: 100vh;
+  min-width: calc(100vw - 56px); /* oldal szélessége */
+  margin-left: 56px; /* oldalsáv szélessége */
+  display: flex;
 }
 
-/* Fix for autofill background color in inputs, textareas, and selects */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill {
-  -webkit-text-fill-color: inherit;
-  box-shadow: 0 0 0px 1000px transparent inset;
-  transition: background-color 5000s ease-in-out 0s;
+.centered-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.error-link {
+  background: var(--link-error-bg);
+  border: 1px solid var(--link-error-border);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.error-link:hover,
+.error-link:active {
+  background: var(--link-error-bg-hover);
+}
+
+svg {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
 }
