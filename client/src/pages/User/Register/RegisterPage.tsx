@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CustomEmail from "../../../components/Form/CustomEmail";
 import CustomPassword from "../../../components/Form/CustomPassword";
 import useRegister from "./hooks/useRegister";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const {
@@ -28,9 +29,13 @@ export default function RegisterPage() {
     console.log(data);
     try {
       const response = await mutateAsync(data);
+      toast.success(response.message || "Sikeres regisztráció!");
       navigate("/auth/login");
       console.log("Registration successful:", response);
-    } catch (error) {
+    } catch (error: unknown) {
+      toast.error(
+        (error as { message?: string })?.message || "Sikertelen regisztráció!",
+      );
       console.error("Registration failed:", error);
     }
   }

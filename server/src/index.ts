@@ -1,12 +1,40 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import userRouter from "./routes/user.routes";
 import { connectToDB } from "./db/connectToDB";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 8000;
+const CLIENT_URLS = (
+  process.env.CLIENT_URLS ||
+  process.env.CLIENT_URL ||
+  "http://localhost:5173"
+)
+  .split(",")
+  .map((url) => url.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow non-browser clients and same-origin requests without Origin header.
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (CLIENT_URLS.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/user", userRouter);
 

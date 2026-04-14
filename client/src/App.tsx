@@ -5,12 +5,14 @@ import { ROUTES } from "./routes";
 import ThemeSwitcher from "./components/ThemeSwitcher/ThemeSwitcher";
 import Sidebar from "./components/Sidebar/Sidebar";
 import PageLoader from "./components/PageLoader/PageLoader";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   return (
     <>
       <ThemeSwitcher />
       <Sidebar />
+      <Toaster position="bottom-right" />
 
       <main className="app-content">
         <Suspense fallback={<PageLoader />}>

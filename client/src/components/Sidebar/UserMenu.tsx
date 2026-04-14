@@ -14,14 +14,25 @@ export default function UserMenu({
   setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const { pathname } = useLocation();
 
-  useOutsideClick(menuRef, () => setIsDropdownOpen(false), isDropdownOpen);
-  useEscapeKey(() => setIsDropdownOpen(false), isDropdownOpen);
+  function closeDropdown() {
+    if (dropdownRef.current?.contains(document.activeElement)) {
+      triggerRef.current?.focus();
+    }
+
+    setIsDropdownOpen(false);
+  }
+
+  useOutsideClick(menuRef, closeDropdown, isDropdownOpen);
+  useEscapeKey(closeDropdown, isDropdownOpen);
 
   return (
     <div className="user-menu-container" ref={menuRef}>
       <button
+        ref={triggerRef}
         className={`user-menu-btn ${isDropdownOpen ? "active" : ""}`}
         title="Felhasználó"
         aria-expanded={isDropdownOpen}
@@ -36,14 +47,15 @@ export default function UserMenu({
       </button>
 
       <div
+        ref={dropdownRef}
         className={`dropdown-container ${isDropdownOpen ? "dropdown-open" : "dropdown-closed"}`}
-        aria-hidden={!isDropdownOpen}
+        inert={!isDropdownOpen}
       >
         <Link
           to="/user/login"
           className={`dropdown-link ${pathname === "/user/login" ? "active" : ""}`}
           tabIndex={isDropdownOpen ? 0 : -1}
-          onClick={() => setIsDropdownOpen(false)}
+          onClick={closeDropdown}
         >
           <LogIn /> Bejelentkezés
         </Link>
@@ -51,7 +63,7 @@ export default function UserMenu({
           to="/user/register"
           className={`dropdown-link ${pathname === "/user/register" ? "active" : ""}`}
           tabIndex={isDropdownOpen ? 0 : -1}
-          onClick={() => setIsDropdownOpen(false)}
+          onClick={closeDropdown}
         >
           <NotebookPen />
           Regisztráció
