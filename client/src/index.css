@@ -4,6 +4,7 @@
 @import "./components/Sidebar/nav.css";
 @import "./components/Sidebar/userMenu.css";
 @import "./components/PageLoader/pageLoader.css";
+@import "./components/Form/formStyle.css";
 
 /* CSS reset*/
 *,

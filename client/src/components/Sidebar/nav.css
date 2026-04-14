@@ -45,3 +45,7 @@
     width 0.3s ease,
     margin-left 0.3s ease;
 }
+
+.nav-link.active {
+  background: var(--link-nav-bg-hover);
+}

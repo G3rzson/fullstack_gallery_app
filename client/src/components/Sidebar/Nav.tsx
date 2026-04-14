@@ -1,5 +1,5 @@
 import { Home, Image, Images } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const NAV_LINKS = [
   { title: "Home", path: "/", icon: <Home /> },
@@ -8,23 +8,31 @@ const NAV_LINKS = [
 ];
 
 export default function Nav({ isSidebarOpen }: { isSidebarOpen: boolean }) {
+  const { pathname } = useLocation();
   return (
     <nav className="sidebar-nav">
       <ul className="nav-list">
-        {NAV_LINKS.map(({ title, path, icon }) => (
-          <li key={path}>
-            <Link to={path} title={title} className={`nav-link`}>
-              {icon}
-              {title && (
-                <p
-                  className={`${isSidebarOpen ? "link-title-open" : "link-title-close"}`}
-                >
-                  {title}
-                </p>
-              )}
-            </Link>
-          </li>
-        ))}
+        {NAV_LINKS.map(({ title, path, icon }) => {
+          const activeLink = pathname === path;
+          return (
+            <li key={path}>
+              <Link
+                to={path}
+                title={title}
+                className={`nav-link ${activeLink ? "active" : ""}`}
+              >
+                {icon}
+                {title && (
+                  <p
+                    className={`${isSidebarOpen ? "link-title-open" : "link-title-close"}`}
+                  >
+                    {title}
+                  </p>
+                )}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

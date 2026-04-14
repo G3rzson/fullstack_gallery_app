@@ -2,6 +2,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1100;
   height: 100%;
   background: var(--sidebar-bg);
   transition: width 0.3s ease;
@@ -9,6 +10,7 @@
   flex-direction: column;
   align-items: start;
   padding: 0.5rem;
+  border-right: 2px solid var(--text);
 }
 .sidebar-container-closed {
   width: 56px; /* oldalsáv szélessége */

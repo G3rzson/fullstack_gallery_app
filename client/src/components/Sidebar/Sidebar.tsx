@@ -7,10 +7,30 @@ import { useEscapeKey } from "../../hooks/useEscapeKey";
 
 export default function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
-  useOutsideClick(sidebarRef, () => setIsSidebarOpen(false), isSidebarOpen);
-  useEscapeKey(() => setIsSidebarOpen(false), isSidebarOpen);
+  useOutsideClick(
+    sidebarRef,
+    () => {
+      if (isDropdownOpen) {
+        setIsDropdownOpen(false);
+        return;
+      }
+
+      setIsSidebarOpen(false);
+    },
+    isSidebarOpen || isDropdownOpen,
+  );
+
+  useEscapeKey(() => {
+    if (isDropdownOpen) {
+      setIsDropdownOpen(false);
+      return;
+    }
+
+    setIsSidebarOpen(false);
+  }, isSidebarOpen || isDropdownOpen);
 
   return (
     <div
@@ -36,7 +56,11 @@ export default function Sidebar() {
 
       <Nav isSidebarOpen={isSidebarOpen} />
 
-      <UserMenu isSidebarOpen={isSidebarOpen} />
+      <UserMenu
+        isSidebarOpen={isSidebarOpen}
+        isDropdownOpen={isDropdownOpen}
+        setIsDropdownOpen={setIsDropdownOpen}
+      />
     </div>
   );
 }
