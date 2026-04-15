@@ -1,19 +1,28 @@
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
 import { ROUTES } from "./routes";
-import ThemeSwitcher from "./components/ThemeSwitcher/ThemeSwitcher";
-import Sidebar from "./components/Sidebar/Sidebar";
-import PageLoader from "./components/PageLoader/PageLoader";
 import { Toaster } from "react-hot-toast";
+import ThemeSwitcher from "./shared/components/ThemeSwitcher/ThemeSwitcher";
+import Sidebar from "./shared/components/Sidebar/Sidebar";
+import PageLoader from "./shared/components/PageLoader/PageLoader";
 
 export default function App() {
   return (
     <>
       <ThemeSwitcher />
       <Sidebar />
-      <Toaster position="bottom-right" />
-
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            background: "var(--sidebar-bg)",
+            border: "1px solid var(--text)",
+            color: "var(--text)",
+            borderRadius: "10px",
+            padding: "16px",
+          },
+        }}
+      />
       <main className="app-content">
         <Suspense fallback={<PageLoader />}>
           <Routes>

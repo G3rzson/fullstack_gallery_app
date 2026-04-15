@@ -1,10 +1,10 @@
-@import "./components/PageTitle/pageTitle.css";
-@import "./components/ThemeSwitcher/themeSwitcher.css";
-@import "./components/Sidebar/sidebar.css";
-@import "./components/Sidebar/nav.css";
-@import "./components/Sidebar/userMenu.css";
-@import "./components/PageLoader/pageLoader.css";
-@import "./components/Form/formStyle.css";
+@import "./shared/components/PageTitle/pageTitle.css";
+@import "./shared/components/ThemeSwitcher/themeSwitcher.css";
+@import "./shared/components/Sidebar/sidebar.css";
+@import "./shared/components/Sidebar/nav.css";
+@import "./shared/components/Sidebar/userMenu.css";
+@import "./shared/components/PageLoader/pageLoader.css";
+@import "./shared/components/Form/formStyle.css";
 
 /* CSS reset*/
 *,
@@ -27,6 +27,7 @@
   --sidebar-bg: rgb(255, 221, 255);
   --loader-border: rgb(245, 166, 255);
   --loader-border-top: rgb(238, 49, 255);
+  --disabled-bg: rgb(224, 224, 224);
 }
 
 [data-theme="dark"] {
@@ -41,6 +42,7 @@
   --sidebar-bg: rgb(59, 1, 59);
   --loader-border: rgb(78, 18, 88);
   --loader-border-top: rgb(247, 161, 255);
+  --disabled-bg: rgb(40, 40, 40);
 }
 
 html {

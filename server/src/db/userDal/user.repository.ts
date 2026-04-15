@@ -11,3 +11,7 @@ export async function createUser(
     password: hashedPassword,
   });
 }
+
+export async function findUserByUsername(username: string) {
+  return await RegisterModel.findOne({ username });
+}

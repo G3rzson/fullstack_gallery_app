@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import PageTitle from "../../components/PageTitle/PageTitle";
+import PageTitle from "../../shared/components/PageTitle/PageTitle";
 import { ArrowBigLeft } from "lucide-react";
 
 export default function NotFoundPage() {

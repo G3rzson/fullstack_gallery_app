@@ -5,12 +5,15 @@ import App from "./App.tsx";
 import { BrowserRouter as Router } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./setup/queryClient.ts";
+import UserContextProvider from "./context/UserContextProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Router>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <UserContextProvider>
+          <App />
+        </UserContextProvider>
       </QueryClientProvider>
     </Router>
   </StrictMode>,

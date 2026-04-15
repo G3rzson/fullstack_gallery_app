@@ -5,7 +5,7 @@
   background: var(--sidebar-bg);
   padding: 1rem;
   border-radius: 10px;
-  box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 10px 10px 20px var(--link-nav-bg-hover);
   width: 100%;
 }
 
@@ -152,4 +152,9 @@
 .submit-btn:hover,
 .submit-btn:active {
   background: var(--link-nav-bg-hover);
+}
+
+.submit-btn:disabled {
+  background: var(--disabled-bg);
+  cursor: not-allowed;
 }
