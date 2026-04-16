@@ -66,7 +66,7 @@ export default function UserMenu({
       <button
         ref={triggerRef}
         className={`user-menu-btn ${isDropdownOpen ? "active" : ""}`}
-        title="Felhasználó"
+        title={isSidebarOpen ? undefined : "Felhasználó"}
         aria-expanded={isDropdownOpen}
         onClick={() => setIsDropdownOpen((prev) => !prev)}
       >

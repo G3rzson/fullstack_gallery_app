@@ -14,12 +14,24 @@ export default function App() {
       <Toaster
         position="bottom-right"
         toastOptions={{
-          style: {
-            background: "var(--sidebar-bg)",
-            border: "1px solid var(--text)",
-            color: "var(--text)",
-            borderRadius: "10px",
-            padding: "16px",
+          error: {
+            style: {
+              background: "var(--error-bg)",
+              border: "1px solid var(--error-border)",
+              color: "var(--error-text)",
+              borderRadius: "10px",
+              padding: "16px",
+            },
+          },
+
+          success: {
+            style: {
+              background: "var(--success-bg)",
+              border: "1px solid var(--success-border)",
+              color: "var(--success-text)",
+              borderRadius: "10px",
+              padding: "16px",
+            },
           },
         }}
       />

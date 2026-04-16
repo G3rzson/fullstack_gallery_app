@@ -1,22 +1,27 @@
 .theme-switcher-btn {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
-  color: var(--text-color);
+  top: 0.5rem;
+  right: 0.5rem;
   border: none;
   cursor: pointer;
   z-index: 1000;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-  background: transparent;
+  background-color: transparent;
+  color: var(--text-primary);
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.theme-switcher-btn:hover,
+.theme-switcher-btn:active {
+  background-color: var(--hover);
 }
 
 .appear {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: appear 0.3s ease;
+  animation: appear 0.3s ease-in-out;
 }
 
 @keyframes appear {

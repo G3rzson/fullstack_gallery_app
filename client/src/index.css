@@ -6,7 +6,7 @@
 @import "./shared/components/PageLoader/pageLoader.css";
 @import "./shared/components/Form/formStyle.css";
 
-/* CSS reset*/
+/* === CSS reset === */
 *,
 *::after,
 *::before {
@@ -16,58 +16,76 @@
 }
 
 :root {
-  --bg: rgb(241, 204, 255);
-  --text: rgb(32, 0, 44);
-  --link-error-bg: rgb(255, 161, 161);
-  --link-error-border: rgb(255, 0, 0);
-  --link-error-bg-hover: rgba(255, 119, 119, 0.7);
-  --link-nav-bg: rgb(250, 198, 255);
-  --link-nav-border: rgb(238, 49, 255);
-  --link-nav-bg-hover: rgba(247, 161, 255, 0.7);
-  --sidebar-bg: rgb(255, 221, 255);
-  --loader-border: rgb(245, 166, 255);
-  --loader-border-top: rgb(238, 49, 255);
-  --disabled-bg: rgb(224, 224, 224);
+  /* === SIDEBAR === */
+  --sidebar-width-open: 300px;
+  --sidebar-width-closed: calc(var(--sidebar-border-right-width) + 56px);
+  --sidebar-border-right-width: 2px;
+}
+
+:root {
+  /*  === MAIN COLORS === */
+  --bg-primary: hsl(300, 100%, 93%);
+  --bg-secondary: hsl(320, 100%, 90%);
+  --text-primary: hsl(300, 100%, 25%);
+  --text-secondary: hsl(300, 100%, 45%);
+  --hover: hsl(300, 100%, 80%);
+  --border: hsl(0, 0%, 0%);
+  --disabled: hsl(0, 0%, 90%);
+
+  /* === ERROR COLORS === */
+  --error-bg: hsl(0, 100%, 87%);
+  --error-text: hsl(0, 100%, 45%);
+  --error-border: hsl(0, 100%, 50%);
+  --error-hover: hsl(0, 100%, 80%);
+
+  /* === SUCCESS COLORS === */
+  --success-bg: hsl(120, 100%, 87%);
+  --success-text: hsl(120, 100%, 25%);
+  --success-border: hsl(120, 100%, 50%);
+  --success-hover: hsl(120, 100%, 80%);
 }
 
 [data-theme="dark"] {
-  --bg: rgb(22, 0, 31);
-  --text: rgb(245, 218, 255);
-  --link-error-bg: rgba(94, 0, 0, 0.7);
-  --link-error-border: rgb(187, 0, 0);
-  --link-error-bg-hover: rgb(94, 0, 0);
-  --link-nav-bg: rgb(83, 0, 90);
-  --link-nav-border: rgb(76, 0, 83);
-  --link-nav-bg-hover: rgba(104, 0, 114, 0.7);
-  --sidebar-bg: rgb(59, 1, 59);
-  --loader-border: rgb(78, 18, 88);
-  --loader-border-top: rgb(247, 161, 255);
-  --disabled-bg: rgb(40, 40, 40);
-}
+  /*  === MAIN COLORS === */
+  --bg-primary: hsl(300, 100%, 12%);
+  --bg-secondary: hsl(300, 100%, 25%);
+  --text-primary: hsl(300, 100%, 93%);
+  --text-secondary: hsl(300, 100%, 85%);
+  --hover: hsl(300, 100%, 20%);
+  --border: hsl(0, 0%, 100%);
+  --disabled: hsl(0, 0%, 10%);
 
-html {
-  overflow-y: scroll;
-  scrollbar-gutter: stable;
+  /* === ERROR COLORS === */
+  --error-bg: hsl(0, 100%, 20%);
+  --error-text: hsl(0, 100%, 68%);
+  --error-border: hsl(0, 100%, 50%);
+  --error-hover: hsl(0, 100%, 25%);
+
+  /* === SUCCESS COLORS === */
+  --success-bg: hsl(120, 100%, 20%);
+  --success-text: hsl(120, 100%, 68%);
+  --success-border: hsl(120, 100%, 50%);
+  --success-hover: hsl(120, 100%, 25%);
 }
 
 body {
-  min-height: 100vh;
-  background: var(--bg);
-  color: var(--text);
-  transition: 0.3s ease;
+  height: 100vh;
+  width: 100vw;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .root {
-  min-height: 100vh;
-  min-width: 100vw;
-  display: flex;
+  height: 100vh;
+  width: 100vw;
 }
 
 .app-content {
-  min-height: 100vh;
-  min-width: calc(100vw - 56px); /* oldal szélessége */
-  margin-left: 56px; /* oldalsáv szélessége */
+  width: calc(100vw - var(--sidebar-width-closed)); /* oldal szélessége */
+  margin-left: var(--sidebar-width-closed); /* oldalsáv szélessége */
+  height: 100vh;
   display: flex;
+  flex-direction: column;
 }
 
 .centered-container {
@@ -81,21 +99,19 @@ body {
 }
 
 .error-link {
-  background: var(--link-error-bg);
-  border: 1px solid var(--link-error-border);
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
-  color: var(--text);
   text-decoration: none;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   transition: background-color 0.3s ease;
+  background-color: var(--error-bg);
 }
 
 .error-link:hover,
 .error-link:active {
-  background: var(--link-error-bg-hover);
+  background-color: var(--error-hover);
 }
 
 svg {

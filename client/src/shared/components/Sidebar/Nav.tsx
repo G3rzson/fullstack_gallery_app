@@ -18,7 +18,7 @@ export default function Nav({ isSidebarOpen }: { isSidebarOpen: boolean }) {
             <li key={path}>
               <Link
                 to={path}
-                title={title}
+                title={isSidebarOpen ? undefined : title}
                 className={`nav-link ${activeLink ? "active" : ""}`}
               >
                 {icon}

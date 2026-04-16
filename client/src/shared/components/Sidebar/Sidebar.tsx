@@ -40,18 +40,11 @@ export default function Sidebar() {
       }`}
     >
       <button
-        title={isSidebarOpen ? "Oldalsáv kinyitása" : "Oldalsáv bezárása"}
+        title={isSidebarOpen ? "Oldalsáv bezárása" : "Oldalsáv kinyitása"}
         className={`sidebar-btn ${isSidebarOpen ? "" : "open"}`}
         onClick={() => setIsSidebarOpen((prev) => !prev)}
       >
-        <div className="icon-wrapper">
-          <span className="icon open-icon">
-            <SidebarOpen />
-          </span>
-          <span className="icon close-icon">
-            <SidebarClose />
-          </span>
-        </div>
+        {isSidebarOpen ? <SidebarClose /> : <SidebarOpen />}
       </button>
 
       <Nav isSidebarOpen={isSidebarOpen} />

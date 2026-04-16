@@ -48,6 +48,8 @@ export default function CustomPassword<T extends FieldValues>({
             <button
               type="button"
               className="toggle-visibility-btn"
+              disabled={isSubmitting}
+              title={showPassword ? "Jelszó elrejtése" : "Jelszó megjelenítése"}
               onClick={() => setShowPassword((prev) => !prev)}
             >
               {showPassword ? <EyeClosed /> : <EyeIcon />}
