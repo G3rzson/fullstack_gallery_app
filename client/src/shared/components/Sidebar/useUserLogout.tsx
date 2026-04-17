@@ -1,15 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
+import { apiClient } from "../../../setup/apiClient";
 
 export function useUserLogout() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
-      const response = await axios.post(`${API_BASE_URL}/user/logout`, null, {
-        withCredentials: true,
-      });
+      const response = await apiClient.post("/user/logout");
       return response.data;
     },
     onSuccess: () => {

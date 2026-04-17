@@ -10,7 +10,7 @@ export default function HomePage() {
         hogy megosztod-e másokkal vagy privátban tartod őket.
       </p>
 
-      <p>
+      <p className="error-text">
         Ez egy mintaalkalmazás. Kérlek ne adj meg valódi adatokat, és ne
         használd éles környezetben! Ez az oldal csak bemutató céllal készült, és
         nem rendelkezik valós funkcionalitással. Köszönöm a megértést!

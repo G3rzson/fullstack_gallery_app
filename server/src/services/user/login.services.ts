@@ -1,4 +1,4 @@
-import { findUserByUsername } from "../../db/userDal/user.repository";
+import { findUserByUsername } from "../../db/dal/user.repository";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
 import {

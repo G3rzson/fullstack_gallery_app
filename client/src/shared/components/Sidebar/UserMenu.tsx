@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import { useEscapeKey } from "../../hooks/useEscapeKey";
-import { useUserContext } from "../../../context/useUserContext";
+import { useUserContext } from "../../../pages/User/context/useUserContext";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import { useUserLogout } from "./useUserLogout";
@@ -80,6 +80,7 @@ export default function UserMenu({
 
       <div
         ref={dropdownRef}
+        style={{ width: isSidebarOpen ? "100%" : "fit-content" }}
         className={`dropdown-container ${isDropdownOpen ? "dropdown-open" : "dropdown-closed"}`}
         inert={!isDropdownOpen}
       >

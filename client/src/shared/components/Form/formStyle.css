@@ -18,6 +18,8 @@
 .field-container {
   position: relative;
   display: flex;
+  align-items: flex-start;
+  justify-content: center;
   flex-direction: column;
   gap: 10px;
 }
@@ -59,6 +61,66 @@
     color 0.2s ease;
 }
 
+.checkbox-wrapper {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* natív checkbox elrejtése */
+.checkbox-wrapper input {
+  display: none;
+}
+
+/* custom box */
+.checkmark {
+  border-radius: 50%;
+  padding: 4px;
+  border: 2px solid var(--text-primary);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+}
+
+.checkmark svg {
+  color: var(--bg-primary);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background-color: transparent;
+}
+
+/* checked állapot */
+.checkbox-wrapper input:checked + .checkmark {
+  background-color: var(--text-primary);
+}
+
+.checkbox-wrapper input:checked + .checkmark svg {
+  opacity: 1;
+  background-color: var(--text-primary);
+}
+
+/* pipa */
+.checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* pipa megjelenítés */
+.checkbox-wrapper input:checked + .checkmark::after {
+  display: block;
+}
+
+.label-title {
+  margin-left: 12px;
+  color: var(--text-primary);
+}
+
 .input:focus + .field-label,
 .input:not(:placeholder-shown) + .field-label {
   top: 9px;
@@ -74,6 +136,7 @@
 
 .password-input-wrapper {
   position: relative;
+  width: 100%;
 }
 
 .pwd-suggest-btn {

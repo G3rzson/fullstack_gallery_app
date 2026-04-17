@@ -1,4 +1,5 @@
 import jwt, { type JwtPayload } from "jsonwebtoken";
+import { UnauthorizedError } from "../errors/UnauthorizedError";
 
 export type AuthTokenPayload = JwtPayload & {
   username: string;
@@ -35,8 +36,10 @@ export function generateRefreshToken(
   return jwt.sign(payload, secrets, { expiresIn: "1d" });
 }
 
-/*
-export function verifyRefreshToken(token: string, secrets: string): AuthTokenPayload {
+export function verifyRefreshToken(
+  token: string,
+  secrets: string,
+): AuthTokenPayload {
   try {
     const decoded = jwt.verify(token, secrets) as JwtPayload;
 
@@ -50,9 +53,12 @@ export function verifyRefreshToken(token: string, secrets: string): AuthTokenPay
   }
 }
 
-export function verifyAccessToken(token: string): AuthTokenPayload {
+export function verifyAccessToken(
+  token: string,
+  secrets: string,
+): AuthTokenPayload {
   try {
-    const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET);
+    const decoded = jwt.verify(token, secrets) as JwtPayload;
     if (typeof decoded !== "object" || !("username" in decoded)) {
       throw new UnauthorizedError("Invalid access token payload");
     }
@@ -62,4 +68,3 @@ export function verifyAccessToken(token: string): AuthTokenPayload {
     throw new UnauthorizedError("Invalid or expired access token");
   }
 }
-*/

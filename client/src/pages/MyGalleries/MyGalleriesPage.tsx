@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import PageTitle from "../../shared/components/PageTitle/PageTitle";
-import useGaleryTitlePublicGet from "./hooks/useGaleryTitlePublicGet";
-import "../MyGalleries/gallery.css";
+import useGaleryTitleGet from "./hooks/useGaleryTitleGet";
+import "./gallery.css";
 
-export default function GalleriesPage() {
-  const { data, isLoading, isError, error } = useGaleryTitlePublicGet();
+export default function MyGalleriesPage() {
+  const { data, isLoading, isError, error } = useGaleryTitleGet();
 
   if (isLoading) {
     return <div className="centered-container">Betöltés...</div>;
@@ -23,19 +23,23 @@ export default function GalleriesPage() {
   if (galleries.length === 0) {
     return (
       <div className="centered-container">
-        <p>Nincs galéria!</p>
+        <p>Még nincs galériád. Hozz létre egyet!</p>
       </div>
     );
   }
 
   return (
     <div className="centered-container">
-      <PageTitle>Galériák</PageTitle>
+      <PageTitle>Saját galériák</PageTitle>
+
+      <Link to="/my-galleries/title/create" className="back-link">
+        Galéria létrehotása
+      </Link>
 
       <ul className="gallery-list-container">
         {galleries.map((gallery: any) => (
           <li key={gallery._id} className="gallery-item">
-            <Link to={`/galleries/${gallery._id}`} className="gallery-link">
+            <Link to={`/my-galleries/${gallery._id}`} className="gallery-link">
               <h3>{gallery.galeryTitle}</h3>
               <p>{gallery.isPublic ? "Publikus" : "Privát"}</p>
             </Link>

@@ -25,7 +25,8 @@
 :root {
   /*  === MAIN COLORS === */
   --bg-primary: hsl(300, 100%, 93%);
-  --bg-secondary: hsl(320, 100%, 90%);
+  --bg-secondary: hsla(320, 100%, 75%, 0.2);
+  --bg-dropdown: hsla(280, 100%, 94%);
   --text-primary: hsl(300, 100%, 25%);
   --text-secondary: hsl(300, 100%, 45%);
   --hover: hsl(300, 100%, 80%);
@@ -47,10 +48,11 @@
 
 [data-theme="dark"] {
   /*  === MAIN COLORS === */
-  --bg-primary: hsl(300, 100%, 12%);
-  --bg-secondary: hsl(300, 100%, 25%);
-  --text-primary: hsl(300, 100%, 93%);
-  --text-secondary: hsl(300, 100%, 85%);
+  --bg-primary: hsl(300, 100%, 6%);
+  --bg-secondary: hsla(280, 100%, 50%, 0.2);
+  --bg-dropdown: hsla(280, 100%, 6%);
+  --text-primary: hsl(300, 100%, 91%);
+  --text-secondary: hsl(300, 100%, 65%);
   --hover: hsl(300, 100%, 20%);
   --border: hsl(0, 0%, 100%);
   --disabled: hsl(0, 0%, 10%);
@@ -68,11 +70,17 @@
   --success-hover: hsl(120, 100%, 25%);
 }
 
+html {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
 body {
   height: 100vh;
   width: 100vw;
   background: var(--bg-primary);
   color: var(--text-primary);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .root {
@@ -94,7 +102,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.5rem;
   padding: 1rem;
 }
 
@@ -118,4 +126,26 @@ svg {
   flex-shrink: 0;
   width: 24px;
   height: 24px;
+}
+
+.error-text {
+  color: var(--error-text);
+  font-size: 1.25rem;
+  animation: grow 0.5s ease-in-out alternate infinite;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+}
+
+@keyframes grow {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.01);
+  }
 }

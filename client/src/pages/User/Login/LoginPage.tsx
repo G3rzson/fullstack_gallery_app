@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import { loginSchema, type LoginSchemaType } from "./validation/loginSchema";
 import useLogin from "./hooks/useLogin";
-import { useUserContext } from "../../../context/useUserContext";
+import { useUserContext } from "../context/useUserContext";
 
 export default function LoginPage() {
   const {
@@ -25,23 +25,17 @@ export default function LoginPage() {
   const isLoading = isSubmitting || isPending;
 
   async function onSubmit(data: LoginSchemaType) {
-    console.log(data);
     try {
       const response = await mutateAsync(data);
-      toast.success(response.message || "Sikeres bejelentkezés!");
+      toast.success(response.message);
       setAccessToken(response.data.accessToken);
       setUserObj(response.data.userObj);
       navigate("/");
-      console.log("Login successful:", response);
     } catch (error: unknown) {
       const axiosError = error as AxiosError<{ message?: string }>;
       const errorMessage =
-        axiosError.response?.data?.message ||
-        axiosError.message ||
-        "Sikertelen bejelentkezés!";
-
+        axiosError.response?.data?.message || axiosError.message;
       toast.error(errorMessage);
-      console.error("Login failed:", error);
     }
   }
   return (

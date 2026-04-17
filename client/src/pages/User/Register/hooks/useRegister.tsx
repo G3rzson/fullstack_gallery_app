@@ -1,15 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import type { RegisterSchemaType } from "../validation/registerSchema";
-import axios from "axios";
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
+import { apiClient } from "../../../../setup/apiClient";
 
 export default function useRegister() {
   return useMutation({
     mutationFn: async (data: RegisterSchemaType) => {
-      const response = await axios.post(`${API_BASE_URL}/user/register`, data, {
-        withCredentials: true,
-      });
+      const response = await apiClient.post("/user/register", data);
       return response.data;
     },
   });

@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import ThemeSwitcher from "./shared/components/ThemeSwitcher/ThemeSwitcher";
 import Sidebar from "./shared/components/Sidebar/Sidebar";
 import PageLoader from "./shared/components/PageLoader/PageLoader";
+import CookieConsentBanner from "./pages/Privacy/components/CookieConsentBanner";
 
 export default function App() {
   return (
@@ -35,6 +36,8 @@ export default function App() {
           },
         }}
       />
+      <CookieConsentBanner />
+
       <main className="app-content">
         <Suspense fallback={<PageLoader />}>
           <Routes>

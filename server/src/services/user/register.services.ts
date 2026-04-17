@@ -1,4 +1,4 @@
-import { createUser } from "../../db/userDal/user.repository";
+import { createUser } from "../../db/dal/user.repository";
 import { BadRequestError } from "../../errors/BadRequestError";
 import { InternalServerError } from "../../errors/InternalServerError";
 import { type RegisterSchemaType } from "../../validation/registerSchema";
