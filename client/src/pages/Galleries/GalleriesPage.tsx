@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import PageTitle from "../../shared/components/PageTitle/PageTitle";
 import useGaleryTitlePublicGet from "./hooks/useGaleryTitlePublicGet";
-import "../MyGalleries/gallery.css";
+//import "../MyGalleries/gallery.css";
 
 export default function GalleriesPage() {
   const { data, isLoading, isError, error } = useGaleryTitlePublicGet();
@@ -36,7 +36,7 @@ export default function GalleriesPage() {
         {galleries.map((gallery: any) => (
           <li key={gallery._id} className="gallery-item">
             <Link to={`/galleries/${gallery._id}`} className="gallery-link">
-              <h3>{gallery.galeryTitle}</h3>
+              <h3>{gallery.gallery}</h3>
               <p>{gallery.isPublic ? "Publikus" : "Privát"}</p>
             </Link>
           </li>

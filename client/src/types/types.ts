@@ -4,3 +4,9 @@ export type UserObjType = {
   username: string;
   role: RoleType;
 };
+
+export type GalleryTitleType = {
+  _id: string;
+  gallery: string;
+  isPublic: boolean;
+};

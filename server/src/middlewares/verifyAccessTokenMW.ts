@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
 import { getJwtSecrets, verifyAccessToken } from "../functions/jwt";
 

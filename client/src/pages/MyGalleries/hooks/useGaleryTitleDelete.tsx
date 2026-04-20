@@ -1,13 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../../../setup/apiClient";
-import type { GallerySchemaType } from "../validation/gallerySchema";
 
-export default function useGaleryTitleCreate() {
+export default function useGaleryTitleDelete(galleryId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: GallerySchemaType) => {
-      const response = await apiClient.post("/galery/title/create", data);
+    mutationFn: async () => {
+      const response = await apiClient.delete(
+        `/galery/title/delete/${galleryId}`,
+      );
       return response.data;
     },
     onSuccess: () => {

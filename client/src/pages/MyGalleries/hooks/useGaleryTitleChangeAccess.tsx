@@ -1,13 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../../../setup/apiClient";
-import type { GallerySchemaType } from "../validation/gallerySchema";
 
-export default function useGaleryTitleCreate() {
+export default function useGaleryTitleChangeAccess(galleryId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: GallerySchemaType) => {
-      const response = await apiClient.post("/galery/title/create", data);
+    mutationFn: async (data: { isPublic: boolean }) => {
+      const response = await apiClient.put(
+        `/galery/title/change-access/${galleryId}`,
+        data,
+      );
       return response.data;
     },
     onSuccess: () => {

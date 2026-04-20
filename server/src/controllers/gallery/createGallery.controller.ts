@@ -21,7 +21,11 @@ export async function createGalleryController(
     res.status(201).json({
       success: true,
       message: "Galéria létrehozva",
-      data: galleryObj,
+      data: {
+        _id: galleryObj._id,
+        gallery: galleryObj.galeryTitle,
+        isPublic: galleryObj.isPublic,
+      },
     });
   } catch (err) {
     next(err);

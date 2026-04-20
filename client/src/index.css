@@ -44,6 +44,12 @@
   --success-text: hsl(120, 100%, 25%);
   --success-border: hsl(120, 100%, 50%);
   --success-hover: hsl(120, 100%, 80%);
+
+  /* === ACTION COLORS === */
+  --edit: hsl(60, 100%, 50%);
+  --delete: hsl(0, 100%, 50%);
+  --change-access: hsl(200, 100%, 50%);
+  --disabled: hsl(0, 0%, 20%);
 }
 
 [data-theme="dark"] {
@@ -68,6 +74,12 @@
   --success-text: hsl(120, 100%, 68%);
   --success-border: hsl(120, 100%, 50%);
   --success-hover: hsl(120, 100%, 25%);
+
+  /* === ACTION COLORS === */
+  --edit: hsl(60, 100%, 50%);
+  --delete: hsl(0, 100%, 50%);
+  --change-access: hsl(200, 100%, 50%);
+  --disabled: hsl(0, 0%, 90%);
 }
 
 html {

@@ -9,10 +9,16 @@ export async function getPublicGalleriesController(
   try {
     const galleries = await getPublicGalleriesService();
 
+    const transformedGalleries = galleries.map((gallery: any) => ({
+      _id: gallery._id,
+      gallery: gallery.galeryTitle,
+      isPublic: gallery.isPublic,
+    }));
+
     res.status(200).json({
       success: true,
       message: "Galériák lekérve",
-      data: galleries,
+      data: transformedGalleries,
     });
   } catch (err) {
     next(err);
