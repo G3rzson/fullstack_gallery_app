@@ -50,6 +50,7 @@
   --delete: hsl(0, 100%, 50%);
   --change-access: hsl(200, 100%, 50%);
   --disabled: hsl(0, 0%, 20%);
+  --selected: hsl(300, 100%, 80%);
 }
 
 [data-theme="dark"] {
@@ -80,6 +81,7 @@
   --delete: hsl(0, 100%, 50%);
   --change-access: hsl(200, 100%, 50%);
   --disabled: hsl(0, 0%, 90%);
+  --selected: hsl(300, 100%, 20%);
 }
 
 html {

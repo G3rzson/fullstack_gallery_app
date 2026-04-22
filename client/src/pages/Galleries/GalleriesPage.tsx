@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import PageTitle from "../../shared/components/PageTitle/PageTitle";
 import useGaleryTitlePublicGet from "./hooks/useGaleryTitlePublicGet";
-//import "../MyGalleries/gallery.css";
 
 export default function GalleriesPage() {
   const { data, isLoading, isError, error } = useGaleryTitlePublicGet();

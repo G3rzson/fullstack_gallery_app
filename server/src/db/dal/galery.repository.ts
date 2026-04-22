@@ -1,6 +1,11 @@
 import GaleryTitleModel, {
   type GaleryTitleSchemaType,
 } from "../models/galeryTitle.model";
+import GaleryImageModel from "../models/galeryImage.model";
+
+export async function getGalleryImagesByGalleryId(galleryId: string) {
+  return await GaleryImageModel.find({ galleryId });
+}
 
 export async function createGaleryTitle(data: GaleryTitleSchemaType) {
   return await GaleryTitleModel.create(data);
@@ -43,4 +48,45 @@ export async function updateGalleryTitle(
     { galeryTitle, isPublic },
     { returnDocument: "after" },
   );
+}
+
+// --- Gallery Image mentés ---
+export async function saveGalleryImageToDb({
+  publicId,
+  publicUrl,
+  originalName,
+  mimetype,
+  size,
+  galleryId,
+  createdBy,
+}: {
+  publicId: string;
+  publicUrl: string;
+  originalName: string;
+  mimetype: string;
+  size: number;
+  galleryId: string;
+  createdBy: string;
+}) {
+  return await GaleryImageModel.create({
+    publicId,
+    publicUrl,
+    originalName,
+    mimetype,
+    size,
+    galleryId,
+    createdBy,
+  });
+}
+
+export async function getGalleryImages(createdBy: string, galleryId: string) {
+  return await GaleryImageModel.find({ createdBy, galleryId });
+}
+
+export async function getGalleryImageById(imageId: string) {
+  return await GaleryImageModel.findById(imageId);
+}
+
+export async function deleteGalleryImage(imageId: string) {
+  return await GaleryImageModel.findByIdAndDelete(imageId);
 }

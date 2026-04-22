@@ -22,14 +22,6 @@ export default function MyGalleriesPage() {
 
   const galleries = data?.data || [];
 
-  if (galleries.length === 0) {
-    return (
-      <div className="centered-container">
-        <p>Még nincs galériád. Hozz létre egyet!</p>
-      </div>
-    );
-  }
-
   return (
     <div className="centered-container">
       <PageTitle>Saját galériák</PageTitle>
@@ -38,11 +30,17 @@ export default function MyGalleriesPage() {
         Galéria létrehotása
       </Link>
 
-      <ul className="gallery-list-container">
-        {galleries.map((gallery: GalleryTitleType) => (
-          <MyGalleriesItems key={gallery._id} gallery={gallery} />
-        ))}
-      </ul>
+      {galleries.length === 0 ? (
+        <div className="centered-container">
+          <p>Még nincs galériád. Hozz létre egyet!</p>
+        </div>
+      ) : (
+        <ul className="gallery-list-container">
+          {galleries.map((gallery: GalleryTitleType) => (
+            <MyGalleriesItems key={gallery._id} gallery={gallery} />
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

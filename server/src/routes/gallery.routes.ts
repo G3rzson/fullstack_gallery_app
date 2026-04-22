@@ -11,6 +11,13 @@ import { deleteGalleryTitleController } from "../controllers/gallery/deleteGalle
 import { getGalleryTitleController } from "../controllers/gallery/getGalleryTitle.controller";
 import { updateGalleryController } from "../controllers/gallery/updateGallery.controller";
 import { uploadGalleryImagesController } from "../controllers/gallery/uploadGalleryImages.controller";
+import { upload } from "../middlewares/multer.mw";
+
+import { getGalleryImageController } from "../controllers/gallery/getGalleryImage.controller";
+import { getPublicGalleryImageController } from "../controllers/gallery/getPublicGalleryImage.controller";
+
+import { deleteGalleryImageController } from "../controllers/gallery/deleteGalleryImage.controller";
+import { deleteManyGalleryImageController } from "../controllers/gallery/deleteManyGalleryImage.controller";
 
 const galleryRouter = Router();
 
@@ -56,7 +63,31 @@ galleryRouter.post(
   "/images/upload/:galleryId",
   verifyAccessTokenMW(),
   hasPermissionMW,
+  upload.array("images"), // "images" mezőn több fájl feltöltése
   uploadGalleryImagesController,
 );
+
+galleryRouter.get(
+  "/image/get/:galleryId",
+  verifyAccessTokenMW(),
+  hasPermissionMW,
+  getGalleryImageController,
+);
+
+// a permission kezelést átdolgozni a hasPermissionMW-ben, hogy a kép törléséhez is ellenőrizze a jogosultságot
+galleryRouter.delete(
+  "/image/delete/:imageId",
+  verifyAccessTokenMW(),
+  deleteGalleryImageController,
+);
+
+galleryRouter.delete(
+  "/image/delete-many/:galleryId",
+  verifyAccessTokenMW(),
+  hasPermissionMW,
+  deleteManyGalleryImageController,
+);
+
+galleryRouter.get("/image/public/get/:id", getPublicGalleryImageController);
 
 export default galleryRouter;

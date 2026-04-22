@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   width: 100%;
-  gap: 0.5rem;
+  gap: 1rem;
   list-style-type: none;
 }
 
@@ -138,4 +138,134 @@
 
 .action-btn.change-access {
   color: var(--change-access);
+}
+
+.link-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+@media screen and (min-width: 600px) {
+  .link-container {
+    flex-direction: row;
+  }
+}
+
+.gallery-image-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  width: 100%;
+  list-style-type: none;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
+  width: 250px;
+  height: 250px;
+  list-style-type: none;
+  transition: background-color 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  background-color: var(--hover);
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--error-text);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition:
+    background-color 0.3s ease,
+    opacity 0.3s ease;
+  opacity: 0;
+}
+
+.delete-all-btn {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.delete-all-btn:hover,
+.delete-all-btn:active {
+  background-color: var(--error-hover);
+}
+
+.card:hover .delete-btn {
+  opacity: 1;
+}
+
+.delete-btn:disabled {
+  cursor: not-allowed;
+  color: var(--disabled) !important;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.check-btn {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: none;
+  border: none;
+  color: var(--success-text);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition:
+    background-color 0.3s ease,
+    opacity 0.3s ease;
+  opacity: 0;
+}
+.card:hover .check-btn {
+  opacity: 1;
+}
+
+.check-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  color: var(--disabled) !important;
+}
+
+.selected {
+  background-color: var(--selected);
 }

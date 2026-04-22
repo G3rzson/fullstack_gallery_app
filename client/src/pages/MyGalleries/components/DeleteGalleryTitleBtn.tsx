@@ -1,5 +1,5 @@
 import type { AxiosError } from "axios";
-import { Trash } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import useGaleryTitleDelete from "../hooks/useGaleryTitleDelete";
 
@@ -30,7 +30,7 @@ export default function DeleteGalleryTitleBtn({
       onClick={onDeleteGalleryTitle}
       disabled={isPending}
     >
-      <Trash />
+      <Trash2 />
     </button>
   );
 }

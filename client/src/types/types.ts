@@ -10,3 +10,14 @@ export type GalleryTitleType = {
   gallery: string;
   isPublic: boolean;
 };
+
+export type GalleryImageType = {
+  _id: string;
+  publicId: string;
+  publicUrl: string;
+  originalName: string;
+  mimetype: string;
+  size: number;
+  galleryId: string;
+  createdBy: string;
+};

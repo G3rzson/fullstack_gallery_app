@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { uploadGalleryImagesService } from "../../services/gallery/uploadGalleryImages.services";
 
 export async function uploadGalleryImagesController(
   req: Request,
@@ -7,19 +8,28 @@ export async function uploadGalleryImagesController(
 ) {
   try {
     const { galleryId } = req.params as { galleryId: string };
-    const username = req.username;
+    const createdBy = req.username ?? "unknown"; // vagy később req.userId ha lesz
 
-    console.log("=== Képek feltöltése ===");
-    console.log("Gallery ID:", galleryId);
-    console.log("Username:", username);
-    console.log("Body:", req.body);
-    console.log("=======================");
+    const files = Array.isArray(req.files) ? req.files : [];
+    if (!files.length) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Nincs feltöltött kép." });
+    }
+
+    const savedImages = await uploadGalleryImagesService({
+      files,
+      galleryId,
+      createdBy,
+    });
 
     res.status(200).json({
       success: true,
-      message: "Képek sikeresen feltöltve (dev mode)",
+      message: "Képek sikeresen feltöltve és elmentve.",
+      data: savedImages,
     });
   } catch (err) {
+    console.error("Hiba a képek feltöltésekor:", err);
     next(err);
   }
 }
