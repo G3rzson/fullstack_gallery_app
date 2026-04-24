@@ -2,6 +2,8 @@ import { Trash2 } from "lucide-react";
 import useGaleryImagesDeleteMany from "../hooks/useGaleryImagesDeleteMany";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
+import Modal from "../../../shared/components/Modal/Modal";
+import PageLoader from "../../../shared/components/PageLoader/PageLoader";
 
 type Props = {
   galleryId: string;
@@ -14,14 +16,13 @@ export default function BatchDeleteButton({
   deletingIdArray,
   setDeletingIdArray,
 }: Props) {
-  const { mutateAsync: deleteMany, isPending: isBatchDeleting } =
-    useGaleryImagesDeleteMany(galleryId);
+  const { mutateAsync, isPending } = useGaleryImagesDeleteMany(galleryId);
 
   if (deletingIdArray.length === 0) return null;
 
   async function handleClick() {
     try {
-      await deleteMany(deletingIdArray);
+      await mutateAsync(deletingIdArray);
       setDeletingIdArray([]);
       toast.success("Kijelölt képek törölve!");
     } catch (error: unknown) {
@@ -33,13 +34,19 @@ export default function BatchDeleteButton({
   }
 
   return (
-    <button
-      className="delete-all-btn"
-      onClick={handleClick}
-      disabled={isBatchDeleting}
-    >
-      Kijelölt elemek törlése <span>{deletingIdArray.length}</span>
-      <Trash2 />
-    </button>
+    <>
+      <button
+        className="delete-all-btn"
+        onClick={handleClick}
+        disabled={isPending}
+      >
+        Kijelölt elemek törlése <span>{deletingIdArray.length}</span>
+        <Trash2 />
+      </button>
+
+      <Modal isOpen={isPending} onClose={() => {}} mode="loader">
+        <PageLoader />
+      </Modal>
+    </>
   );
 }

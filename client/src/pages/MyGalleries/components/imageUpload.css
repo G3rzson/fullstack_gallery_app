@@ -152,12 +152,13 @@
 }
 
 .submit-btn {
-  background-color: var(--primary);
-  color: white;
+  background-color: var(--success-bg);
+  color: var(--success-text);
+  border: 1px solid var(--success-border);
 }
 
 .submit-btn:hover:not(:disabled) {
-  opacity: 0.9;
+  background-color: var(--success-hover);
 }
 
 .cancel-btn:disabled,

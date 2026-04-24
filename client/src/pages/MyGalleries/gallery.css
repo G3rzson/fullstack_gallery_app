@@ -186,22 +186,17 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  cursor: zoom-in;
 }
 
 .delete-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
   background: none;
   border: none;
   color: var(--error-text);
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
-  transition:
-    background-color 0.3s ease,
-    opacity 0.3s ease;
-  opacity: 0;
+  transition: background-color 0.3s ease;
 }
 
 .delete-all-btn {
@@ -225,10 +220,6 @@
   background-color: var(--error-hover);
 }
 
-.card:hover .delete-btn {
-  opacity: 1;
-}
-
 .delete-btn:disabled {
   cursor: not-allowed;
   color: var(--disabled) !important;
@@ -242,22 +233,13 @@
 }
 
 .check-btn {
-  position: absolute;
-  top: 8px;
-  left: 8px;
   background: none;
   border: none;
   color: var(--success-text);
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
-  transition:
-    background-color 0.3s ease,
-    opacity 0.3s ease;
-  opacity: 0;
-}
-.card:hover .check-btn {
-  opacity: 1;
+  transition: background-color 0.3s ease;
 }
 
 .check-btn:disabled {
@@ -268,4 +250,22 @@
 
 .selected {
   background-color: var(--selected);
+}
+
+.action-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover .action-btn-container {
+  opacity: 1;
 }

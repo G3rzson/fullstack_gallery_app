@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import "./components/imageUpload.css";
 import PageTitle from "../../shared/components/PageTitle/PageTitle";
+import Modal from "../../shared/components/Modal/Modal";
+import PageLoader from "../../shared/components/PageLoader/PageLoader";
 
 export default function MyGalleryImageAdd() {
   const { id } = useParams<{ id: string }>();
@@ -97,6 +99,10 @@ export default function MyGalleryImageAdd() {
           </button>
         </div>
       </form>
+
+      <Modal isOpen={isLoading} onClose={() => {}} mode="loader">
+        <PageLoader />
+      </Modal>
     </div>
   );
 }
