@@ -4,7 +4,7 @@ import PageTitle from "../../../shared/components/PageTitle/PageTitle";
 import {
   registerSchema,
   type RegisterSchemaType,
-} from "./validation/registerSchema";
+} from "./registerSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomEmail from "../../../shared/components/Form/CustomEmail";

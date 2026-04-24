@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import type { RegisterSchemaType } from "../validation/registerSchema";
+import type { RegisterSchemaType } from "../registerSchema";
 import { apiClient } from "../../../../setup/apiClient";
 
 export default function useRegister() {
