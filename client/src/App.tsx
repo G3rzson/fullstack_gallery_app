@@ -1,49 +1,52 @@
+import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import Footer from "./Components/Footer/Footer";
+import { ROUTES } from "./routes";
 import { Toaster } from "react-hot-toast";
-import NavComp from "./Components/NavComp/NavComp";
-import NotFoundPage from "./Pages/NotFoundPage";
-import HomePage from "./Pages/HomePage";
-import LoginPage from "./Pages/Auth/LoginPage";
-import RegisterPage from "./Pages/Auth/RegisterPage";
-import MyGaleries from "./Pages/MyGaleriesPage";
-import GaleryImageViewerPage from "./Pages/GaleryImageViewerPage";
-import GaleryTitlePage from "./Pages/GaleryTitlePage";
-import GaleryImageUploadPage from "./Pages/GaleryImageUploadPage";
+import ThemeSwitcher from "./shared/components/ThemeSwitcher/ThemeSwitcher";
+import Sidebar from "./shared/components/Sidebar/Sidebar";
+import PageLoader from "./shared/components/PageLoader/PageLoader";
+import CookieConsentBanner from "./pages/Privacy/components/CookieConsentBanner";
 
 export default function App() {
   return (
     <>
-      <Toaster position="top-right" />
+      <ThemeSwitcher />
+      <Sidebar />
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          error: {
+            style: {
+              background: "var(--error-bg)",
+              border: "1px solid var(--error-border)",
+              color: "var(--error-text)",
+              borderRadius: "10px",
+              padding: "16px",
+            },
+          },
 
-      <div className="flex flex-row items-stretch min-h-dvh">
-        <NavComp />
+          success: {
+            style: {
+              background: "var(--success-bg)",
+              border: "1px solid var(--success-border)",
+              color: "var(--success-text)",
+              borderRadius: "10px",
+              padding: "16px",
+            },
+          },
+        }}
+      />
+      <CookieConsentBanner />
 
-        <div className="flex-1 flex flex-col min-h-0 sm:ml-0 ml-12 ">
+      <main className="app-content">
+        <Suspense fallback={<PageLoader />}>
           <Routes>
             {ROUTES.map(({ path, element }) => (
               <Route key={path} path={path} element={element} />
             ))}
           </Routes>
-
-          <Footer />
-        </div>
-      </div>
+        </Suspense>
+      </main>
     </>
   );
 }
-
-const ROUTES = [
-  { path: "*", element: <NotFoundPage /> },
-  { path: "/", element: <HomePage /> },
-  { path: "/my-galery-titles", element: <MyGaleries /> },
-  { path: "/galery-title/create", element: <GaleryTitlePage /> },
-  { path: "/galery-title/update/:id", element: <GaleryTitlePage /> },
-  { path: "/galery/:url-params", element: <GaleryImageViewerPage /> },
-  {
-    path: "/galery/image/upload/:url-params",
-    element: <GaleryImageUploadPage />,
-  },
-  { path: "/auth/login", element: <LoginPage /> },
-  { path: "/auth/register", element: <RegisterPage /> },
-];

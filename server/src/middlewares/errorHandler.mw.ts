@@ -6,13 +6,9 @@ export function errorHandlerMW(
   err: unknown,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   console.error(err);
-
-  /*---------------------------------------------------------------
-    | külső hiba loggoló szolgáltatások integrációja ide kerülhet |
-    ---------------------------------------------------------------*/
 
   // handle custom AppErrors
   if (err instanceof AppError) {

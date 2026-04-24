@@ -1,0 +1,115 @@
+.user-menu-container {
+  position: relative;
+  width: 100%;
+  margin-top: auto;
+}
+
+.user-menu-btn {
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+.user-menu-btn.active,
+.dropdown-link.active {
+  background-color: var(--hover);
+}
+
+.user-menu-btn:hover,
+.user-menu-btn:active {
+  background-color: var(--hover);
+}
+
+.user-title-open {
+  text-align: left;
+  margin-left: 1rem;
+  width: 100%;
+  opacity: 1;
+  transition:
+    opacity 0.3s ease,
+    width 0.3s ease,
+    margin-left 0.3s ease;
+}
+
+.user-title-close {
+  text-align: left;
+  width: 0;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    width 0.3s ease,
+    margin-left 0.3s ease;
+}
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  z-index: 1000;
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  transition: all 0.3s ease;
+  background-color: var(--bg-dropdown);
+}
+
+.dropdown-link {
+  display: block;
+  text-decoration: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  border: none;
+  transition: background-color 0.3s ease-in-out;
+  color: var(--text-primary);
+  background-color: transparent;
+}
+
+.dropdown-link:hover,
+.dropdown-link:active {
+  background-color: var(--hover);
+}
+
+.dropdown-link > svg {
+  margin-right: 1rem;
+  width: 16px;
+  height: 16px;
+}
+
+.dropdown-user-badge {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  margin: 0 auto;
+  text-align: center;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.dropdown-user-info {
+  font-weight: bold;
+  padding: 0.5rem;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.dropdown-open {
+  opacity: 1;
+}
+
+.dropdown-closed {
+  opacity: 0;
+}

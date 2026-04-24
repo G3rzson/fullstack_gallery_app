@@ -1,0 +1,52 @@
+.sidebar-nav {
+  width: 100%;
+}
+
+.nav-list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.nav-link {
+  padding: 0.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  color: var(--text-primary);
+  transition: background-color 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.nav-link:hover,
+.nav-link:active {
+  background-color: var(--hover);
+}
+
+.link-title-open {
+  text-wrap: nowrap;
+  margin-left: 1rem;
+  width: 100%;
+  opacity: 1;
+  transition:
+    opacity 0.3s ease,
+    width 0.3s ease,
+    margin-left 0.3s ease;
+}
+
+.link-title-close {
+  text-wrap: nowrap;
+  width: 0;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    width 0.3s ease,
+    margin-left 0.3s ease;
+}
+
+.nav-link.active {
+  background-color: var(--hover);
+}

@@ -1,19 +1,25 @@
-import { Request, Response, NextFunction } from "express";
-import { verifyAccessToken } from "../utils/token";
+import type { Request, Response, NextFunction } from "express";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
+import { getJwtSecrets, verifyAccessToken } from "../functions/jwt";
 
 export function verifyAccessTokenMW() {
   return (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return next(new UnauthorizedError("No token provided"));
-    }
-    const token = authHeader.slice("Bearer ".length).trim();
-    if (!token) {
-      return next(new UnauthorizedError("No token provided"));
-    }
     try {
-      const decoded = verifyAccessToken(token);
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return next(new UnauthorizedError("No token provided"));
+      }
+      const token = authHeader.slice("Bearer ".length).trim();
+      if (!token) {
+        return next(new UnauthorizedError("No token provided"));
+      }
+      const secrets = getJwtSecrets();
+      if (!secrets) {
+        return next(new UnauthorizedError("JWT secrets not configured"));
+      }
+
+      const decoded = verifyAccessToken(token, secrets.accessTokenSecret);
+
       req.username = decoded.username;
       next();
     } catch (err) {

@@ -1,0 +1,271 @@
+.gallery-list-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  width: 100%;
+  gap: 1rem;
+  list-style-type: none;
+}
+
+@media screen and (min-width: 600px) {
+  .gallery-list-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .gallery-list-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .gallery-list-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.gallery-item {
+  position: relative;
+}
+
+.gallery-link {
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 500;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 188px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
+  z-index: 100;
+}
+.gallery-link:hover {
+  background-color: var(--hover);
+}
+
+.dropdown-menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  top: 48px;
+  right: 8px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  transform: translateY(-10px);
+}
+
+.dropdown-menu.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.dropdown-menu-button {
+  width: fit-content;
+  padding: 4px 0;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border-radius: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease,
+    background-color 0.3s ease;
+}
+
+.gallery-item:hover .dropdown-menu-button {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown-menu-button.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown-menu-button:hover {
+  background-color: var(--hover);
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: var(--hover);
+}
+
+.action-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  color: var(--disabled) !important;
+}
+
+.action-btn.edit {
+  color: var(--edit);
+}
+
+.action-btn.delete {
+  color: var(--delete);
+}
+
+.action-btn.change-access {
+  color: var(--change-access);
+}
+
+.link-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+@media screen and (min-width: 600px) {
+  .link-container {
+    flex-direction: row;
+  }
+}
+
+.gallery-image-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  width: 100%;
+  list-style-type: none;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
+  width: 250px;
+  height: 250px;
+  list-style-type: none;
+  transition: background-color 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  background-color: var(--hover);
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: zoom-in;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: var(--error-text);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.delete-all-btn {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.delete-all-btn:hover,
+.delete-all-btn:active {
+  background-color: var(--error-hover);
+}
+
+.delete-btn:disabled {
+  cursor: not-allowed;
+  color: var(--disabled) !important;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.check-btn {
+  background: none;
+  border: none;
+  color: var(--success-text);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.check-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  color: var(--disabled) !important;
+}
+
+.selected {
+  background-color: var(--selected);
+}
+
+.action-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover .action-btn-container {
+  opacity: 1;
+}

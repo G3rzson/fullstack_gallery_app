@@ -2,18 +2,14 @@ import { Schema, model, models } from "mongoose";
 
 export type GaleryTitleSchemaType = {
   galeryTitle: string;
-  path: string;
-  url: string;
   createdBy: string;
-  isPrivate: boolean;
+  isPublic: boolean;
 };
 
 const galeryTitleSchema = new Schema<GaleryTitleSchemaType>({
   galeryTitle: { type: String, required: true },
-  path: { type: String, required: true, unique: true },
-  url: { type: String, required: true, unique: true },
   createdBy: { type: String, required: true },
-  isPrivate: { type: Boolean, required: true, default: false },
+  isPublic: { type: Boolean, required: true, default: false },
 });
 
 const GaleryTitleModel =
