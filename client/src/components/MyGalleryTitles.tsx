@@ -5,8 +5,8 @@ import PageLoader from "./PageLoader";
 import ServerError from "./ServerError";
 import MyGalleryTitleActionMenu from "./MyGalleryTitleActionMenu";
 
-export default function MyGalleryTitles() {
-  const { data, isLoading, isError, error } = useMyGaleryTitleGet();
+export default function MyGalleryTitles({ search }: { search: string }) {
+  const { data, isLoading, isError, error } = useMyGaleryTitleGet(search);
 
   if (isLoading) return <PageLoader />;
 

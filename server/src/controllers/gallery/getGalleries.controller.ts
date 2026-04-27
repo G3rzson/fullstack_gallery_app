@@ -9,12 +9,13 @@ export async function getGalleriesController(
 ) {
   try {
     const username = req.username;
+    const search = req.query.search as string | undefined;
 
     if (!username) {
       throw new UnauthorizedError("Missing username");
     }
 
-    const galleries = await getGalleriesService(username);
+    const galleries = await getGalleriesService(username, search);
 
     res.status(200).json({
       success: true,

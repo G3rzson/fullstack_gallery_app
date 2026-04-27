@@ -8,8 +8,10 @@ import GaleryImageModel, {
 } from "../models/galeryImage.model";
 import { Types } from "mongoose";
 
-export async function getPublicGaleries(): Promise<GaleryTitleDocumentType[]> {
-  return await GaleryTitleModel.find({ isPublic: true });
+export async function getPublicGaleries(
+  filter: Record<string, any>,
+): Promise<GaleryTitleDocumentType[]> {
+  return await GaleryTitleModel.find(filter);
 }
 
 export async function getGalleryById(
@@ -30,10 +32,10 @@ export async function getGalleryImagesByGalleryId(
   return await GaleryImageModel.find({ galleryId });
 }
 
-export async function getGaleriesByUsername(
-  username: string,
+export async function getFilteredGalleryTitles(
+  filter: Record<string, any>,
 ): Promise<GaleryTitleDocumentType[]> {
-  return await GaleryTitleModel.find({ createdBy: username });
+  return await GaleryTitleModel.find(filter);
 }
 
 export async function changeGalleryTitleAccess(

@@ -4,8 +4,9 @@ import PageLoader from "./PageLoader";
 import useGetAllPublicGaleryTitle from "../hooks/useGetAllPublicGaleryTitle";
 import { Link } from "react-router-dom";
 
-export default function PublicGalleryTitles() {
-  const { data, isLoading, isError, error } = useGetAllPublicGaleryTitle();
+export default function PublicGalleryTitles({ search }: { search: string }) {
+  const { data, isLoading, isError, error } =
+    useGetAllPublicGaleryTitle(search);
 
   if (isLoading) return <PageLoader />;
 

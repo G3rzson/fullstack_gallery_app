@@ -7,7 +7,9 @@ export async function getPublicGalleriesController(
   next: NextFunction,
 ) {
   try {
-    const galleries = await getPublicGalleriesService();
+    const search = req.query.search as string | undefined;
+
+    const galleries = await getPublicGalleriesService(search);
 
     res.status(200).json({
       success: true,
