@@ -7,7 +7,13 @@ const NAV_LINKS = [
   { title: "Saját galériák", path: "/my-gallery-titles", icon: <Image /> },
 ];
 
-export default function Nav({ isSidebarOpen }: { isSidebarOpen: boolean }) {
+export default function Nav({
+  isSidebarOpen,
+  setIsSidebarOpen,
+}: {
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const { pathname } = useLocation();
   return (
     <nav className="mt-10">
@@ -19,6 +25,7 @@ export default function Nav({ isSidebarOpen }: { isSidebarOpen: boolean }) {
               <Link
                 to={path}
                 title={isSidebarOpen ? undefined : title}
+                onClick={() => setIsSidebarOpen((prev) => !prev)}
                 className={`flex flex-row items-center w-full justify-start gap-3 p-2 dark:hover:bg-pink-900 hover:bg-pink-200 transition-colors duration-300 ${activeLink ? "dark:bg-pink-900 bg-pink-200" : ""}`}
               >
                 <span className="w-6 flex items-center justify-center">
