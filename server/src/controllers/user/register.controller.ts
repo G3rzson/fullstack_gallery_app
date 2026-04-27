@@ -1,17 +1,22 @@
-import type { Request, Response } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { type RegisterSchemaType } from "../../validation/registerSchema";
 import { registerUserService } from "../../services/user/register.services";
 
 export async function registerController(
   req: Request<{}, {}, RegisterSchemaType>,
   res: Response,
+  next: NextFunction,
 ) {
-  const { username, email, password } = req.body;
+  try {
+    const { username, email, password } = req.body;
 
-  await registerUserService({ username, email, password });
+    await registerUserService({ username, email, password });
 
-  res.json({
-    success: true,
-    message: "Sikeres regisztráció!",
-  });
+    res.json({
+      success: true,
+      message: "Sikeres regisztráció!",
+    });
+  } catch (error) {
+    next(error);
+  }
 }

@@ -1,9 +1,6 @@
 <!doctype html>
 <html lang="hu">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       (function () {
         var storedTheme = localStorage.getItem("theme");
@@ -17,15 +14,25 @@
               ? "dark"
               : "light";
 
-        document.documentElement.setAttribute("data-theme", theme);
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
         document.documentElement.style.colorScheme = theme;
       })();
     </script>
 
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Galéria app</title>
   </head>
   <body>
-    <div id="root" class="root"></div>
+    <div
+      id="root"
+      class="min-h-screen flex flex-row dark:bg-purple-950 bg-purple-200 dark:text-purple-200 text-purple-950 transition-colors duration-300"
+    ></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -2,14 +2,14 @@ import { z } from "zod";
 
 export const loginSchema = z.object({
   username: z
-    .string()
+    .string("A mező kötelező!")
     .trim()
     .transform((str) => str.replace(/\s+/g, " "))
     .pipe(
       z.string().min(1, "A név kötelező!").max(30, "Max hossz 30 karakter!"),
     ),
   password: z
-    .string()
+    .string("A mező kötelező!")
     .min(6, "A jelszónak legalább 6 karakter hosszúnak kell lennie!")
     .max(20, "A jelszó nem lehet hosszabb 20 karakternél!")
     .refine((val) => /[a-z]/.test(val), {
@@ -23,6 +23,9 @@ export const loginSchema = z.object({
     })
     .refine((val) => /^[A-Za-z\d]+$/.test(val), {
       message: "A jelszó nem tartalmazhat speciális karaktert",
+    })
+    .refine((val) => !/\s/.test(val), {
+      message: "A jelszó nem tartalmazhat szóközt",
     }),
 });
 

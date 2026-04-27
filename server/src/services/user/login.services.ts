@@ -1,6 +1,7 @@
 import { findUserByUsername } from "../../db/dal/user.repository";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
+import { errorHandler } from "../../functions/errorHandler";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -14,7 +15,7 @@ export async function loginUserService({
   password,
 }: LoginSchemaType): Promise<{
   accessToken: string;
-  userObj: { username: string; role: "ADMIN" | "USER" };
+  userObj: { username: string; role: "USER" | "ADMIN" };
   refreshToken: string;
 }> {
   try {
@@ -54,9 +55,6 @@ export async function loginUserService({
       refreshToken,
     };
   } catch (error) {
-    if (error instanceof NotFoundError || error instanceof UnauthorizedError) {
-      throw error;
-    }
-    throw new Error("Bejelentkezés sikertelen.");
+    errorHandler(error);
   }
 }

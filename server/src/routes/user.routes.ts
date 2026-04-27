@@ -10,15 +10,15 @@ import { refreshController } from "../controllers/user/refresh.controller";
 const userRouter = Router();
 
 userRouter.post(
-  "/register",
+  "/user/register",
   validateDataMW(registerSchema),
   registerController,
 );
 
-userRouter.post("/login", validateDataMW(loginSchema), loginController);
+userRouter.post("/user/login", validateDataMW(loginSchema), loginController);
 
-userRouter.post("/logout", logoutController);
+userRouter.post("/user/logout", logoutController);
 
-userRouter.post("/refresh", refreshController);
+userRouter.post("/user/refresh", refreshController);
 
 export default userRouter;

@@ -1,6 +1,5 @@
 import { createUser } from "../../db/dal/user.repository";
-import { BadRequestError } from "../../errors/BadRequestError";
-import { InternalServerError } from "../../errors/InternalServerError";
+import { errorHandler } from "../../functions/errorHandler";
 import { type RegisterSchemaType } from "../../validation/registerSchema";
 import bcrypt from "bcrypt";
 
@@ -14,10 +13,6 @@ export async function registerUserService({
 
     await createUser(username, email, hashedPassword);
   } catch (error) {
-    if (error instanceof BadRequestError) {
-      throw error;
-    }
-
-    throw new InternalServerError("Felhasználó létrehozása sikertelen.");
+    errorHandler(error);
   }
 }
