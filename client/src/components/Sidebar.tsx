@@ -36,7 +36,7 @@ export default function Sidebar() {
     // w-10 - 40px => sidebar closed width if you want to change the closed width, change this and the ms-10 on main in App.tsx
     <div
       ref={sidebarRef}
-      className={`dark:bg-fuchsia-950 bg-fuchsia-300 border-r-2 z-10 dark:border-fuchsia-700 border-fuchsia-500 absolute top-0 left-0 h-full transition-width duration-300 ${
+      className={`dark:bg-fuchsia-950 bg-fuchsia-300 border-r-2 z-10 dark:border-fuchsia-700 border-fuchsia-500 absolute top-0 left-0 h-dvh transition-width duration-300 ${
         isSidebarOpen ? "w-75" : "w-10"
       }`}
     >
