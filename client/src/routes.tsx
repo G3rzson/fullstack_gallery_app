@@ -1,45 +1,43 @@
 import { lazy } from "react";
 
-const HomePage = lazy(() => import("./pages/Home/HomePage"));
-const NotFoundPage = lazy(() => import("./pages/NotFound/NotFoundPage"));
-const RegisterPage = lazy(() => import("./pages/User/Register/RegisterPage"));
-const LoginPage = lazy(() => import("./pages/User/Login/LoginPage"));
-const PrivacyPage = lazy(() => import("./pages/Privacy/PrivacyPage"));
-const MyGalleriesPage = lazy(
-  () => import("./pages/MyGalleries/MyGalleriesPage"),
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
+const PublicGalleryTitlesPage = lazy(
+  () => import("./pages/PublicGalleryTitlesPage"),
 );
-const MyGalleryCreatePage = lazy(
-  () => import("./pages/MyGalleries/MyGalleryCreatePage"),
+const SinglePublicGalleryPage = lazy(
+  () => import("./pages/SinglePublicGalleryPage"),
 );
-const MyGalleryPage = lazy(() => import("./pages/MyGalleries/MyGalleryPage"));
-const GalleryPage = lazy(() => import("./pages/Galleries/GalleryPage"));
-const GalleriesPage = lazy(() => import("./pages/Galleries/GalleriesPage"));
-const MyGalleryUpdatePage = lazy(
-  () => import("./pages/MyGalleries/MyGalleryUpdatePage"),
+const MyGalleryTitlesPage = lazy(() => import("./pages/MyGalleryTitlesPage"));
+const CreateMyGalleryTitlePage = lazy(
+  () => import("./pages/CreateMyGalleryTitlePage"),
 );
-const MyGalleryImageAdd = lazy(
-  () => import("./pages/MyGalleries/MyGalleryImageAdd"),
+const MyGalleryPage = lazy(() => import("./pages/MyGalleryImagePage"));
+const MyGalleryTitleUpdatePage = lazy(
+  () => import("./pages/UpdateMyGalleryTitlePage"),
 );
+const GalleryImageAdd = lazy(() => import("./pages/GalleryImageAdd"));
 
 export const ROUTES = [
   { path: "*", element: <NotFoundPage /> },
   { path: "/", element: <HomePage /> },
-
-  // Public galleries routes
-  { path: "/galleries", element: <GalleriesPage /> },
-  { path: "/galleries/:id", element: <GalleryPage /> },
-
-  // My galleries routes
-  { path: "/my-galleries", element: <MyGalleriesPage /> },
-  { path: "/my-galleries/:id", element: <MyGalleryPage /> },
-  { path: "/my-galleries/title/create", element: <MyGalleryCreatePage /> },
-  { path: "/my-galleries/title/update/:id", element: <MyGalleryUpdatePage /> },
-
-  // My galleries Image routes
-  { path: "/my-galleries/:id/image/add", element: <MyGalleryImageAdd /> },
-
-  // User routes
   { path: "/user/register", element: <RegisterPage /> },
   { path: "/user/login", element: <LoginPage /> },
   { path: "/privacy", element: <PrivacyPage /> },
+  { path: "/public-gallery-titles", element: <PublicGalleryTitlesPage /> },
+  {
+    path: "/public-gallery-titles/:id",
+    element: <SinglePublicGalleryPage />,
+  },
+  { path: "/my-gallery-titles", element: <MyGalleryTitlesPage /> },
+  { path: "/my-gallery-titles/create", element: <CreateMyGalleryTitlePage /> },
+  {
+    path: "/my-gallery-titles/update/:id",
+    element: <MyGalleryTitleUpdatePage />,
+  },
+  { path: "/my-gallery-titles/:id", element: <MyGalleryPage /> },
+  { path: "/my-gallery/image/add/:id", element: <GalleryImageAdd /> },
 ];

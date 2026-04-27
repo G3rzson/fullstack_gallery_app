@@ -1,4 +1,5 @@
 import { changeGalleryTitleAccess } from "../../db/dal/galery.repository";
+import { errorHandler } from "../../functions/errorHandler";
 
 export async function changeGalleryTitleAccessService(
   galleryId: string,
@@ -7,6 +8,6 @@ export async function changeGalleryTitleAccessService(
   try {
     return await changeGalleryTitleAccess(galleryId, !isPublic);
   } catch (error) {
-    throw new Error("Failed to change gallery access");
+    errorHandler(error);
   }
 }

@@ -7,20 +7,16 @@ export async function getPublicGalleriesController(
   next: NextFunction,
 ) {
   try {
-    const galleries = await getPublicGalleriesService();
+    const search = req.query.search as string | undefined;
 
-    const transformedGalleries = galleries.map((gallery: any) => ({
-      _id: gallery._id,
-      gallery: gallery.galeryTitle,
-      isPublic: gallery.isPublic,
-    }));
+    const galleries = await getPublicGalleriesService(search);
 
     res.status(200).json({
       success: true,
       message: "Galériák lekérve",
-      data: transformedGalleries,
+      data: galleries,
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 }

@@ -1,5 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
-import { getGalleryById } from "../db/dal/galery.repository";
+import { getGalleryByUsername } from "../db/dal/galery.repository";
+import { UnauthorizedError } from "../errors/UnauthorizedError";
+import { NotFoundError } from "../errors/NotFoundError";
+import { BadRequestError } from "../errors/BadRequestError";
+import { errorHandler } from "../functions/errorHandler";
 
 export async function hasPermissionMW(
   req: Request,
@@ -7,44 +11,22 @@ export async function hasPermissionMW(
   next: NextFunction,
 ) {
   try {
-    const galleryId = req.params.galleryId as string;
     const username = req.username;
-
-    if (!galleryId) {
-      return res.status(400).json({
-        success: false,
-        message: "Gallery ID is required",
-      });
-    }
     if (!username) {
-      return res.status(401).json({
-        success: false,
-        message: "Unauthorized",
-      });
+      throw new UnauthorizedError("Unauthorized");
     }
 
-    const galleryObj = await getGalleryById(galleryId);
-
+    const galleryObj = await getGalleryByUsername(username);
     if (!galleryObj) {
-      return res.status(404).json({
-        success: false,
-        message: "Gallery not found",
-      });
+      throw new NotFoundError("Gallery not found");
     }
 
     if (galleryObj.createdBy !== username) {
-      return res.status(403).json({
-        success: false,
-        message: "Forbidden",
-      });
+      throw new BadRequestError("Forbidden");
     }
 
     next();
-  } catch (err) {
-    console.error("Error in hasPermissionMW:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
+  } catch (error) {
+    errorHandler(error);
   }
 }

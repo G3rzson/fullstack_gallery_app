@@ -28,18 +28,15 @@ export async function refreshController(
       secrets.refreshTokenSecret,
     );
 
-    const newAccessToken = generateAccessToken(
-      {
-        username: decoded.username,
-        role: decoded.role,
-      },
-      secrets.accessTokenSecret,
-    );
-
     const userObj = {
       username: decoded.username,
       role: decoded.role,
     };
+
+    const newAccessToken = generateAccessToken(
+      userObj,
+      secrets.accessTokenSecret,
+    );
 
     res.json({
       success: true,

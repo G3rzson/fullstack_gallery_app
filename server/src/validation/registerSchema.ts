@@ -2,15 +2,22 @@ import { z } from "zod";
 
 export const registerSchema = z.object({
   username: z
-    .string()
+    .string("A mező kötelező!")
     .trim()
     .transform((str) => str.replace(/\s+/g, " "))
     .pipe(
-      z.string().min(1, "A név kötelező!").max(30, "Max hossz 30 karakter!"),
+      z
+        .string()
+        .min(3, "Minimum 3 karakter!")
+        .max(30, "Max hossz 30 karakter!"),
     ),
-  email: z.string().toLowerCase().email("Érvénytelen email cím!"),
+  email: z
+    .string("A mező kötelező!")
+    .toLowerCase()
+    .email("Érvénytelen email cím!"),
   password: z
-    .string()
+    .string("A mező kötelező!")
+    .trim()
     .min(6, "A jelszónak legalább 6 karakter hosszúnak kell lennie!")
     .max(20, "A jelszó nem lehet hosszabb 20 karakternél!")
     .refine((val) => /[a-z]/.test(val), {
@@ -24,6 +31,9 @@ export const registerSchema = z.object({
     })
     .refine((val) => /^[A-Za-z\d]+$/.test(val), {
       message: "A jelszó nem tartalmazhat speciális karaktert",
+    })
+    .refine((val) => !/\s/.test(val), {
+      message: "A jelszó nem tartalmazhat szóközt",
     }),
 });
 

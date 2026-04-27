@@ -1,31 +1,51 @@
 <!doctype html>
-<html lang="hu">
+<html lang="hu" class="initial-colors">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      html.initial-colors,
+      html.initial-colors body {
+        background-color: #e9d4ff; /* világos alap */
+        color: #4b004f;
+        transition: none !important;
+      }
+      html.initial-colors.dark,
+      html.initial-colors.dark body {
+        background-color: #3c0366; /* sötét alap */
+        color: #f6cfff;
+      }
+    </style>
     <script>
+      // Prevent FOUC: set theme class and remove initial-colors before rendering
       (function () {
         var storedTheme = localStorage.getItem("theme");
-        var prefersDark =
-          window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
         var theme =
           storedTheme === "dark" || storedTheme === "light"
             ? storedTheme
             : prefersDark
               ? "dark"
               : "light";
-
-        document.documentElement.setAttribute("data-theme", theme);
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+        document.documentElement.classList.remove("initial-colors");
         document.documentElement.style.colorScheme = theme;
       })();
     </script>
 
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Galéria app</title>
   </head>
-  <body>
-    <div id="root" class="root"></div>
+  <body
+    class="bg-purple-200 dark:bg-purple-950 text-fuchsia-950 dark:text-fuchsia-200 transition-colors duration-300"
+  >
+    <div id="root" class="min-h-screen flex flex-row"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

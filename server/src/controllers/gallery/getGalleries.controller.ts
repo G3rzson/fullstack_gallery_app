@@ -9,25 +9,20 @@ export async function getGalleriesController(
 ) {
   try {
     const username = req.username;
+    const search = req.query.search as string | undefined;
 
     if (!username) {
       throw new UnauthorizedError("Missing username");
     }
 
-    const galleries = await getGalleriesService(username);
-
-    const transformedGalleries = galleries.map((gallery: any) => ({
-      _id: gallery._id,
-      gallery: gallery.galeryTitle,
-      isPublic: gallery.isPublic,
-    }));
+    const galleries = await getGalleriesService(username, search);
 
     res.status(200).json({
       success: true,
       message: "Galériák lekérve",
-      data: transformedGalleries,
+      data: galleries,
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 }

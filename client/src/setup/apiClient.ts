@@ -87,9 +87,6 @@ apiClient.interceptors.response.use(
         }
         accessToken = null;
 
-        // Redirect to login page
-        window.location.href = "/user/login";
-
         return Promise.reject(refreshError);
       }
     }

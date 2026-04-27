@@ -16,7 +16,6 @@ export async function deleteGalleryTitleController(
       message: "Galéria törölve",
     });
   } catch (err) {
-    console.error("Hiba a galéria törlésekor:", err);
     next(err);
   }
 }

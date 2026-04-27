@@ -6,19 +6,27 @@ import { loginSchema } from "../validation/loginSchema";
 import { loginController } from "../controllers/user/login.controller";
 import { logoutController } from "../controllers/user/logout.controller";
 import { refreshController } from "../controllers/user/refresh.controller";
+import { deleteAccountController } from "../controllers/user/deleteAccount.controller";
+import { verifyAccessTokenMW } from "../middlewares/verifyAccessTokenMW";
 
 const userRouter = Router();
 
 userRouter.post(
-  "/register",
+  "/user/register",
   validateDataMW(registerSchema),
   registerController,
 );
 
-userRouter.post("/login", validateDataMW(loginSchema), loginController);
+userRouter.post("/user/login", validateDataMW(loginSchema), loginController);
 
-userRouter.post("/logout", logoutController);
+userRouter.post("/user/logout", logoutController);
 
-userRouter.post("/refresh", refreshController);
+userRouter.post("/user/refresh", refreshController);
+
+userRouter.post(
+  "/user/delete-account",
+  verifyAccessTokenMW(),
+  deleteAccountController,
+);
 
 export default userRouter;

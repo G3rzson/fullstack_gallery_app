@@ -1,23 +1,13 @@
 import { createGaleryTitle } from "../../db/dal/galery.repository";
-import { BadRequestError } from "../../errors/BadRequestError";
-import { InternalServerError } from "../../errors/InternalServerError";
+import { GaleryTitleSchemaType } from "../../db/models/galeryTitle.model";
+import { errorHandler } from "../../functions/errorHandler";
 
 export async function createGalleryService(
-  gallery: string,
-  isPublic: boolean,
-  username: string,
+  newGalleryTitle: GaleryTitleSchemaType,
 ) {
   try {
-    return await createGaleryTitle({
-      galeryTitle: gallery,
-      createdBy: username,
-      isPublic: isPublic,
-    });
+    return await createGaleryTitle(newGalleryTitle);
   } catch (error) {
-    if (error instanceof BadRequestError) {
-      throw error;
-    }
-
-    throw new InternalServerError("Galéria létrehozása sikertelen.");
+    errorHandler(error);
   }
 }

@@ -1,19 +1,33 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models, Document } from "mongoose";
 
-export type RegisterSchemaType = {
+export interface RegisterSchemaType {
   username: string;
   email: string;
   password: string;
   role: "USER" | "ADMIN";
-};
+}
 
-const registerSchema = new Schema<RegisterSchemaType>({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+export interface RegisterDocumentType extends RegisterSchemaType, Document {}
+
+const registerSchema = new Schema<RegisterDocumentType>({
+  username: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 3,
+    maxlength: 30,
+    unique: true,
+  },
+  email: { type: String, required: true, trim: true, unique: true },
+  password: {
+    type: String,
+    trim: true,
+    required: true,
+  },
   role: { type: String, enum: ["USER", "ADMIN"], default: "USER" },
 });
 
 const RegisterModel =
-  models.User || model<RegisterSchemaType>("User", registerSchema);
-export { RegisterModel };
+  models.User || model<RegisterDocumentType>("User", registerSchema);
+
+export default RegisterModel;
