@@ -12,7 +12,8 @@ export default function MyGalleryTitles() {
 
   if (isError) return <ServerError errorMsg={error?.message} />;
 
-  if (!data || data.length === 0) return <EmptyList />;
+  if (!data || data.length === 0)
+    return <EmptyList message={"Még nincs galériád. Hozz létre egyet!"} />;
 
   return (
     <ul className="gallery-titles-container">

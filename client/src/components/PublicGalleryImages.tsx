@@ -15,7 +15,8 @@ export default function PublicGalleryImages({ id }: { id: string }) {
 
   if (isError) return <ServerError errorMsg={error?.message} />;
 
-  if (!data || data.length === 0) return <EmptyList />;
+  if (!data || data.length === 0)
+    return <EmptyList message={"Nincs kép a galériában!"} />;
 
   return (
     <ul className="gallery-titles-container">

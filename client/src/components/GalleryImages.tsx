@@ -23,7 +23,8 @@ export default function GalleryImages({
 
   if (isError) return <ServerError errorMsg={error?.message} />;
 
-  if (!data || data.length === 0) return <EmptyList />;
+  if (!data || data.length === 0)
+    return <EmptyList message={"Még nincs képed a galériában. Tölts fel!"} />;
 
   return (
     <>

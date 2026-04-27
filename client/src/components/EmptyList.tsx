@@ -1,7 +1,7 @@
-export default function EmptyList() {
+export default function EmptyList({ message }: { message: string }) {
   return (
     <div className="centered-container">
-      <p>Még nincs galériád. Hozz létre egyet!</p>
+      <p>{message}</p>
     </div>
   );
 }

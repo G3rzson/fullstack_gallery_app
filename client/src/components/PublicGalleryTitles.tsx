@@ -11,7 +11,8 @@ export default function PublicGalleryTitles() {
 
   if (isError) return <ServerError errorMsg={error?.message} />;
 
-  if (!data || data.length === 0) return <EmptyList />;
+  if (!data || data.length === 0)
+    return <EmptyList message={"Nincs galéria!"} />;
 
   return (
     <ul className="gallery-titles-container">

@@ -7,3 +7,5 @@
 4. update - image blur cloudinary-vel
 
 5. fix - villogás hiba ujratöltéskor
+
+6. fix - készíteni egy test usert aki tud dolgokat csinálni a többit letiltani
