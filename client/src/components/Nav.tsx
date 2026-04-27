@@ -25,7 +25,7 @@ export default function Nav({
               <Link
                 to={path}
                 title={isSidebarOpen ? undefined : title}
-                onClick={() => setIsSidebarOpen((prev) => !prev)}
+                onClick={() => setIsSidebarOpen(false)}
                 className={`flex flex-row items-center w-full justify-start gap-3 p-2 dark:hover:bg-pink-900 hover:bg-pink-200 transition-colors duration-300 ${activeLink ? "dark:bg-pink-900 bg-pink-200" : ""}`}
               >
                 <span className="w-6 flex items-center justify-center">
