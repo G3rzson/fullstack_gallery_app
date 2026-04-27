@@ -9,21 +9,34 @@ import { Trash2 } from "lucide-react";
 import DeleteBtn from "../components/DeleteBtn";
 import { useGalleryContext } from "../hooks/useGalleryContext";
 import { useEffect } from "react";
+import { useUserContext } from "../hooks/useUserContext";
+import PageLoader from "../components/PageLoader";
+import { toast } from "react-hot-toast/headless";
 
 export default function MyGalleryImagePage() {
   const { id } = useParams<{ id: string }>();
   const { deletingIdArray } = useGalleryContext();
-
+  const { userObj, isAuthLoading } = useUserContext();
   const [searchParams] = useSearchParams();
   const galleryTitle = searchParams.get("title");
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthLoading && !userObj) {
+      toast.error("Kérlek jelentkezz be a saját galériáid megtekintéséhez!");
+      setTimeout(() => navigate("/user/login", { replace: true }), 0);
+    }
+  }, [userObj, isAuthLoading, navigate]);
 
   useEffect(() => {
     if (!id) {
       navigate("/my-gallery-titles");
     }
   }, [id]);
+
+  if (isAuthLoading || !userObj) {
+    return <PageLoader />;
+  }
 
   return (
     <>

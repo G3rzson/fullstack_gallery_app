@@ -89,7 +89,7 @@ export default function ImageUploadDropzone({
                 <img
                   src={URL.createObjectURL(file)}
                   alt={`Preview ${index + 1}`}
-                  className="w-full h-full object-cover rounded mb-1"
+                  className="w-full h-full object-contain rounded mb-1"
                 />
                 <button
                   type="button"

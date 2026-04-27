@@ -7,21 +7,21 @@ import {
 } from "../validation/imageUploadSchema";
 import ImageUploadDropzone from "../components/ImageUploadDropzone";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useMyGalleryImageUpload from "../hooks/useMyGalleryImageUpload";
 import { useModalContext } from "../hooks/useModalContext";
 import { useModalClose } from "../hooks/useModalClose";
 import { getAxiosErrorMessage } from "../functions/getAxiosErrorMessage";
+import { useUserContext } from "../hooks/useUserContext";
+import PageLoader from "../components/PageLoader";
 
 export default function GalleryImageAdd() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [files, setFiles] = useState<File[]>([]);
-
-  if (!id) {
-    navigate("/my-gallery-titles");
-    return null;
-  }
+  const { userObj, isAuthLoading } = useUserContext();
+  const { setIsModalOpen, setMode } = useModalContext();
+  const handleModalClose = useModalClose();
 
   const {
     handleSubmit,
@@ -33,11 +33,26 @@ export default function GalleryImageAdd() {
       images: [],
     },
   });
-  const { setIsModalOpen, setMode } = useModalContext();
-  const handleModalClose = useModalClose();
+
+  useEffect(() => {
+    if (!isAuthLoading && !userObj) {
+      toast.error("Kérlek jelentkezz be a saját galériáid megtekintéséhez!");
+      setTimeout(() => navigate("/user/login", { replace: true }), 0);
+    }
+  }, [userObj, isAuthLoading, navigate]);
+
+  if (!id) {
+    navigate("/my-gallery-titles");
+    return null;
+  }
+
   const { mutateAsync, isPending } = useMyGalleryImageUpload(id);
 
   const isLoading = isSubmitting || isPending;
+
+  if (isAuthLoading || !userObj) {
+    return <PageLoader />;
+  }
 
   async function onSubmit(data: ImageUploadSchemaType) {
     try {

@@ -1,14 +1,11 @@
-import { LogIn, LogOut, NotebookPen, User } from "lucide-react";
+import { LogIn, NotebookPen, User } from "lucide-react";
 import { useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { Link, useLocation } from "react-router-dom";
 import { useUserContext } from "../hooks/useUserContext";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import { useEscapeKey } from "../hooks/useEscapeKey";
-import { useUserLogout } from "../hooks/useUserLogout";
-import { getAxiosErrorMessage } from "../functions/getAxiosErrorMessage";
-import { useModalContext } from "../hooks/useModalContext";
-import { useModalClose } from "../hooks/useModalClose";
+import LogoutBtn from "./LogoutBtn";
+import DeleteAccountBtn from "./DeleteAccountBtn";
 
 export default function UserMenu({
   isSidebarOpen,
@@ -24,8 +21,6 @@ export default function UserMenu({
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const { pathname } = useLocation();
   const { userObj } = useUserContext();
-  const { setIsModalOpen, setMode } = useModalContext();
-  const handleModalClose = useModalClose();
 
   function closeDropdown() {
     if (dropdownRef.current?.contains(document.activeElement)) {
@@ -37,27 +32,6 @@ export default function UserMenu({
 
   useOutsideClick(menuRef, closeDropdown, isDropdownOpen);
   useEscapeKey(closeDropdown, isDropdownOpen);
-
-  const { setAccessToken, setUserObj } = useUserContext();
-  const navigate = useNavigate();
-  const { mutateAsync, isPending } = useUserLogout();
-
-  async function handleLogout() {
-    try {
-      setIsModalOpen(true);
-      setMode("loader");
-      const response = await mutateAsync();
-      toast.success(response.message);
-      navigate("/", { replace: true });
-      setAccessToken(null);
-      setUserObj(null);
-    } catch (error: unknown) {
-      toast.error(getAxiosErrorMessage(error));
-    } finally {
-      closeDropdown();
-      handleModalClose();
-    }
-  }
 
   return (
     <div className="absolute bottom-0 left-0 w-full" ref={menuRef}>
@@ -88,15 +62,8 @@ export default function UserMenu({
               {userObj.username.charAt(0).toUpperCase()}
             </p>
             <p className="text-xl text-center">{userObj.username}</p>
-
-            <button
-              onClick={handleLogout}
-              disabled={isPending}
-              aria-label="Kijelentkezés"
-              className="flex items-center justify-center gap-2 p-2 rounded cursor-pointer dark:hover:bg-pink-900 hover:bg-pink-200 transition-colors duration-300"
-            >
-              <LogOut /> Kijelentkezés
-            </button>
+            <LogoutBtn closeDropdown={closeDropdown} />
+            <DeleteAccountBtn closeDropdown={closeDropdown} />
           </>
         ) : (
           <>

@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../setup/apiClient";
 import type { GalleryTitleType } from "../types/types";
+import { useUserContext } from "../hooks/useUserContext";
 
 export default function useMyGaleryTitleGet(search: string) {
+  const { userObj } = useUserContext();
   return useQuery<GalleryTitleType[]>({
     queryKey: ["galeryTitle", search],
     queryFn: async () => {
@@ -11,5 +13,6 @@ export default function useMyGaleryTitleGet(search: string) {
       );
       return response.data.data;
     },
+    enabled: !!userObj,
   });
 }

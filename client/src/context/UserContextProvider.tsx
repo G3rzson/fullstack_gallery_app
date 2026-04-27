@@ -26,6 +26,13 @@ export default function UserContextProvider({
     setAuthToken(accessToken, setAccessToken);
   }, [accessToken]);
 
+  // Clear userObj if accessToken becomes null (e.g. after logout or token expiry)
+  useEffect(() => {
+    if (accessToken === null && userObj !== null) {
+      setUserObj(null);
+    }
+  }, [accessToken, userObj]);
+
   // Try to refresh token on app mount
   useEffect(() => {
     const refreshToken = async () => {

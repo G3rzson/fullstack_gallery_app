@@ -19,3 +19,7 @@ export async function findUserByUsername(
 ): Promise<RegisterDocumentType | null> {
   return await RegisterModel.findOne({ username });
 }
+
+export async function deleteUserByUsername(username: string): Promise<void> {
+  await RegisterModel.findOneAndDelete({ username });
+}

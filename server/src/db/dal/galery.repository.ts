@@ -26,6 +26,12 @@ export async function getGalleryByUsername(
   return await GaleryTitleModel.findOne({ createdBy: username });
 }
 
+export async function getAllGalleryTitleByUsername(
+  username: string,
+): Promise<GaleryTitleDocumentType[] | null> {
+  return await GaleryTitleModel.find({ createdBy: username });
+}
+
 export async function getGalleryImagesByGalleryId(
   galleryId: string,
 ): Promise<GaleryImageDocumentType[]> {

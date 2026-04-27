@@ -1,13 +1,27 @@
 import { Link, useSearchParams } from "react-router-dom";
 import MyGalleryTitles from "../components/MyGalleryTitles";
 import { useState, useEffect } from "react";
+import { useUserContext } from "../hooks/useUserContext";
+import { useNavigate } from "react-router-dom";
 import { useDebounce } from "../hooks/useDebounce";
+import PageLoader from "../components/PageLoader";
+import toast from "react-hot-toast";
 
 export default function MyGalleryTitlesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
   const [searchInput, setSearchInput] = useState(search);
   const debouncedSearch = useDebounce(searchInput, 400);
+  const { userObj, isAuthLoading } = useUserContext();
+  const navigate = useNavigate();
+
+  // Auth guard csak a védett oldalra
+  useEffect(() => {
+    if (!isAuthLoading && !userObj && window.location.pathname !== "/") {
+      toast.error("Kérlek jelentkezz be a saját galériáid megtekintéséhez!");
+      setTimeout(() => navigate("/user/login", { replace: true }), 0);
+    }
+  }, [userObj, isAuthLoading, navigate]);
 
   useEffect(() => {
     setSearchParams(debouncedSearch ? { search: debouncedSearch } : {});
@@ -16,6 +30,10 @@ export default function MyGalleryTitlesPage() {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
+
+  if (isAuthLoading || !userObj) {
+    return <PageLoader />;
+  }
 
   return (
     <>
