@@ -6,12 +6,9 @@ import { apiClient } from "../setup/apiClient";
 export default function useMyGaleryTitleCreate() {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<BaseResponseType, unknown, GallerySchemaType>({
     mutationFn: async (data: GallerySchemaType) => {
-      const response = await apiClient.post<BaseResponseType>(
-        "/galery/title/create",
-        data,
-      );
+      const response = await apiClient.post("/galery/title/create", data);
       return response.data;
     },
     onSuccess: () => {

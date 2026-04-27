@@ -6,12 +6,18 @@ import GalleryImageCheckbox from "./GalleryImageCheckbox";
 import DeleteBtn from "./DeleteBtn";
 import useMyGaleryImageGet from "../hooks/useMyGaleryImageGet";
 import { useGalleryContext } from "../hooks/useGalleryContext";
+import { useModalContext } from "../hooks/useModalContext";
 
-export default function GalleryImages({ id }: { id: string }) {
-  const { data, isLoading, isError, error } = useMyGaleryImageGet(id!);
-
-  const { deletingIdArray, setGalleryImageObj, setIsImageModalOpen } =
-    useGalleryContext();
+export default function GalleryImages({
+  galleryTitleId,
+}: {
+  galleryTitleId: string;
+}) {
+  const { deletingIdArray, setGalleryImageObj } = useGalleryContext();
+  const { setIsModalOpen } = useModalContext();
+  const { data, isLoading, isError, error } = useMyGaleryImageGet(
+    galleryTitleId!,
+  );
 
   if (isLoading) return <PageLoader />;
 
@@ -21,24 +27,28 @@ export default function GalleryImages({ id }: { id: string }) {
 
   return (
     <>
-      <ul className="image-container">
+      <ul className="gallery-titles-container">
         {data.map((galleryImage) => (
           <li
             key={galleryImage._id}
-            className={`image-card ${deletingIdArray.includes(galleryImage._id) ? "selected" : ""}`}
+            className="w-full h-50 group relative rounded-lg overflow-hidden"
           >
             <img
               src={galleryImage.publicUrl}
               alt={galleryImage.originalName}
-              className="image"
+              className="w-full h-full object-cover cursor-zoom-in"
               loading="lazy"
               onClick={() => {
                 setGalleryImageObj(galleryImage);
-                setIsImageModalOpen(true);
+                setIsModalOpen(true);
               }}
             />
 
-            <div className="action-btn-container">
+            <span
+              className={`pointer-events-none absolute top-0 left-0 h-full w-full dark:bg-pink-900/40 bg-pink-300/40 ${deletingIdArray.includes(galleryImage._id) ? "opacity-100" : "opacity-0"} transition-opacity duration-200`}
+            />
+
+            <div className="absolute bottom-0 right-0 flex items-center z-20 justify-between gap-2 p-2 bg-black/50 w-full sm:opacity-0 opacity-100 group-hover:opacity-100 transition-all duration-300">
               <DeleteBtn id={galleryImage._id} mode="image">
                 <Trash2 />
               </DeleteBtn>

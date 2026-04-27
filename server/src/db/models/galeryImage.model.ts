@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models, Document, Types } from "mongoose";
 
 export type GaleryImageSchemaType = {
   publicId: string;
@@ -6,11 +6,14 @@ export type GaleryImageSchemaType = {
   originalName: string;
   mimetype: string;
   size: number;
-  galleryId: Schema.Types.ObjectId;
+  galleryId: Types.ObjectId;
   createdBy: string;
 };
 
-const galeryImageSchema = new Schema<GaleryImageSchemaType>({
+export interface GaleryImageDocumentType
+  extends GaleryImageSchemaType, Document {}
+
+const galeryImageSchema = new Schema<GaleryImageDocumentType>({
   publicId: { type: String, required: true },
   publicUrl: { type: String, required: true },
   originalName: { type: String, required: true },
@@ -22,6 +25,6 @@ const galeryImageSchema = new Schema<GaleryImageSchemaType>({
 
 const GaleryImageModel =
   models.GaleryImage ||
-  model<GaleryImageSchemaType>("GaleryImage", galeryImageSchema);
+  model<GaleryImageDocumentType>("GaleryImage", galeryImageSchema);
 
 export default GaleryImageModel;

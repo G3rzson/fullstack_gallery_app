@@ -8,6 +8,7 @@ import { useEscapeKey } from "../hooks/useEscapeKey";
 import { useUserLogout } from "../hooks/useUserLogout";
 import { getAxiosErrorMessage } from "../functions/getAxiosErrorMessage";
 import { useModalContext } from "../hooks/useModalContext";
+import { useModalClose } from "../hooks/useModalClose";
 
 export default function UserMenu({
   isSidebarOpen,
@@ -24,6 +25,7 @@ export default function UserMenu({
   const { pathname } = useLocation();
   const { userObj } = useUserContext();
   const { setIsModalOpen, setMode } = useModalContext();
+  const handleModalClose = useModalClose();
 
   function closeDropdown() {
     if (dropdownRef.current?.contains(document.activeElement)) {
@@ -53,7 +55,7 @@ export default function UserMenu({
       toast.error(getAxiosErrorMessage(error));
     } finally {
       closeDropdown();
-      setIsModalOpen(false);
+      handleModalClose();
     }
   }
 

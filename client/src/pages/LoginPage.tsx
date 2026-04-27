@@ -9,6 +9,7 @@ import { useUserContext } from "../hooks/useUserContext";
 import CustomPassword from "../components/CustomPassword";
 import { useModalContext } from "../hooks/useModalContext";
 import { getAxiosErrorMessage } from "../functions/getAxiosErrorMessage";
+import { useModalClose } from "../hooks/useModalClose";
 
 export default function LoginPage() {
   const {
@@ -22,6 +23,7 @@ export default function LoginPage() {
   const { mutateAsync, isPending } = useLogin();
   const { setAccessToken, setUserObj } = useUserContext();
   const { setIsModalOpen, setMode } = useModalContext();
+  const handleModalClose = useModalClose();
 
   const isLoading = isSubmitting || isPending;
 
@@ -37,7 +39,7 @@ export default function LoginPage() {
     } catch (error: unknown) {
       toast.error(getAxiosErrorMessage(error));
     } finally {
-      setIsModalOpen(false);
+      handleModalClose();
     }
   }
   return (

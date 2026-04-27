@@ -1,5 +1,10 @@
 import { getGaleriesByUsername } from "../../db/dal/galery.repository";
+import { errorHandler } from "../../functions/errorHandler";
 
 export async function getGalleriesService(username: string) {
-  return await getGaleriesByUsername(username);
+  try {
+    return await getGaleriesByUsername(username);
+  } catch (error) {
+    errorHandler(error);
+  }
 }

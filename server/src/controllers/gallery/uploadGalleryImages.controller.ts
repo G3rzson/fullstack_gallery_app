@@ -28,8 +28,7 @@ export async function uploadGalleryImagesController(
       message: "Képek sikeresen feltöltve és elmentve.",
       data: savedImages,
     });
-  } catch (err) {
-    console.error("Hiba a képek feltöltésekor:", err);
-    next(err);
+  } catch (error) {
+    next(error);
   }
 }

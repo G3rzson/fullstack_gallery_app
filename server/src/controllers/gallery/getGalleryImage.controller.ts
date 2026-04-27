@@ -13,10 +13,7 @@ export async function getGalleryImageController(
     const galleryImages = await getGalleryImageService(username, galleryId);
 
     if (!galleryImages) {
-      return res.status(404).json({
-        success: false,
-        message: "Galéria képek nem találhatók",
-      });
+      throw new Error("Galéria képek lekérése sikertelen.");
     }
 
     res.status(200).json({
@@ -25,7 +22,6 @@ export async function getGalleryImageController(
       data: galleryImages,
     });
   } catch (err) {
-    console.error("Hiba a galéria képek lekérésekor:", err);
     next(err);
   }
 }

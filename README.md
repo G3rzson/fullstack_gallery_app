@@ -2,10 +2,8 @@
 
 2. feat - a felhasználó tudja törölni a saját fiókját
 
-3. fix - egységes loading, error message a get válaszokhoz
+3. feat - searchbar a galéria címekhez
 
 4. update - image blur cloudinary-vel
 
-5. feat - searchbar a galéria címekhez
-
-6. fix - villogás hiba ujratöltéskor
+5. fix - villogás hiba ujratöltéskor

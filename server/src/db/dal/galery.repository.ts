@@ -1,28 +1,45 @@
 import GaleryTitleModel, {
   type GaleryTitleSchemaType,
+  type GaleryTitleDocumentType,
 } from "../models/galeryTitle.model";
-import GaleryImageModel from "../models/galeryImage.model";
+import GaleryImageModel, {
+  GaleryImageSchemaType,
+  type GaleryImageDocumentType,
+} from "../models/galeryImage.model";
+import { Types } from "mongoose";
 
-export async function getGalleryImagesByGalleryId(galleryId: string) {
+export async function getPublicGaleries(): Promise<GaleryTitleDocumentType[]> {
+  return await GaleryTitleModel.find({ isPublic: true });
+}
+
+export async function getGalleryById(
+  galleryId: string,
+): Promise<GaleryTitleDocumentType | null> {
+  return await GaleryTitleModel.findById(galleryId);
+}
+
+export async function getGalleryByUsername(
+  username: string,
+): Promise<GaleryTitleDocumentType | null> {
+  return await GaleryTitleModel.findOne({ createdBy: username });
+}
+
+export async function getGalleryImagesByGalleryId(
+  galleryId: string,
+): Promise<GaleryImageDocumentType[]> {
   return await GaleryImageModel.find({ galleryId });
 }
 
-export async function createGaleryTitle(data: GaleryTitleSchemaType) {
-  return await GaleryTitleModel.create(data);
-}
-
-export async function getGaleriesByUsername(username: string) {
+export async function getGaleriesByUsername(
+  username: string,
+): Promise<GaleryTitleDocumentType[]> {
   return await GaleryTitleModel.find({ createdBy: username });
-}
-
-export async function getPublicGaleries() {
-  return await GaleryTitleModel.find({ isPublic: true });
 }
 
 export async function changeGalleryTitleAccess(
   galleryId: string,
   isPublic: boolean,
-) {
+): Promise<GaleryTitleDocumentType | null> {
   return await GaleryTitleModel.findByIdAndUpdate(
     galleryId,
     { isPublic },
@@ -30,19 +47,17 @@ export async function changeGalleryTitleAccess(
   );
 }
 
-export async function getGalleryById(galleryId: string) {
-  return await GaleryTitleModel.findById(galleryId);
-}
-
-export async function deleteGalleryTitle(galleryId: string) {
-  return await GaleryTitleModel.findByIdAndDelete(galleryId);
+export async function createGaleryTitle(
+  data: GaleryTitleSchemaType,
+): Promise<GaleryTitleDocumentType> {
+  return await GaleryTitleModel.create(data);
 }
 
 export async function updateGalleryTitle(
   galleryId: string,
   galeryTitle: string,
   isPublic: boolean,
-) {
+): Promise<GaleryTitleDocumentType | null> {
   return await GaleryTitleModel.findByIdAndUpdate(
     galleryId,
     { galeryTitle, isPublic },
@@ -50,43 +65,31 @@ export async function updateGalleryTitle(
   );
 }
 
-// --- Gallery Image mentés ---
-export async function saveGalleryImageToDb({
-  publicId,
-  publicUrl,
-  originalName,
-  mimetype,
-  size,
-  galleryId,
-  createdBy,
-}: {
-  publicId: string;
-  publicUrl: string;
-  originalName: string;
-  mimetype: string;
-  size: number;
-  galleryId: string;
-  createdBy: string;
-}) {
-  return await GaleryImageModel.create({
-    publicId,
-    publicUrl,
-    originalName,
-    mimetype,
-    size,
-    galleryId,
-    createdBy,
-  });
+export async function deleteGalleryTitle(galleryId: string): Promise<void> {
+  await GaleryTitleModel.findByIdAndDelete(galleryId);
 }
 
-export async function getGalleryImages(createdBy: string, galleryId: string) {
+export async function saveGalleryImageToDb(
+  data: GaleryImageSchemaType,
+): Promise<GaleryImageDocumentType> {
+  return await GaleryImageModel.create(data);
+}
+
+export async function getGalleryImages(
+  createdBy: string,
+  galleryId: string,
+): Promise<GaleryImageDocumentType[]> {
   return await GaleryImageModel.find({ createdBy, galleryId });
 }
 
-export async function getGalleryImageById(imageId: string) {
+export async function getGalleryImageById(
+  imageId: string,
+): Promise<GaleryImageDocumentType | null> {
   return await GaleryImageModel.findById(imageId);
 }
 
-export async function deleteGalleryImage(imageId: string) {
-  return await GaleryImageModel.findByIdAndDelete(imageId);
+export async function deleteGalleryImage(
+  imageId: string | Types.ObjectId,
+): Promise<void> {
+  await GaleryImageModel.findByIdAndDelete(imageId);
 }

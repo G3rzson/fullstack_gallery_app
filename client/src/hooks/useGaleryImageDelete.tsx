@@ -5,9 +5,9 @@ import { apiClient } from "../setup/apiClient";
 export default function useGaleryImageDelete(galleryImageId: string) {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<BaseResponseType>({
     mutationFn: async () => {
-      const response = await apiClient.delete<BaseResponseType>(
+      const response = await apiClient.delete(
         `/galery/image/delete/${galleryImageId}`,
       );
       return response.data;

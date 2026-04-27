@@ -23,11 +23,8 @@ const GalleryImageAdd = lazy(() => import("./pages/GalleryImageAdd"));
 
 export const ROUTES = [
   { path: "*", element: <NotFoundPage /> },
-
   { path: "/", element: <HomePage /> },
-
   { path: "/user/register", element: <RegisterPage /> },
-
   { path: "/user/login", element: <LoginPage /> },
   { path: "/privacy", element: <PrivacyPage /> },
   { path: "/public-gallery-titles", element: <PublicGalleryTitlesPage /> },

@@ -1,7 +1,9 @@
 import { RefreshCw } from "lucide-react";
-import type { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import useGaleryTitleChangeAccess from "../hooks/useMyGaleryTitleChangeAccess";
+import { useModalClose } from "../hooks/useModalClose";
+import { useModalContext } from "../hooks/useModalContext";
+import { getAxiosErrorMessage } from "../functions/getAxiosErrorMessage";
 
 type Props = {
   galleryTitleId: string;
@@ -13,18 +15,19 @@ export default function ChangeGalleryTitleAccessBtn({
   isPublic,
 }: Props) {
   const { mutateAsync, isPending } = useGaleryTitleChangeAccess(galleryTitleId);
+  const { setIsModalOpen, setMode } = useModalContext();
+  const handleModalClose = useModalClose();
 
   async function onChangeAccess() {
     try {
+      setIsModalOpen(true);
+      setMode("loader");
       const response = await mutateAsync({ isPublic });
-
       toast.success(response.message);
     } catch (error: unknown) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      const errorMessage =
-        axiosError.response?.data?.message || axiosError.message;
-
-      toast.error(errorMessage);
+      toast.error(getAxiosErrorMessage(error));
+    } finally {
+      handleModalClose();
     }
   }
 

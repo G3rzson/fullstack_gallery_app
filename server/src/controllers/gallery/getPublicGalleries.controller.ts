@@ -9,18 +9,12 @@ export async function getPublicGalleriesController(
   try {
     const galleries = await getPublicGalleriesService();
 
-    const transformedGalleries = galleries.map((gallery: any) => ({
-      _id: gallery._id,
-      gallery: gallery.galeryTitle,
-      isPublic: gallery.isPublic,
-    }));
-
     res.status(200).json({
       success: true,
       message: "Galériák lekérve",
-      data: transformedGalleries,
+      data: galleries,
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 }

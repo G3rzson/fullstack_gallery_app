@@ -15,8 +15,7 @@ export async function deleteGalleryImageController(
       success: true,
       message: "Kép törölve",
     });
-  } catch (err) {
-    console.error("Hiba a kép törlése során:", err);
-    next(err);
+  } catch (error) {
+    next(error);
   }
 }

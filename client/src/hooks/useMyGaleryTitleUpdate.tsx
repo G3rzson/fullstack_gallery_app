@@ -6,9 +6,9 @@ import type { BaseResponseType } from "../types/types";
 export default function useMyGaleryTitleUpdate(galleryId: string) {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<BaseResponseType, unknown, GallerySchemaType>({
     mutationFn: async (data: GallerySchemaType) => {
-      const response = await apiClient.put<BaseResponseType>(
+      const response = await apiClient.put(
         `/galery/title/update/${galleryId}`,
         data,
       );

@@ -1,9 +1,11 @@
-import type { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import useGaleryImageDelete from "../hooks/useGaleryImageDelete";
 import useMyGaleryTitleDelete from "../hooks/useMyGaleryTitleDelete";
 import useMyGaleryImagesDeleteMany from "../hooks/useMyGaleryImagesDeleteMany";
 import { useGalleryContext } from "../hooks/useGalleryContext";
+import { useModalClose } from "../hooks/useModalClose";
+import { useModalContext } from "../hooks/useModalContext";
+import { getAxiosErrorMessage } from "../functions/getAxiosErrorMessage";
 
 export default function DeleteBtn({
   children,
@@ -17,8 +19,9 @@ export default function DeleteBtn({
   const deleteImageQuery = useGaleryImageDelete(id);
   const deleteTitleQuery = useMyGaleryTitleDelete(id);
   const deleteImageArrayQuery = useMyGaleryImagesDeleteMany(id);
-
   const { deletingIdArray, setDeletingIdArray } = useGalleryContext();
+  const { setIsModalOpen, setMode } = useModalContext();
+  const handleModalClose = useModalClose();
 
   let mutateAsync: any, isPending: boolean;
   if (mode === "image") {
@@ -33,6 +36,8 @@ export default function DeleteBtn({
 
   async function handleDelete() {
     try {
+      setIsModalOpen(true);
+      setMode("loader");
       let response;
       if (mode === "imageArray") {
         response = await mutateAsync(deletingIdArray);
@@ -42,16 +47,16 @@ export default function DeleteBtn({
       }
       toast.success(response?.message || "Sikeres törlés!");
     } catch (error: unknown) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      const errorMessage =
-        axiosError.response?.data?.message || axiosError.message;
-      toast.error(errorMessage);
+      toast.error(getAxiosErrorMessage(error));
+    } finally {
+      handleModalClose();
     }
   }
 
   return (
     <button
-      className="action-btn delete-btn"
+      className={`${mode === "title" ? "action-btn" : mode === "image" ? "image-action-btn" : "delete-array-btn"}`}
+      title="Törlés"
       disabled={
         isPending ||
         (mode === "imageArray" ? false : deletingIdArray.includes(id))

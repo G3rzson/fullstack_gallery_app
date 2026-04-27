@@ -16,16 +16,18 @@ export async function createGalleryController(
       throw new UnauthorizedError("Missing username");
     }
 
-    const galleryObj = await createGalleryService(gallery, isPublic, username);
+    const newGalleryTitle = {
+      galeryTitle: gallery,
+      createdBy: username,
+      isPublic: isPublic,
+    };
+
+    const galleryObj = await createGalleryService(newGalleryTitle);
 
     res.status(201).json({
       success: true,
       message: "Galéria létrehozva",
-      data: {
-        _id: galleryObj._id,
-        gallery: galleryObj.galeryTitle,
-        isPublic: galleryObj.isPublic,
-      },
+      data: galleryObj,
     });
   } catch (err) {
     next(err);

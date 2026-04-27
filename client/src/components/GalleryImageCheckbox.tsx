@@ -9,9 +9,6 @@ export default function GalleryImageCheckbox({
   const { deletingIdArray, setDeletingIdArray } = useGalleryContext();
 
   function handleCheck() {
-    console.log("checkbox clicked, id:", galleryImageId);
-    console.log(deletingIdArray);
-
     setDeletingIdArray((prev) => {
       if (prev.includes(galleryImageId)) {
         return prev.filter((id) => id !== galleryImageId);
@@ -22,7 +19,16 @@ export default function GalleryImageCheckbox({
   }
 
   return (
-    <button className="check-btn" disabled={false} onClick={handleCheck}>
+    <button
+      className="text-green-400! cursor-pointer"
+      title={
+        deletingIdArray.includes(galleryImageId)
+          ? "Kijelölés visszavonása"
+          : "Kijelölés"
+      }
+      disabled={false}
+      onClick={handleCheck}
+    >
       {deletingIdArray.includes(galleryImageId) ? <SquareCheck /> : <Square />}
     </button>
   );

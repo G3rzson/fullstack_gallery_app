@@ -12,6 +12,7 @@ import useRegister from "../hooks/useRegister";
 import CustomPassword from "../components/CustomPassword";
 import { getAxiosErrorMessage } from "../functions/getAxiosErrorMessage";
 import { useModalContext } from "../hooks/useModalContext";
+import { useModalClose } from "../hooks/useModalClose";
 
 export default function RegisterPage() {
   const {
@@ -24,6 +25,7 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const { mutateAsync, isPending } = useRegister();
   const { setIsModalOpen, setMode } = useModalContext();
+  const handleModalClose = useModalClose();
 
   const isLoading = isSubmitting || isPending;
 
@@ -37,7 +39,7 @@ export default function RegisterPage() {
     } catch (error: unknown) {
       toast.error(getAxiosErrorMessage(error));
     } finally {
-      setIsModalOpen(false);
+      handleModalClose();
     }
   }
 

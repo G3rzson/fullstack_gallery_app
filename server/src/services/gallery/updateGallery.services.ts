@@ -1,19 +1,14 @@
 import { updateGalleryTitle } from "../../db/dal/galery.repository";
-import { BadRequestError } from "../../errors/BadRequestError";
-import { InternalServerError } from "../../errors/InternalServerError";
+import { errorHandler } from "../../functions/errorHandler";
 
 export async function updateGalleryService(
   galleryId: string,
-  gallery: string,
+  galleryTitle: string,
   isPublic: boolean,
 ) {
   try {
-    return await updateGalleryTitle(galleryId, gallery, isPublic);
+    return await updateGalleryTitle(galleryId, galleryTitle, isPublic);
   } catch (error) {
-    if (error instanceof BadRequestError) {
-      throw error;
-    }
-
-    throw new InternalServerError("Galéria frissítése sikertelen.");
+    errorHandler(error);
   }
 }

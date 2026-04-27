@@ -45,7 +45,7 @@ export default function ImageUploadDropzone({
       <div
         {...getRootProps()}
         className={[
-          "flex flex-col items-center justify-center border-2 border-dashed border-pink-800 dark:border-pink-200 bg-fuchsia-100 dark:bg-fuchsia-900 rounded-xl p-6 cursor-pointer transition-colors duration-300 w-full min-h-[160px] text-center",
+          "flex flex-col items-center justify-center border-2 border-dashed border-pink-800 dark:border-pink-200 bg-fuchsia-100 dark:bg-fuchsia-900 rounded-md p-6 cursor-pointer transition-colors duration-300 w-full min-h-[160px] text-center",
           isDragActive
             ? "bg-fuchsia-200 dark:bg-fuchsia-800 border-fuchsia-500 dark:border-fuchsia-400"
             : "",
@@ -80,16 +80,16 @@ export default function ImageUploadDropzone({
           <p className="font-semibold mb-2 text-pink-800 dark:text-pink-200">
             Kiválasztott képek ({files.length}/5)
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {files.map((file, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center bg-fuchsia-50 dark:bg-fuchsia-950 border border-pink-200 dark:border-pink-800 rounded-lg p-2 relative"
+                className="flex flex-col h-25 items-center rounded-lg relative"
               >
                 <img
                   src={URL.createObjectURL(file)}
                   alt={`Preview ${index + 1}`}
-                  className="w-24 h-24 object-cover rounded mb-1"
+                  className="w-full h-full object-cover rounded mb-1"
                 />
                 <button
                   type="button"
@@ -99,9 +99,6 @@ export default function ImageUploadDropzone({
                 >
                   <X size={16} />
                 </button>
-                <p className="text-xs text-center break-all mt-1">
-                  {file.name}
-                </p>
               </div>
             ))}
           </div>

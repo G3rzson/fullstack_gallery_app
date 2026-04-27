@@ -9,7 +9,7 @@ export type ModeType = "public" | "my";
 
 export type GalleryTitleType = {
   _id: string;
-  gallery: string;
+  galeryTitle: string;
   isPublic: boolean;
 };
 

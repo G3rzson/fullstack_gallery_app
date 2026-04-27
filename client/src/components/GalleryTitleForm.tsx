@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import type { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import type { GalleryTitleType } from "../types/types";
@@ -13,6 +12,9 @@ import useMyGaleryTitleCreate from "../hooks/useMyGaleryTitleCreate";
 import useMyGaleryTitleUpdate from "../hooks/useMyGaleryTitleUpdate";
 import CustomText from "./CustomText";
 import CustomCheckbox from "./CustomCheckbox";
+import { useModalClose } from "../hooks/useModalClose";
+import { useModalContext } from "../hooks/useModalContext";
+import { getAxiosErrorMessage } from "../functions/getAxiosErrorMessage";
 
 export default function GalleryTitleForm({
   gallery,
@@ -32,19 +34,18 @@ export default function GalleryTitleForm({
     },
   });
   const navigate = useNavigate();
-
+  const { setIsModalOpen, setMode } = useModalContext();
+  const handleModalClose = useModalClose();
   const createMutation = useMyGaleryTitleCreate();
   const updateMutation = useMyGaleryTitleUpdate(gallery?._id || "");
-
   const mutation = gallery ? updateMutation : createMutation;
   const { mutateAsync, isPending } = mutation;
-
   const isLoading = isSubmitting || isPending;
 
   useEffect(() => {
     if (gallery) {
       reset({
-        gallery: gallery.gallery,
+        gallery: gallery.galeryTitle,
         isPublic: gallery.isPublic,
       });
     }
@@ -52,14 +53,15 @@ export default function GalleryTitleForm({
 
   async function onSubmit(data: GallerySchemaType) {
     try {
+      setIsModalOpen(true);
+      setMode("loader");
       const response = await mutateAsync(data);
       navigate("/my-gallery-titles");
       toast.success(response.message);
     } catch (error: unknown) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      const errorMessage =
-        axiosError.response?.data?.message || axiosError.message;
-      toast.error(errorMessage);
+      toast.error(getAxiosErrorMessage(error));
+    } finally {
+      handleModalClose();
     }
   }
 

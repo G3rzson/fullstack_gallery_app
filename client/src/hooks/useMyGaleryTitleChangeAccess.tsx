@@ -5,9 +5,9 @@ import type { BaseResponseType } from "../types/types";
 export default function useGaleryTitleChangeAccess(galleryId: string) {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<BaseResponseType, unknown, { isPublic: boolean }>({
     mutationFn: async (data: { isPublic: boolean }) => {
-      const response = await apiClient.put<BaseResponseType>(
+      const response = await apiClient.put(
         `/galery/title/change-access/${galleryId}`,
         data,
       );

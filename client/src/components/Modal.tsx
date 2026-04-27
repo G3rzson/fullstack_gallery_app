@@ -27,7 +27,7 @@ export default function Modal({
         className={`relative ${mode === "loader" ? "pointer-events-none" : "pointer-events-auto"}`}
         onClick={(e) => e.stopPropagation()}
       >
-        {mode !== "loader" && (
+        {mode === "default" && (
           <button
             onClick={onClose}
             className="absolute top-4 right-4 p-0.5 bg-fuchsia-300/80 dark:bg-fuchsia-950/80 duration-300 rounded-md hover:bg-fuchsia-400 dark:hover:bg-fuchsia-900 transition-colors cursor-pointer"

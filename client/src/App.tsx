@@ -9,10 +9,12 @@ import CookieConsentBanner from "./components/CookieConsentBanner";
 import { useGalleryContext } from "./hooks/useGalleryContext";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import { useModalContext } from "./hooks/useModalContext";
+import { useModalClose } from "./hooks/useModalClose";
 
 export default function App() {
   const { galleryImageObj } = useGalleryContext();
-  const { isModalOpen, setIsModalOpen, mode } = useModalContext();
+  const { isModalOpen, mode } = useModalContext();
+  const handleModalClose = useModalClose();
 
   return (
     <>
@@ -46,7 +48,7 @@ export default function App() {
 
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => handleModalClose()}
         mode={mode}
       >
         {galleryImageObj ? (

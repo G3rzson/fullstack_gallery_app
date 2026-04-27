@@ -5,9 +5,9 @@ import { apiClient } from "../setup/apiClient";
 export default function useMyGaleryImagesDeleteMany(galleryId: string) {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<BaseResponseType, unknown, string[]>({
     mutationFn: async (ids: string[]) => {
-      const response = await apiClient.delete<BaseResponseType>(
+      const response = await apiClient.delete(
         `/galery/image/delete-many/${galleryId}`,
         {
           data: { ids },
