@@ -48,12 +48,13 @@ export default function Sidebar() {
         {isSidebarOpen ? <SidebarClose /> : <SidebarOpen />}
       </button>
 
-      <Nav isSidebarOpen={isSidebarOpen} />
+      <Nav isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       <UserMenu
         isSidebarOpen={isSidebarOpen}
         isDropdownOpen={isDropdownOpen}
         setIsDropdownOpen={setIsDropdownOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
       />
     </div>
   );

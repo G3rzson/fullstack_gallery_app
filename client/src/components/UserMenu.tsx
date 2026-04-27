@@ -11,10 +11,12 @@ export default function UserMenu({
   isSidebarOpen,
   isDropdownOpen,
   setIsDropdownOpen,
+  setIsSidebarOpen,
 }: {
   isSidebarOpen: boolean;
   isDropdownOpen: boolean;
   setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -28,6 +30,7 @@ export default function UserMenu({
     }
 
     setIsDropdownOpen(false);
+    setIsSidebarOpen(false);
   }
 
   useOutsideClick(menuRef, closeDropdown, isDropdownOpen);
