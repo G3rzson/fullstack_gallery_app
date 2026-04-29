@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
+import { NotFoundError } from "../errors/NotFoundError";
 
 // Middleware to handle invalid URLs (404 Not Found)
 export function invalidUrlMW(req: Request, res: Response) {
-  res.status(404).json({
-    success: false,
-    message: "API végpont nem található",
-  });
+  throw new NotFoundError("API végpont nem található");
 }

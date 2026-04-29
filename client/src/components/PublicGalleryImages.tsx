@@ -21,7 +21,10 @@ export default function PublicGalleryImages({ id }: { id: string }) {
   return (
     <ul className="gallery-titles-container">
       {data.map((galleryImage) => (
-        <li key={galleryImage._id} className="w-full h-50">
+        <li
+          key={galleryImage._id}
+          className="w-full h-50 border-2 border-pink-800 dark:border-pink-200 rounded-lg overflow-hidden"
+        >
           <img
             src={galleryImage.publicUrl}
             alt={galleryImage.originalName}

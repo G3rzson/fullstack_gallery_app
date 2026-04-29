@@ -42,10 +42,7 @@ export default function MyGalleryImagePage() {
     <>
       <h1 className="page-title">{galleryTitle || "Galéria képek"}</h1>
 
-      <Link
-        className="block text-center px-4 mt-6 py-2 rounded-lg bg-green-300 hover:bg-green-400 dark:bg-green-800 dark:hover:bg-green-700 transition-colors"
-        to={`/my-gallery/image/add/${id}`}
-      >
+      <Link className="submit-btn mt-4" to={`/my-gallery/image/add/${id}`}>
         Kép hozzáadása
       </Link>
 

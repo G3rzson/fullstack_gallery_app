@@ -11,15 +11,17 @@ export async function createGalleryController(
   try {
     const { gallery, isPublic } = req.body;
     const username = req.username;
+    const userId = req.userId;
 
-    if (!username) {
-      throw new UnauthorizedError("Missing username");
+    if (!username || !userId) {
+      throw new UnauthorizedError("Missing username or userId in request.");
     }
 
     const newGalleryTitle = {
       galeryTitle: gallery,
-      createdBy: username,
       isPublic: isPublic,
+      createdBy: username,
+      userId: userId,
     };
 
     const galleryObj = await createGalleryService(newGalleryTitle);

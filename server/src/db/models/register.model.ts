@@ -5,6 +5,7 @@ export interface RegisterSchemaType {
   email: string;
   password: string;
   role: "USER" | "ADMIN";
+  createdAt?: Date;
 }
 
 export interface RegisterDocumentType extends RegisterSchemaType, Document {}
@@ -25,6 +26,7 @@ const registerSchema = new Schema<RegisterDocumentType>({
     required: true,
   },
   role: { type: String, enum: ["USER", "ADMIN"], default: "USER" },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const RegisterModel =

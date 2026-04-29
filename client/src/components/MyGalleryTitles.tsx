@@ -20,6 +20,7 @@ export default function MyGalleryTitles({ search }: { search: string }) {
       {data.map((galleryTitle) => (
         <li key={galleryTitle._id} className="gallery-titles group">
           <Link
+            className="gallery-title-link"
             to={`/my-gallery-titles/${galleryTitle._id}?title=${galleryTitle.galeryTitle}`}
           >
             <h3>{galleryTitle.galeryTitle}</h3>

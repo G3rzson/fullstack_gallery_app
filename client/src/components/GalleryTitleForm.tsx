@@ -59,7 +59,11 @@ export default function GalleryTitleForm({
       navigate("/my-gallery-titles");
       toast.success(response.message);
     } catch (error: unknown) {
-      toast.error(getAxiosErrorMessage(error));
+      const message = getAxiosErrorMessage(error);
+      if (message === "Max 2 galéria engedélyezett!") {
+        navigate("/my-gallery-titles");
+      }
+      toast.error(message);
     } finally {
       handleModalClose();
     }

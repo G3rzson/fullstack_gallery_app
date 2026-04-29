@@ -48,11 +48,15 @@ apiClient.interceptors.response.use(
     // Don't retry if the request is already a refresh request
     const isRefreshRequest = originalRequest.url?.includes("/user/refresh");
 
+    // Don't retry if the request is a login request
+    const isLoginRequest = originalRequest.url?.includes("/user/login");
+
     // If error is 401 and we haven't retried yet and it's not a refresh request
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !isRefreshRequest
+      !isRefreshRequest &&
+      !isLoginRequest
     ) {
       originalRequest._retry = true;
 

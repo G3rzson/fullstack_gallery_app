@@ -2,4 +2,4 @@
 
 2. update - image blur cloudinary-vel
 
-3. fix - limit beállítása 1 user max 2 title és max 8 kép
+3. update - add unit tests

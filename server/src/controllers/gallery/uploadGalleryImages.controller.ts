@@ -8,7 +8,8 @@ export async function uploadGalleryImagesController(
 ) {
   try {
     const { galleryId } = req.params as { galleryId: string };
-    const createdBy = req.username ?? "unknown"; // vagy később req.userId ha lesz
+    const createdBy = req.username as string;
+    const userId = req.userId as string;
 
     const files = Array.isArray(req.files) ? req.files : [];
     if (!files.length) {
@@ -21,6 +22,7 @@ export async function uploadGalleryImagesController(
       files,
       galleryId,
       createdBy,
+      userId,
     });
 
     res.status(200).json({

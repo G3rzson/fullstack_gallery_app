@@ -7,10 +7,12 @@ export async function uploadGalleryImagesService({
   files,
   galleryId,
   createdBy,
+  userId,
 }: {
   files: Express.Multer.File[];
   galleryId: string;
   createdBy: string;
+  userId: string;
 }) {
   try {
     const savedImages = [];
@@ -37,8 +39,9 @@ export async function uploadGalleryImagesService({
           originalName: file.originalname,
           mimetype: file.mimetype,
           size: file.size,
-          galleryId: new Types.ObjectId(galleryId),
+          galleryId,
           createdBy,
+          userId,
         };
 
         const img = await saveGalleryImageToDb(newImageData);

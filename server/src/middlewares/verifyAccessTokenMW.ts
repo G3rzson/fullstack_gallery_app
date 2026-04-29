@@ -21,6 +21,8 @@ export function verifyAccessTokenMW() {
       const decoded = verifyAccessToken(token, secrets.accessTokenSecret);
 
       req.username = decoded.username;
+      req.userId = decoded.userId;
+      req.userRole = decoded.role;
       next();
     } catch (err) {
       return next(new UnauthorizedError("Invalid token"));

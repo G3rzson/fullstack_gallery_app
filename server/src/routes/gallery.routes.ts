@@ -16,6 +16,8 @@ import { getGalleryImageController } from "../controllers/gallery/getGalleryImag
 import { getPublicGalleryImageController } from "../controllers/gallery/getPublicGalleryImage.controller";
 import { deleteGalleryImageController } from "../controllers/gallery/deleteGalleryImage.controller";
 import { deleteManyGalleryImageController } from "../controllers/gallery/deleteManyGalleryImage.controller";
+import { limitGalleryTitlesMW } from "../middlewares/limitGalleryTitles.mw";
+import { limitGalleryImagesMW } from "../middlewares/limitGalleryImages.mw";
 
 const galleryRouter = Router();
 
@@ -31,6 +33,7 @@ galleryRouter.put(
 galleryRouter.post(
   "/title/create",
   verifyAccessTokenMW(),
+  limitGalleryTitlesMW,
   validateDataMW(gallerySchema),
   createGalleryController,
 );
@@ -68,6 +71,7 @@ galleryRouter.post(
   "/images/upload/:galleryId",
   verifyAccessTokenMW(),
   hasPermissionMW,
+  limitGalleryImagesMW,
   upload.array("images"),
   uploadGalleryImagesController,
 );

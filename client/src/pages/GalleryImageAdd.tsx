@@ -66,7 +66,11 @@ export default function GalleryImageAdd() {
       toast.success(response.message || "Képek feltöltve");
       navigate(`/my-gallery-titles/${id}`);
     } catch (error: unknown) {
-      toast.error(getAxiosErrorMessage(error));
+      const message = getAxiosErrorMessage(error);
+      if (message === "Max 6 kép engedélyezett!") {
+        navigate(`/my-gallery-titles/${id}`);
+      }
+      toast.error(message);
     } finally {
       handleModalClose();
     }

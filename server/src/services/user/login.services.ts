@@ -27,10 +27,11 @@ export async function loginUserService({
 
     const isValid = await validatePassword(password, userObj.password);
     if (!isValid) {
-      throw new UnauthorizedError("Érvénytelen jelszó.");
+      throw new UnauthorizedError("Érvénytelen felhasználónév vagy jelszó.");
     }
 
     const tokenPayload = {
+      userId: userObj._id,
       username: userObj.username,
       role: userObj.role,
     };

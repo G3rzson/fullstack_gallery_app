@@ -1,4 +1,4 @@
-import { Schema, model, models, Document, Types } from "mongoose";
+import { Schema, model, models, Document } from "mongoose";
 
 export type GaleryImageSchemaType = {
   publicId: string;
@@ -6,8 +6,10 @@ export type GaleryImageSchemaType = {
   originalName: string;
   mimetype: string;
   size: number;
-  galleryId: Types.ObjectId;
+  galleryId: Schema.Types.ObjectId | string;
+  userId: Schema.Types.ObjectId | string;
   createdBy: string;
+  createdAt?: Date;
 };
 
 export interface GaleryImageDocumentType
@@ -20,7 +22,9 @@ const galeryImageSchema = new Schema<GaleryImageDocumentType>({
   mimetype: { type: String, required: true },
   size: { type: Number, required: true },
   galleryId: { type: Schema.Types.ObjectId, ref: "Gallery", required: true },
+  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   createdBy: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const GaleryImageModel =

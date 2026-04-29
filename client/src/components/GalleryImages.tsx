@@ -32,7 +32,7 @@ export default function GalleryImages({
         {data.map((galleryImage) => (
           <li
             key={galleryImage._id}
-            className="w-full h-50 group relative rounded-lg overflow-hidden"
+            className="w-full h-50 border-2 border-pink-800 dark:border-pink-200 group relative rounded-lg overflow-hidden"
           >
             <img
               src={galleryImage.publicUrl}
@@ -49,7 +49,7 @@ export default function GalleryImages({
               className={`pointer-events-none absolute top-0 left-0 h-full w-full dark:bg-pink-900/40 bg-pink-300/40 ${deletingIdArray.includes(galleryImage._id) ? "opacity-100" : "opacity-0"} transition-opacity duration-200`}
             />
 
-            <div className="absolute bottom-0 right-0 flex items-center z-20 justify-between gap-2 p-2 bg-black/50 w-full sm:opacity-0 opacity-100 group-hover:opacity-100 transition-all duration-300">
+            <div className="absolute bottom-0 right-0 flex items-center justify-between gap-2 p-2 bg-black/50 w-full sm:opacity-0 opacity-100 group-hover:opacity-100 transition-all duration-300">
               <DeleteBtn id={galleryImage._id} mode="image">
                 <Trash2 />
               </DeleteBtn>
