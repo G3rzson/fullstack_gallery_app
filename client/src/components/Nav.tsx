@@ -1,10 +1,11 @@
-import { Home, Image, Images } from "lucide-react";
+import { Home, Image, Images, ShieldUser } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const NAV_LINKS = [
   { title: "Home", path: "/", icon: <Home /> },
   { title: "Galériák", path: "/public-gallery-titles", icon: <Images /> },
   { title: "Saját galériák", path: "/my-gallery-titles", icon: <Image /> },
+  { title: "Admin", path: "/admin/users", icon: <ShieldUser /> },
 ];
 
 export default function Nav({
@@ -19,7 +20,8 @@ export default function Nav({
     <nav className="mt-10">
       <ul>
         {NAV_LINKS.map(({ title, path, icon }) => {
-          const activeLink = pathname === path;
+          const activeLink =
+            pathname === path || (path !== "/" && pathname.startsWith(path));
           return (
             <li key={path}>
               <Link

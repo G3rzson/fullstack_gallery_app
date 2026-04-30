@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import GalleryTitleForm from "../components/GalleryTitleForm";
 import useMyGalleryTitleGetOne from "../hooks/useMyGalleryTitleGetOne";
 import { useUserContext } from "../hooks/useUserContext";
-import { toast } from "react-hot-toast/headless";
+import { toast } from "react-hot-toast";
 
 export default function UpdateMyGalleryTitlePage() {
   const { id } = useParams<{ id: string }>();
@@ -33,7 +33,7 @@ export default function UpdateMyGalleryTitlePage() {
 
   if (isLoading) return <PageLoader />;
 
-  if (isError) return <ServerError errorMsg={error?.message} />;
+  if (isError) return <ServerError error={error} />;
 
   return <GalleryTitleForm gallery={data} />;
 }

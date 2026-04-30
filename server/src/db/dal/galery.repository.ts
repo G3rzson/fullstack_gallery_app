@@ -14,6 +14,7 @@ export async function getPublicGaleries(
   return await GaleryTitleModel.find(filter);
 }
 
+// mi ez torolni ?
 export async function getGalleryById(
   galleryId: string,
 ): Promise<GaleryTitleDocumentType | null> {
@@ -84,10 +85,9 @@ export async function saveGalleryImageToDb(
 }
 
 export async function getGalleryImages(
-  createdBy: string,
   galleryId: string,
 ): Promise<GaleryImageDocumentType[]> {
-  return await GaleryImageModel.find({ createdBy, galleryId });
+  return await GaleryImageModel.find({ galleryId });
 }
 
 export async function getGalleryImageById(

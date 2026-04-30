@@ -3,7 +3,7 @@ import GalleryTitleForm from "../components/GalleryTitleForm";
 import { useUserContext } from "../hooks/useUserContext";
 import { useNavigate } from "react-router-dom";
 import PageLoader from "../components/PageLoader";
-import { toast } from "react-hot-toast/headless";
+import { toast } from "react-hot-toast";
 
 export default function CreateMyGalleryTitlePage() {
   const { userObj, isAuthLoading } = useUserContext();

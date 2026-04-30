@@ -8,7 +8,6 @@ import { getPublicGalleriesController } from "../controllers/gallery/getPublicGa
 import { changeGalleryTitleAccessController } from "../controllers/gallery/changeGalleryTitleAccess.controller";
 import { hasPermissionMW } from "../middlewares/hasPermission.mw";
 import { deleteGalleryTitleController } from "../controllers/gallery/deleteGalleryTitle.controller";
-import { getGalleryTitleController } from "../controllers/gallery/getGalleryTitle.controller";
 import { updateGalleryController } from "../controllers/gallery/updateGallery.controller";
 import { uploadGalleryImagesController } from "../controllers/gallery/uploadGalleryImages.controller";
 import { upload } from "../middlewares/multer.mw";
@@ -21,9 +20,26 @@ import { limitGalleryImagesMW } from "../middlewares/limitGalleryImages.mw";
 
 const galleryRouter = Router();
 
-galleryRouter.get("/title/public/get", getPublicGalleriesController);
-galleryRouter.get("/image/public/get/:id", getPublicGalleryImageController);
-galleryRouter.get("/title/get", verifyAccessTokenMW(), getGalleriesController);
+galleryRouter.get("/public-gallery-titles", getPublicGalleriesController);
+galleryRouter.get(
+  "/public-gallery-titles/:galleryTitleId",
+  getPublicGalleryImageController,
+);
+
+galleryRouter.get(
+  "/my-gallery-titles",
+  verifyAccessTokenMW(),
+  hasPermissionMW,
+  getGalleriesController,
+);
+
+galleryRouter.get(
+  "/my-gallery-titles/:galleryTitleId",
+  verifyAccessTokenMW(),
+  hasPermissionMW,
+  getGalleryImageController,
+);
+
 galleryRouter.put(
   "/title/change-access/:galleryId",
   verifyAccessTokenMW(),
@@ -37,12 +53,7 @@ galleryRouter.post(
   validateDataMW(gallerySchema),
   createGalleryController,
 );
-galleryRouter.get(
-  "/title/get/:galleryId",
-  verifyAccessTokenMW(),
-  hasPermissionMW,
-  getGalleryTitleController,
-);
+
 galleryRouter.put(
   "/title/update/:galleryId",
   verifyAccessTokenMW(),
@@ -56,11 +67,7 @@ galleryRouter.delete(
   hasPermissionMW,
   deleteGalleryTitleController,
 );
-galleryRouter.get(
-  "/image/get/:galleryId",
-  verifyAccessTokenMW(),
-  getGalleryImageController,
-);
+
 galleryRouter.delete(
   "/image/delete/:imageId",
   verifyAccessTokenMW(),

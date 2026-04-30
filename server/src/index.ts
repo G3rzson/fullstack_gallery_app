@@ -7,6 +7,7 @@ import { connectToDB } from "./db/connectToDB";
 import { errorHandlerMW } from "./middlewares/errorHandler.mw";
 import { invalidUrlMW } from "./middlewares/invalidUrl.mw";
 import galleryRouter from "./routes/gallery.routes";
+import adminRouter from "./routes/admin.routes";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 8000;
@@ -42,7 +43,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api", userRouter);
-app.use("/api/galery", galleryRouter);
+app.use("/api", galleryRouter);
+app.use("/api", adminRouter);
 
 app.use(invalidUrlMW);
 

@@ -8,6 +8,7 @@ import { queryClient } from "./setup/queryClient.ts";
 import GalleryContextProvider from "./context/GalleryContextProvider.tsx";
 import UserContextProvider from "./context/UserContextProvider.tsx";
 import ModalContextProvider from "./context/ModalContextProvider.tsx";
+import SearchbarContextProvider from "./context/SearchbarContextProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -16,7 +17,9 @@ createRoot(document.getElementById("root")!).render(
         <UserContextProvider>
           <GalleryContextProvider>
             <ModalContextProvider>
-              <App />
+              <SearchbarContextProvider>
+                <App />
+              </SearchbarContextProvider>
             </ModalContextProvider>
           </GalleryContextProvider>
         </UserContextProvider>

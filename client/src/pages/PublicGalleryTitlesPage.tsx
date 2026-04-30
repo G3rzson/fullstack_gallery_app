@@ -1,38 +1,13 @@
-import { useSearchParams } from "react-router-dom";
-import PublicGalleryTitles from "../components/PublicGalleryTitles";
-import { useEffect, useState } from "react";
-import { useDebounce } from "../hooks/useDebounce";
-
+import GetData from "../components/GetData";
+import Searchbar from "../components/Searchbar";
 export default function PublicGalleryTitlesPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const search = searchParams.get("search") || "";
-  const [searchInput, setSearchInput] = useState(search);
-  const debouncedSearch = useDebounce(searchInput, 400);
-
-  useEffect(() => {
-    setSearchParams(debouncedSearch ? { search: debouncedSearch } : {});
-  }, [debouncedSearch, setSearchParams]);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
-  };
-
   return (
     <>
       <h1 className="page-title">Galériák</h1>
 
-      <div className="field-group mt-4">
-        <input
-          type="text"
-          placeholder=" "
-          value={searchInput}
-          onChange={handleSearch}
-          className="field-input"
-        />
-        <label className="field-label">Keresés galéria címre...</label>
-      </div>
+      <Searchbar label="Keresés galéria alapján..." />
 
-      <PublicGalleryTitles search={debouncedSearch} />
+      <GetData type="publicGalleryTitles" />
     </>
   );
 }

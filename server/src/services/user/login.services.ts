@@ -1,3 +1,4 @@
+import { Schema } from "mongoose";
 import { findUserByUsername } from "../../db/dal/user.repository";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
@@ -15,7 +16,7 @@ export async function loginUserService({
   password,
 }: LoginSchemaType): Promise<{
   accessToken: string;
-  userObj: { username: string; role: "USER" | "ADMIN" };
+  userObj: { userId: string; username: string; role: "USER" | "ADMIN" };
   refreshToken: string;
 }> {
   try {
@@ -31,7 +32,7 @@ export async function loginUserService({
     }
 
     const tokenPayload = {
-      userId: userObj._id,
+      userId: userObj._id.toString(),
       username: userObj.username,
       role: userObj.role,
     };

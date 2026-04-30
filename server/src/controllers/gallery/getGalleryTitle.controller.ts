@@ -1,18 +1,20 @@
 import type { NextFunction, Request, Response } from "express";
 import { getGalleryService } from "../../services/gallery/getGallery.services";
+import { NotFoundError } from "../../errors/NotFoundError";
 
+// mi ez torolni ?
 export async function getGalleryTitleController(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const { galleryId } = req.params as { galleryId: string };
+    const { galleryTitleId } = req.params as { galleryTitleId: string };
 
-    const gallery = await getGalleryService(galleryId);
+    const gallery = await getGalleryService(galleryTitleId);
 
     if (!gallery) {
-      throw new Error("Galéria nem található.");
+      throw new NotFoundError("Galéria nem található.");
     }
 
     res.status(200).json({

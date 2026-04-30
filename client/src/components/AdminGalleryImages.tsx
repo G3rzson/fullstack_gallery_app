@@ -2,7 +2,7 @@ import { useGalleryContext } from "../hooks/useGalleryContext";
 import { useModalContext } from "../hooks/useModalContext";
 import type { GalleryImageType } from "../types/types";
 
-export default function PublicGalleryImages({
+export default function AdminGalleryImages({
   item,
 }: {
   item: GalleryImageType;

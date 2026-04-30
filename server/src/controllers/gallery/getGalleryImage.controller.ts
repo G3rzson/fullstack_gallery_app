@@ -7,15 +7,13 @@ export async function getGalleryImageController(
   next: NextFunction,
 ) {
   try {
-    const username = req.username ?? "unknown";
-    const galleryId = req.params.galleryId as string;
+    const galleryTitleId = req.params.galleryTitleId as string;
 
-    const galleryImages = await getGalleryImageService(username, galleryId);
+    const galleryImages = await getGalleryImageService(galleryTitleId);
 
     if (!galleryImages) {
       throw new Error("Galéria képek lekérése sikertelen.");
     }
-
     res.status(200).json({
       success: true,
       message: "Galéria képek lekérve",

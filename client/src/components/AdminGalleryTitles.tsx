@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import type { GalleryTitleType } from "../types/types";
 
-export default function PublicGalleryTitles({
+export default function AdminGalleryTitles({
   item,
 }: {
   item: GalleryTitleType;
@@ -9,12 +9,10 @@ export default function PublicGalleryTitles({
   const pathname = useLocation().pathname;
 
   return (
-    <li key={item._id} className="gallery-titles">
-      <Link
-        className="gallery-title-link"
-        to={`${pathname}/${item._id}?title=${item.galeryTitle}`}
-      >
+    <li className="gallery-titles">
+      <Link className="gallery-title-link" to={`${pathname}/${item._id}`}>
         <h3>{item.galeryTitle}</h3>
+        <p>{item.isPublic ? "Publikus" : "Privát"}</p>
       </Link>
     </li>
   );

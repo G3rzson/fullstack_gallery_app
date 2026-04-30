@@ -1,37 +1,14 @@
-import { Link, useSearchParams } from "react-router-dom";
-import MyGalleryTitles from "../components/MyGalleryTitles";
-import { useState, useEffect } from "react";
-import { useUserContext } from "../hooks/useUserContext";
-import { useNavigate } from "react-router-dom";
-import { useDebounce } from "../hooks/useDebounce";
+import { Link, useLocation } from "react-router-dom";
+import useProtection from "../hooks/useProtection";
 import PageLoader from "../components/PageLoader";
-import toast from "react-hot-toast";
+import Searchbar from "../components/Searchbar";
+import GetData from "../components/GetData";
 
 export default function MyGalleryTitlesPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const search = searchParams.get("search") || "";
-  const [searchInput, setSearchInput] = useState(search);
-  const debouncedSearch = useDebounce(searchInput, 400);
-  const { userObj, isAuthLoading } = useUserContext();
-  const navigate = useNavigate();
+  const { isLoading } = useProtection({ type: "protected" });
+  const pathname = useLocation().pathname;
 
-  // Auth guard csak a védett oldalra
-  useEffect(() => {
-    if (!isAuthLoading && !userObj && window.location.pathname !== "/") {
-      toast.error("Kérlek jelentkezz be a saját galériáid megtekintéséhez!");
-      setTimeout(() => navigate("/user/login", { replace: true }), 0);
-    }
-  }, [userObj, isAuthLoading, navigate]);
-
-  useEffect(() => {
-    setSearchParams(debouncedSearch ? { search: debouncedSearch } : {});
-  }, [debouncedSearch, setSearchParams]);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
-  };
-
-  if (isAuthLoading || !userObj) {
+  if (isLoading) {
     return <PageLoader />;
   }
 
@@ -39,22 +16,13 @@ export default function MyGalleryTitlesPage() {
     <>
       <h1 className="page-title">Saját galériák</h1>
 
-      <Link to="/my-gallery-titles/create" className="submit-btn mt-4">
+      <Link to={`${pathname}/create`} className="submit-btn mt-4">
         Új galéria létrehozása
       </Link>
 
-      <div className="field-group mt-4">
-        <input
-          type="text"
-          placeholder=" "
-          value={searchInput}
-          onChange={handleSearch}
-          className="field-input"
-        />
-        <label className="field-label">Keresés galéria címre...</label>
-      </div>
+      <Searchbar label="Keresés galéria alapján..." />
 
-      <MyGalleryTitles search={debouncedSearch} />
+      <GetData type="myGalleryTitles" />
     </>
   );
 }

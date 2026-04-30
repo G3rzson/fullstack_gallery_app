@@ -1,38 +1,24 @@
-import { Link } from "react-router-dom";
-import useMyGaleryTitleGet from "../hooks/useMyGaleryTitleGet";
-import EmptyList from "./EmptyList";
-import PageLoader from "./PageLoader";
-import ServerError from "./ServerError";
+import { Link, useLocation } from "react-router-dom";
 import MyGalleryTitleActionMenu from "./MyGalleryTitleActionMenu";
+import type { GalleryTitleType } from "../types/types";
 
-export default function MyGalleryTitles({ search }: { search: string }) {
-  const { data, isLoading, isError, error } = useMyGaleryTitleGet(search);
-
-  if (isLoading) return <PageLoader />;
-
-  if (isError) return <ServerError errorMsg={error?.message} />;
-
-  if (!data || data.length === 0)
-    return <EmptyList message={"Még nincs galériád. Hozz létre egyet!"} />;
+export default function MyGalleryTitles({ item }: { item: GalleryTitleType }) {
+  const pathname = useLocation().pathname;
 
   return (
-    <ul className="gallery-titles-container">
-      {data.map((galleryTitle) => (
-        <li key={galleryTitle._id} className="gallery-titles group">
-          <Link
-            className="gallery-title-link"
-            to={`/my-gallery-titles/${galleryTitle._id}?title=${galleryTitle.galeryTitle}`}
-          >
-            <h3>{galleryTitle.galeryTitle}</h3>
-            <p>{galleryTitle.isPublic ? "Publikus" : "Privát"}</p>
-          </Link>
+    <li key={item._id} className="gallery-titles group">
+      <Link
+        className="gallery-title-link"
+        to={`${pathname}/${item._id}?title=${item.galeryTitle}`}
+      >
+        <h3>{item.galeryTitle}</h3>
+        <p>{item.isPublic ? "Publikus" : "Privát"}</p>
+      </Link>
 
-          <MyGalleryTitleActionMenu
-            galleryTitleId={galleryTitle._id}
-            isPublic={galleryTitle.isPublic}
-          />
-        </li>
-      ))}
-    </ul>
+      <MyGalleryTitleActionMenu
+        galleryTitleId={item._id}
+        isPublic={item.isPublic}
+      />
+    </li>
   );
 }

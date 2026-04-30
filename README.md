@@ -1,5 +1,3 @@
-1. feat - admin dashboard készítés user title image stb
+1. update - image blur cloudinary-vel
 
-2. update - image blur cloudinary-vel
-
-3. update - add unit tests
+2. update - add unit tests

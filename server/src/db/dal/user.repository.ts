@@ -1,3 +1,4 @@
+import { Schema } from "mongoose";
 import RegisterModel, {
   type RegisterDocumentType,
 } from "../models/register.model";
@@ -22,4 +23,10 @@ export async function findUserByUsername(
 
 export async function deleteUserByUsername(username: string): Promise<void> {
   await RegisterModel.findOneAndDelete({ username });
+}
+
+export async function getAllUsers(
+  filter: Record<string, any>,
+): Promise<RegisterDocumentType[]> {
+  return RegisterModel.find(filter).select("-password -__v");
 }

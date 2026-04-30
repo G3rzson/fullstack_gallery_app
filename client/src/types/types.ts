@@ -1,11 +1,22 @@
 export type RoleType = "ADMIN" | "USER";
 
+// ha a userObj-et bővíted vigyázz mert a login response-ban is használva van, ha változik akkor ott is változtatni kell vagy átalakítani a login response-t hogy ne használja ezt a típust
 export type UserObjType = {
+  _id: string;
   username: string;
   role: RoleType;
 };
 
 export type ModeType = "public" | "my";
+
+export type GetDataType =
+  | "adminUserData"
+  | "adminGalleryTitles"
+  | "adminGalleryImages"
+  | "publicGalleryTitles"
+  | "publicGalleryImages"
+  | "myGalleryTitles"
+  | "myGalleryImages";
 
 export type GalleryTitleType = {
   _id: string;
@@ -38,6 +49,10 @@ export type LoginResponse = {
   message: string;
   data: {
     accessToken: string;
-    userObj: { username: string; role: "USER" | "ADMIN" };
+    userObj: {
+      _id: string;
+      username: string;
+      role: "USER" | "ADMIN";
+    };
   };
 };
