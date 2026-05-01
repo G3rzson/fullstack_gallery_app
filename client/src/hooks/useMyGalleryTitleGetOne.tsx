@@ -2,13 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../setup/apiClient";
 import type { GalleryTitleType } from "../types/types";
 
-export default function useMyGalleryTitleGetOne(id: string) {
+export default function useMyGalleryTitleGetOne(pathname: string) {
   return useQuery<GalleryTitleType>({
-    queryKey: ["galeryTitle", id],
+    queryKey: ["galleryTitles", pathname],
     queryFn: async () => {
-      const response = await apiClient.get(`/galery/title/get/${id}`);
+      const response = await apiClient.get(`${pathname}`);
       return response.data.data;
     },
-    enabled: !!id,
   });
 }

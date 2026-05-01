@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import GaleryTitleModel from "../db/models/galeryTitle.model";
+import GaleryTitleModel from "../db/models/galleryTitle.model";
 import { AppError } from "../errors/AppError";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
 

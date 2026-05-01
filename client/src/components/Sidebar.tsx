@@ -1,13 +1,14 @@
 import { SidebarClose, SidebarOpen } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Nav from "./Nav";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import UserMenu from "./UserMenu";
+import { useSidebarContext } from "../hooks/useSidebarContext";
 
 export default function Sidebar() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { isSidebarOpen, setIsSidebarOpen, isDropdownOpen, setIsDropdownOpen } =
+    useSidebarContext();
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   useOutsideClick(
@@ -48,14 +49,9 @@ export default function Sidebar() {
         {isSidebarOpen ? <SidebarClose /> : <SidebarOpen />}
       </button>
 
-      <Nav isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      <Nav />
 
-      <UserMenu
-        isSidebarOpen={isSidebarOpen}
-        isDropdownOpen={isDropdownOpen}
-        setIsDropdownOpen={setIsDropdownOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-      />
+      <UserMenu />
     </div>
   );
 }

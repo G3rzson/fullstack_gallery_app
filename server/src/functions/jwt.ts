@@ -1,15 +1,6 @@
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
-
-export type AuthTokenPayload = JwtPayload & {
-  username: string;
-  role: "ADMIN" | "USER";
-};
-
-type JwtSecrets = {
-  accessTokenSecret: string;
-  refreshTokenSecret: string;
-};
+import { AuthTokenPayload, JwtSecrets } from "../types/types";
 
 export function getJwtSecrets(): JwtSecrets | null {
   const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
@@ -26,7 +17,7 @@ export function generateAccessToken(
   payload: AuthTokenPayload,
   secrets: string,
 ): string {
-  return jwt.sign(payload, secrets, { expiresIn: "15m" });
+  return jwt.sign(payload, secrets, { expiresIn: "2m" });
 }
 
 export function generateRefreshToken(
@@ -43,7 +34,7 @@ export function verifyRefreshToken(
   try {
     const decoded = jwt.verify(token, secrets) as JwtPayload;
 
-    if (typeof decoded !== "object" || !("username" in decoded)) {
+    if (typeof decoded !== "object") {
       throw new UnauthorizedError("Invalid refresh token payload");
     }
 
@@ -59,7 +50,7 @@ export function verifyAccessToken(
 ): AuthTokenPayload {
   try {
     const decoded = jwt.verify(token, secrets) as JwtPayload;
-    if (typeof decoded !== "object" || !("username" in decoded)) {
+    if (typeof decoded !== "object") {
       throw new UnauthorizedError("Invalid access token payload");
     }
 

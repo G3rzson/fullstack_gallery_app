@@ -1,28 +1,28 @@
 import type { Request, Response, NextFunction } from "express";
-import { getGalleryByUsername } from "../db/dal/galery.repository";
-import { UnauthorizedError } from "../errors/UnauthorizedError";
-import { NotFoundError } from "../errors/NotFoundError";
-import { BadRequestError } from "../errors/BadRequestError";
 import { errorHandler } from "../functions/errorHandler";
+import { AppError } from "../errors/AppError";
+import { findUserById } from "../db/dal/user.repository";
+import { NotFoundError } from "../errors/NotFoundError";
+import { getGalleryTitleById } from "../db/dal/gallery.repository";
 
+// megírni mert nem jó !!!
 export async function hasPermissionMW(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const username = req.username;
-    if (!username) {
-      throw new UnauthorizedError("Unauthorized");
+    const userId = req.userId as string;
+
+    const userObj = await findUserById(userId);
+    if (!userObj) {
+      throw new NotFoundError("Felhasználó nem található");
     }
 
-    const galleryObj = await getGalleryByUsername(username);
-    if (!galleryObj) {
-      throw new NotFoundError("Gallery not found");
-    }
+    const galleryTitles = await getGalleryTitleById(userId);
 
-    if (galleryObj.createdBy !== username) {
-      throw new BadRequestError("Forbidden");
+    if (userId !== userObj._id.toString()) {
+      throw new AppError("Nincs jogosultságod ehhez a művelethez", 403);
     }
 
     next();

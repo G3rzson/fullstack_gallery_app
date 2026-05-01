@@ -6,8 +6,9 @@ import cookieParser from "cookie-parser";
 import { connectToDB } from "./db/connectToDB";
 import { errorHandlerMW } from "./middlewares/errorHandler.mw";
 import { invalidUrlMW } from "./middlewares/invalidUrl.mw";
-import galleryRouter from "./routes/gallery.routes";
+import myGalleryRouter from "./routes/myGallery.routes";
 import adminRouter from "./routes/admin.routes";
+import publicGalleryRouter from "./routes/publicGallery.routes";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 8000;
@@ -43,7 +44,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api", userRouter);
-app.use("/api", galleryRouter);
+app.use("/api", publicGalleryRouter);
+app.use("/api", myGalleryRouter);
 app.use("/api", adminRouter);
 
 app.use(invalidUrlMW);

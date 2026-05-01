@@ -1,4 +1,3 @@
-import { Schema } from "mongoose";
 import { findUserByUsername } from "../../db/dal/user.repository";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
@@ -21,9 +20,8 @@ export async function loginUserService({
 }> {
   try {
     const userObj = await findUserByUsername(username);
-
     if (!userObj) {
-      throw new NotFoundError("Felhasználó nem található.");
+      throw new NotFoundError("Érvénytelen felhasználónév vagy jelszó.");
     }
 
     const isValid = await validatePassword(password, userObj.password);

@@ -1,4 +1,3 @@
-import { Schema } from "mongoose";
 import RegisterModel, {
   type RegisterDocumentType,
 } from "../models/register.model";
@@ -15,14 +14,20 @@ export async function createUser(
   });
 }
 
+export async function findUserById(
+  userId: string,
+): Promise<RegisterDocumentType | null> {
+  return await RegisterModel.findById(userId);
+}
+
 export async function findUserByUsername(
   username: string,
 ): Promise<RegisterDocumentType | null> {
   return await RegisterModel.findOne({ username });
 }
 
-export async function deleteUserByUsername(username: string): Promise<void> {
-  await RegisterModel.findOneAndDelete({ username });
+export async function deleteUserById(userId: string): Promise<void> {
+  await RegisterModel.findByIdAndDelete(userId);
 }
 
 export async function getAllUsers(

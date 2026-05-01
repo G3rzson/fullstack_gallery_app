@@ -23,14 +23,20 @@ export default function LogoutBtn({
       setIsModalOpen(true);
       setMode("loader");
       const response = await mutateAsync();
+
+      // Set flag to prevent "login required" toast during logout
+      sessionStorage.setItem("isLoggingOut", "true");
+
+      setAccessToken(null);
+      setUserObj(null);
+      navigate("/", { replace: true });
       toast.success(response.message);
-      setTimeout(() => {
-        navigate("/", { replace: true });
-        setAccessToken(null);
-        setUserObj(null);
-      }, 0);
+
+      // Clear flag after navigation
+      setTimeout(() => sessionStorage.removeItem("isLoggingOut"), 100);
     } catch (error: unknown) {
       toast.error(getAxiosErrorMessage(error));
+      sessionStorage.removeItem("isLoggingOut");
     } finally {
       closeDropdown();
       handleModalClose();

@@ -143,5 +143,9 @@ input:-webkit-autofill:focus {
 }
 
 .delete-array-btn {
-  @apply cursor-pointer rounded-lg p-1 text-center px-4 mt-6 py-2 bg-pink-300 hover:bg-pink-400 dark:bg-pink-800 dark:hover:bg-pink-700 transition-colors duration-300 flex items-center justify-center gap-2 disabled:text-gray-500 disabled:cursor-not-allowed;
+  @apply cursor-pointer rounded-lg p-1 text-center px-4 mt-4 py-2 bg-pink-300 hover:bg-pink-400 dark:bg-pink-800 dark:hover:bg-pink-700 transition-colors duration-300 flex items-center justify-center gap-2 disabled:text-gray-500 disabled:cursor-not-allowed;
+}
+
+.delete-account-btn {
+  @apply flex items-center justify-center gap-2 p-2 rounded cursor-pointer dark:hover:bg-pink-900 hover:bg-pink-200 transition-colors duration-300 disabled:text-gray-500 disabled:cursor-not-allowed;
 }

@@ -1,5 +1,6 @@
 import { Home, Image, Images, ShieldUser } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useSidebarContext } from "../hooks/useSidebarContext";
 
 const NAV_LINKS = [
   { title: "Home", path: "/", icon: <Home /> },
@@ -8,14 +9,10 @@ const NAV_LINKS = [
   { title: "Admin", path: "/admin/users", icon: <ShieldUser /> },
 ];
 
-export default function Nav({
-  isSidebarOpen,
-  setIsSidebarOpen,
-}: {
-  isSidebarOpen: boolean;
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+export default function Nav() {
   const { pathname } = useLocation();
+  const { isSidebarOpen, setIsSidebarOpen } = useSidebarContext();
+
   return (
     <nav className="mt-10">
       <ul>

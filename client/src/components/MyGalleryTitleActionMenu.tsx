@@ -5,6 +5,8 @@ import { EllipsisVertical, Trash2 } from "lucide-react";
 import UpdateGalleryTitleLink from "./UpdateGalleryTitleLink";
 import DeleteBtn from "./DeleteBtn";
 import ChangeGalleryTitleAccessBtn from "./ChangeGalleryTitleAccessBtn";
+import { getGalleryStatus } from "../functions/getGalleryStatus";
+import { useLocation } from "react-router-dom";
 
 export default function MyGalleryTitleActionMenu({
   galleryTitleId,
@@ -15,6 +17,8 @@ export default function MyGalleryTitleActionMenu({
 }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const pathname = useLocation().pathname;
+  const galleryStatus = getGalleryStatus(pathname);
 
   useOutsideClick(dropdownRef, () => setIsDropdownOpen(false), isDropdownOpen);
 
@@ -40,12 +44,16 @@ export default function MyGalleryTitleActionMenu({
           <Trash2 />
         </DeleteBtn>
 
-        <UpdateGalleryTitleLink galleryTitleId={galleryTitleId} />
+        {galleryStatus !== "admin" && (
+          <UpdateGalleryTitleLink galleryTitleId={galleryTitleId} />
+        )}
 
-        <ChangeGalleryTitleAccessBtn
-          galleryTitleId={galleryTitleId}
-          isPublic={isPublic}
-        />
+        {galleryStatus !== "admin" && (
+          <ChangeGalleryTitleAccessBtn
+            galleryTitleId={galleryTitleId}
+            isPublic={isPublic}
+          />
+        )}
       </div>
     </div>
   );

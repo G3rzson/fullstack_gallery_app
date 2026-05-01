@@ -37,7 +37,7 @@ export default function GalleryTitleForm({
   const { setIsModalOpen, setMode } = useModalContext();
   const handleModalClose = useModalClose();
   const createMutation = useMyGaleryTitleCreate();
-  const updateMutation = useMyGaleryTitleUpdate(gallery?._id || "");
+  const updateMutation = useMyGaleryTitleUpdate();
   const mutation = gallery ? updateMutation : createMutation;
   const { mutateAsync, isPending } = mutation;
   const isLoading = isSubmitting || isPending;
@@ -45,7 +45,7 @@ export default function GalleryTitleForm({
   useEffect(() => {
     if (gallery) {
       reset({
-        gallery: gallery.galeryTitle,
+        gallery: gallery.galleryTitle,
         isPublic: gallery.isPublic,
       });
     }

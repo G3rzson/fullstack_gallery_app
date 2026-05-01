@@ -1,9 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
-import { UnauthorizedError } from "../errors/UnauthorizedError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { BadRequestError } from "../errors/BadRequestError";
 import { errorHandler } from "../functions/errorHandler";
-import { findUserByUsername } from "../db/dal/user.repository";
+import { findUserById } from "../db/dal/user.repository";
 
 export async function isAdminMW(
   req: Request,
@@ -11,12 +10,8 @@ export async function isAdminMW(
   next: NextFunction,
 ) {
   try {
-    const username = req.username;
-    if (!username) {
-      throw new UnauthorizedError("Unauthorized");
-    }
-
-    const userObj = await findUserByUsername(username);
+    const userId = req.userId as string;
+    const userObj = await findUserById(userId);
     if (!userObj) {
       throw new NotFoundError("User not found");
     }

@@ -7,9 +7,9 @@ export async function deleteAccountController(
   next: NextFunction,
 ) {
   try {
-    const username = req.username as string;
+    const userId = req.userId as string;
 
-    await deleteAccountService(username);
+    await deleteAccountService(userId);
 
     const isProduction = process.env.NODE_ENV === "production";
     res.cookie("refreshToken", "", {

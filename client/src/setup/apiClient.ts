@@ -61,14 +61,18 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        // Try to refresh the token
-        const response = await axios.post(
-          `${API_BASE_URL}/user/refresh`,
-          {},
-          {
-            withCredentials: true,
+        console.log("Attempting token refresh...");
+        // Try to refresh the token using a new axios instance to avoid interceptor loop
+        const refreshClient = axios.create({
+          baseURL: API_BASE_URL,
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+        });
+
+        const response = await refreshClient.post("/user/refresh");
+        console.log("Token refresh successful");
 
         const newAccessToken = response.data.data.accessToken;
 
@@ -85,6 +89,7 @@ apiClient.interceptors.response.use(
 
         return apiClient(originalRequest);
       } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError);
         // If refresh fails, clear token and redirect to login
         if (setAccessToken) {
           setAccessToken(null);

@@ -7,20 +7,11 @@ export type UserObjType = {
   role: RoleType;
 };
 
-export type ModeType = "public" | "my";
-
-export type GetDataType =
-  | "adminUserData"
-  | "adminGalleryTitles"
-  | "adminGalleryImages"
-  | "publicGalleryTitles"
-  | "publicGalleryImages"
-  | "myGalleryTitles"
-  | "myGalleryImages";
+export type GetDataType = "userData" | "titleData" | "imageData";
 
 export type GalleryTitleType = {
   _id: string;
-  galeryTitle: string;
+  galleryTitle: string;
   isPublic: boolean;
 };
 

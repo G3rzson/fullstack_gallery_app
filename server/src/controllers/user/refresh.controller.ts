@@ -14,6 +14,8 @@ export async function refreshController(
   try {
     const refreshToken = req.cookies?.refreshToken;
 
+    console.log("Refresh token cookie:", refreshToken ? "EXISTS" : "MISSING");
+
     if (!refreshToken) {
       return next(new UnauthorizedError("No refresh token provided"));
     }
@@ -29,6 +31,7 @@ export async function refreshController(
     );
 
     const userObj = {
+      userId: decoded.userId,
       username: decoded.username,
       role: decoded.role,
     };

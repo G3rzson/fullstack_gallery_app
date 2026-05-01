@@ -12,15 +12,22 @@ export default function useProtection(options: {
   useEffect(() => {
     if (isAuthLoading) return;
 
+    // Don't show toast if user is logging out
+    const isLoggingOut = sessionStorage.getItem("isLoggingOut") === "true";
+
     if (options.type === "admin") {
       if (!userObj || userObj.role !== "ADMIN") {
-        toast.error("Nincs jogosultságod az oldal megtekintéséhez!");
+        if (!isLoggingOut) {
+          toast.error("Nincs jogosultságod az oldal megtekintéséhez!");
+        }
         setTimeout(() => navigate("/", { replace: true }), 0);
       }
     } else if (options.type === "protected") {
       if (!userObj) {
-        toast.error("Bejelentkezés szükséges!");
-        setTimeout(() => navigate("/login", { replace: true }), 0);
+        if (!isLoggingOut) {
+          toast.error("Bejelentkezés szükséges!");
+        }
+        setTimeout(() => navigate("/user/login", { replace: true }), 0);
       }
     }
   }, [userObj, isAuthLoading, navigate, options.type]);
