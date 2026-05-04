@@ -15,7 +15,11 @@ export default function useProtection(options: {
     // Ha a felhasználó éppen kijelentkezik / fiókot töröl,
     // ne csináljunk semmit – a window.location.replace kezeli az átirányítást
     const isLoggingOut = sessionStorage.getItem("isLoggingOut") === "true";
-    if (isLoggingOut) return;
+    if (isLoggingOut) {
+      // Flag törlése: egyszer használtuk, többé nem kell
+      sessionStorage.removeItem("isLoggingOut");
+      return;
+    }
 
     if (options.type === "admin") {
       if (!userObj || userObj.role !== "ADMIN") {

@@ -44,7 +44,6 @@ export default function DeleteAccountBtn({
         setIsDropdownOpen(false);
         setIsSidebarOpen(false);
         toast.success(response?.message || "Fiók sikeresen törölve!");
-        sessionStorage.removeItem("isLoggingOut");
         navigate("/");
       } else {
         // Admin törli másik usert
