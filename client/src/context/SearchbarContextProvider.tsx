@@ -7,8 +7,6 @@ export type SearchContextType = {
   setSearchInput: React.Dispatch<React.SetStateAction<string>>;
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  hasListItem: boolean;
-  setHasListItem: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function SearchbarContextProvider({
@@ -20,7 +18,6 @@ export default function SearchbarContextProvider({
   const search = searchParams.get("search") || "";
   const [searchInput, setSearchInput] = useState(search);
   const [searchQuery, setSearchQuery] = useState(searchInput);
-  const [hasListItem, setHasListItem] = useState(true);
 
   useEffect(() => {
     const handler = setTimeout(() => setSearchQuery(searchInput), 400);
@@ -46,8 +43,6 @@ export default function SearchbarContextProvider({
         setSearchInput,
         searchQuery,
         setSearchQuery,
-        hasListItem,
-        setHasListItem,
       }}
     >
       {children}
