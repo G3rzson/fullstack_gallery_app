@@ -12,8 +12,10 @@ export async function deleteAccountService(userId: string): Promise<void> {
   try {
     const galleryTitles = await getAllGalleryTitleByUserId(userId);
 
-    if (!galleryTitles) {
-      throw new Error("Hiba történt a müvelet végrahajtása során.");
+    if (!galleryTitles || galleryTitles.length === 0) {
+      // Ha nincs galéria, csak töröljük a felhasználót
+      await deleteUserById(userId);
+      return;
     }
 
     for (const galleryTitle of galleryTitles) {

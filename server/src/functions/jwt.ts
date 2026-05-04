@@ -17,7 +17,7 @@ export function generateAccessToken(
   payload: AuthTokenPayload,
   secrets: string,
 ): string {
-  return jwt.sign(payload, secrets, { expiresIn: "2m" });
+  return jwt.sign(payload, secrets, { expiresIn: "15m" });
 }
 
 export function generateRefreshToken(

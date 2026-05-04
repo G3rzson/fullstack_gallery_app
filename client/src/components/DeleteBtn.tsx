@@ -7,10 +7,6 @@ import { useModalClose } from "../hooks/useModalClose";
 import { useModalContext } from "../hooks/useModalContext";
 import { getAxiosErrorMessage } from "../functions/getAxiosErrorMessage";
 import type { BaseResponseType } from "../types/types";
-import { useDeleteAccount } from "../hooks/useDeleteAccount";
-import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../hooks/useUserContext";
-import { useSidebarContext } from "../hooks/useSidebarContext";
 
 export default function DeleteBtn({
   children,
@@ -19,27 +15,21 @@ export default function DeleteBtn({
 }: {
   children: React.ReactNode;
   id: string;
-  mode: "image" | "title" | "imageArray" | "user";
+  mode: "image" | "title" | "imageArray";
 }) {
   const deleteImageQuery = useMyGalleryImageDelete(id);
   const deleteTitleQuery = useMyGaleryTitleDelete(id);
   const deleteImageArrayQuery = useMyGaleryImagesDeleteMany();
-  const deleteAccountQuery = useDeleteAccount(id);
   const { deletingIdArray, setDeletingIdArray } = useGalleryContext();
   const { setIsModalOpen, setMode } = useModalContext();
   const handleModalClose = useModalClose();
-  const navigate = useNavigate();
-  const { setAccessToken, setUserObj } = useUserContext();
-  const { setIsDropdownOpen, setIsSidebarOpen } = useSidebarContext();
 
   const mutation =
     mode === "image"
       ? deleteImageQuery
       : mode === "title"
         ? deleteTitleQuery
-        : mode === "user"
-          ? deleteAccountQuery
-          : deleteImageArrayQuery;
+        : deleteImageArrayQuery;
 
   const { isPending } = mutation;
 
@@ -61,19 +51,6 @@ export default function DeleteBtn({
         response = await deleteImageQuery.mutateAsync();
       } else if (mode === "title") {
         response = await deleteTitleQuery.mutateAsync();
-      } else if (mode === "user") {
-        response = await deleteAccountQuery.mutateAsync();
-        // Set flag to prevent "login required" toast during delete account
-        sessionStorage.setItem("isLoggingOut", "true");
-
-        setAccessToken(null);
-        setUserObj(null);
-        navigate("/", { replace: true });
-        setIsDropdownOpen(false);
-        setIsSidebarOpen(false);
-
-        // Clear flag after navigation
-        setTimeout(() => sessionStorage.removeItem("isLoggingOut"), 100);
       } else {
         return null;
       }
@@ -88,7 +65,7 @@ export default function DeleteBtn({
 
   return (
     <button
-      className={`${mode === "title" ? "action-btn" : mode === "image" ? "image-action-btn" : mode === "user" ? "delete-account-btn" : "delete-array-btn"}`}
+      className={`${mode === "title" ? "action-btn" : mode === "image" ? "image-action-btn" : "delete-array-btn"}`}
       title="Törlés"
       disabled={
         isPending ||

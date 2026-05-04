@@ -7,7 +7,7 @@ export async function getGalleriesController(
   next: NextFunction,
 ) {
   try {
-    const userId = req.userId as string;
+    const userId = req._id as string;
     const search = req.query.search;
 
     const galleries = await getGalleriesService(userId, search);

@@ -7,10 +7,9 @@ export async function uploadGalleryImagesController(
   next: NextFunction,
 ) {
   try {
-    console.log("uploadGalleryImagesController - req.params:", req.params);
     const { galleryTitleId } = req.params;
     const createdBy = req.username as string;
-    const userId = req.userId as string;
+    const userId = req._id as string;
 
     const files = Array.isArray(req.files) ? req.files : [];
     if (!files.length) {

@@ -12,21 +12,19 @@ export default function useProtection(options: {
   useEffect(() => {
     if (isAuthLoading) return;
 
-    // Don't show toast if user is logging out
+    // Ha a felhasználó éppen kijelentkezik / fiókot töröl,
+    // ne csináljunk semmit – a window.location.replace kezeli az átirányítást
     const isLoggingOut = sessionStorage.getItem("isLoggingOut") === "true";
+    if (isLoggingOut) return;
 
     if (options.type === "admin") {
       if (!userObj || userObj.role !== "ADMIN") {
-        if (!isLoggingOut) {
-          toast.error("Nincs jogosultságod az oldal megtekintéséhez!");
-        }
+        toast.error("Nincs jogosultságod az oldal megtekintéséhez!");
         setTimeout(() => navigate("/", { replace: true }), 0);
       }
     } else if (options.type === "protected") {
       if (!userObj) {
-        if (!isLoggingOut) {
-          toast.error("Bejelentkezés szükséges!");
-        }
+        toast.error("Bejelentkezés szükséges!");
         setTimeout(() => navigate("/user/login", { replace: true }), 0);
       }
     }

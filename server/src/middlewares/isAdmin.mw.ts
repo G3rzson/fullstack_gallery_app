@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { NotFoundError } from "../errors/NotFoundError";
 import { BadRequestError } from "../errors/BadRequestError";
+import { UnauthorizedError } from "../errors/UnauthorizedError";
 import { errorHandler } from "../functions/errorHandler";
 import { findUserById } from "../db/dal/user.repository";
 
@@ -10,10 +10,12 @@ export async function isAdminMW(
   next: NextFunction,
 ) {
   try {
-    const userId = req.userId as string;
+    const userId = req._id as string;
     const userObj = await findUserById(userId);
     if (!userObj) {
-      throw new NotFoundError("User not found");
+      // A JWT valid volt, de a user már nem létezik (pl. törölve lett)
+      // 401-et adunk vissza, hogy a kliens kijelentkeztesse magát
+      throw new UnauthorizedError("Hitelesítés szükséges.");
     }
 
     if (userObj.role !== "ADMIN") {

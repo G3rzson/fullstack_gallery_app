@@ -7,18 +7,24 @@ export async function deleteAccountController(
   next: NextFunction,
 ) {
   try {
-    const userId = req.userId as string;
+    const userIdToDelete = req.params.userId as string;
+    const loggedInUserId = req._id as string;
 
-    await deleteAccountService(userId);
+    await deleteAccountService(userIdToDelete);
 
-    const isProduction = process.env.NODE_ENV === "production";
-    res.cookie("refreshToken", "", {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "none" : "lax",
-      expires: new Date(0),
-      path: "/",
-    });
+    // Csak akkor töröljük a cookie-t, ha a bejelentkezett user a saját accountját törli
+    const isDeletingOwnAccount = userIdToDelete === loggedInUserId;
+
+    if (isDeletingOwnAccount) {
+      const isProduction = process.env.NODE_ENV === "production";
+      res.cookie("refreshToken", "", {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        expires: new Date(0),
+        path: "/",
+      });
+    }
 
     res.json({
       success: true,

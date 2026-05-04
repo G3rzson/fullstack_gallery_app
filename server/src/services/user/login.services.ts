@@ -15,7 +15,7 @@ export async function loginUserService({
   password,
 }: LoginSchemaType): Promise<{
   accessToken: string;
-  userObj: { userId: string; username: string; role: "USER" | "ADMIN" };
+  userObj: { _id: string; username: string; role: "USER" | "ADMIN" };
   refreshToken: string;
 }> {
   try {
@@ -30,7 +30,7 @@ export async function loginUserService({
     }
 
     const tokenPayload = {
-      userId: userObj._id.toString(),
+      _id: userObj._id.toString(),
       username: userObj.username,
       role: userObj.role,
     };
@@ -51,7 +51,11 @@ export async function loginUserService({
 
     return {
       accessToken,
-      userObj: tokenPayload,
+      userObj: {
+        _id: userObj._id.toString(),
+        username: userObj.username,
+        role: userObj.role,
+      },
       refreshToken,
     };
   } catch (error) {

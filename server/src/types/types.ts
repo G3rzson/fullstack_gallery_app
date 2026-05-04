@@ -1,7 +1,7 @@
 import { type JwtPayload } from "jsonwebtoken";
 
 export type AuthTokenPayload = JwtPayload & {
-  userId: string;
+  _id: string;
   username: string;
   role: "ADMIN" | "USER";
 };

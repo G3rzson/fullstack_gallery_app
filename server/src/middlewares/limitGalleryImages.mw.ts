@@ -10,15 +10,18 @@ export async function limitGalleryImagesMW(
   next: NextFunction,
 ) {
   try {
-    const userId = req.userId;
+    const userId = req._id;
     if (!userId) {
       throw new UnauthorizedError("User not authenticated.");
     }
-    const count = await GaleryImageModel.countDocuments({
-      userId,
-    });
-    if (count >= 6) {
-      throw new AppError("Max 6 kép engedélyezett!", 403);
+    const existingCount = await GaleryImageModel.countDocuments({ userId });
+    const incomingFiles = (req.files as Express.Multer.File[]) || [];
+    const incomingCount = incomingFiles.length;
+    if (existingCount + incomingCount > 6) {
+      throw new AppError(
+        `Maximum 6 kép lehet! (jelenleg: ${existingCount}, feltöltés: ${incomingCount})`,
+        403,
+      );
     }
     next();
   } catch (err) {

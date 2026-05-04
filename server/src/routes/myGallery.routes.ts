@@ -68,8 +68,8 @@ myGalleryRouter.delete(
 myGalleryRouter.post(
   "/my-gallery-titles/:galleryTitleId/add",
   verifyAccessTokenMW(),
-  limitGalleryImagesMW,
   upload.array("images"),
+  limitGalleryImagesMW,
   uploadGalleryImagesController,
 );
 myGalleryRouter.post(

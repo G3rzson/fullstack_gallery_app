@@ -5,7 +5,7 @@ import { useUserContext } from "../hooks/useUserContext";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import LogoutBtn from "./LogoutBtn";
-import DeleteBtn from "./DeleteBtn";
+import DeleteAccountBtn from "./DeleteAccountBtn";
 import { useSidebarContext } from "../hooks/useSidebarContext";
 
 export default function UserMenu() {
@@ -59,9 +59,9 @@ export default function UserMenu() {
             </p>
             <p className="text-xl text-center">{userObj.username}</p>
             <LogoutBtn closeDropdown={closeDropdown} />
-            <DeleteBtn id={userObj._id} mode="user">
+            <DeleteAccountBtn userId={userObj._id}>
               <Trash2 /> Fiók törlése
-            </DeleteBtn>
+            </DeleteAccountBtn>
           </>
         ) : (
           <>

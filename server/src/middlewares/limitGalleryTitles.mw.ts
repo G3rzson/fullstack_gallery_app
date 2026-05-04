@@ -10,7 +10,7 @@ export async function limitGalleryTitlesMW(
   next: NextFunction,
 ) {
   try {
-    const userId = req.userId;
+    const userId = req._id;
     if (!userId) {
       throw new UnauthorizedError("User not authenticated.");
     }

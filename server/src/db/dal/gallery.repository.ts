@@ -62,9 +62,9 @@ export async function getGalleryTitleById(
 }
 
 export async function getAllGalleryTitleByUserId(
-  username: string,
+  userId: string,
 ): Promise<GalleryTitleDocumentType[] | null> {
-  return await GalleryTitleModel.find({ createdBy: username });
+  return await GalleryTitleModel.find({ userId });
 }
 
 export async function getGalleryImagesByGalleryId(

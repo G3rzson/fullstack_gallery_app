@@ -10,7 +10,6 @@ export async function deleteManyGalleryImageController(
 ) {
   try {
     const { ids } = req.body;
-    console.log("Törlendő képek ID-jei:", ids);
     if (!Array.isArray(ids) || ids.length === 0) {
       throw new BadRequestError("Nincs megadva törlendő kép.");
     }

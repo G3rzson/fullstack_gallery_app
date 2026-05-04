@@ -12,7 +12,7 @@ export async function hasPermissionMW(
   next: NextFunction,
 ) {
   try {
-    const userId = req.userId as string;
+    const userId = req._id as string;
 
     const userObj = await findUserById(userId);
     if (!userObj) {

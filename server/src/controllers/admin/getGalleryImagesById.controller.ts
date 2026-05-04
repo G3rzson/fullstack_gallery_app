@@ -10,20 +10,12 @@ export async function getGalleryImagesByIdController(
   try {
     const galleryTitleId = req.params.galleryTitleId as string;
 
-    console.log(
-      "getGalleryImagesByIdController - galleryTitleId:",
-      galleryTitleId,
-    );
     if (!galleryTitleId) {
       throw new UnauthorizedError("Gallery Title ID is required.");
     }
 
     const galleryImages = await getAllGalleryImagesByIdService(galleryTitleId);
 
-    console.log(
-      "getGalleryImagesByIdController - galleryImages:",
-      galleryImages,
-    );
     res.status(200).json({
       success: true,
       message: "Gallery képek lekérve",

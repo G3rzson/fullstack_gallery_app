@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import type { UserObjType } from "../types/types";
-import DeleteBtn from "./DeleteBtn";
+import DeleteAccountBtn from "./DeleteAccountBtn";
 import { Trash2 } from "lucide-react";
 
 export default function Users({ item }: { item: UserObjType }) {
@@ -14,9 +14,9 @@ export default function Users({ item }: { item: UserObjType }) {
       </Link>
 
       <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <DeleteBtn id={item._id} mode="user">
+        <DeleteAccountBtn userId={item._id}>
           <Trash2 />
-        </DeleteBtn>
+        </DeleteAccountBtn>
       </div>
     </li>
   );

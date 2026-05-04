@@ -11,7 +11,7 @@ export async function createGalleryController(
   try {
     const { gallery, isPublic } = req.body;
     const username = req.username as string;
-    const userId = req.userId as string;
+    const userId = req._id as string;
 
     const newGalleryTitle = {
       galleryTitle: gallery,
