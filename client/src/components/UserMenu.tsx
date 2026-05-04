@@ -1,4 +1,4 @@
-import { LogIn, NotebookPen, User } from "lucide-react";
+import { LogIn, NotebookPen, Trash2, User } from "lucide-react";
 import { useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useUserContext } from "../hooks/useUserContext";
@@ -6,18 +6,11 @@ import { useOutsideClick } from "../hooks/useOutsideClick";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import LogoutBtn from "./LogoutBtn";
 import DeleteAccountBtn from "./DeleteAccountBtn";
+import { useSidebarContext } from "../hooks/useSidebarContext";
 
-export default function UserMenu({
-  isSidebarOpen,
-  isDropdownOpen,
-  setIsDropdownOpen,
-  setIsSidebarOpen,
-}: {
-  isSidebarOpen: boolean;
-  isDropdownOpen: boolean;
-  setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+export default function UserMenu() {
+  const { isSidebarOpen, setIsSidebarOpen, isDropdownOpen, setIsDropdownOpen } =
+    useSidebarContext();
   const menuRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -66,7 +59,9 @@ export default function UserMenu({
             </p>
             <p className="text-xl text-center">{userObj.username}</p>
             <LogoutBtn closeDropdown={closeDropdown} />
-            <DeleteAccountBtn closeDropdown={closeDropdown} />
+            <DeleteAccountBtn userId={userObj._id}>
+              <Trash2 /> Fiók törlése
+            </DeleteAccountBtn>
           </>
         ) : (
           <>

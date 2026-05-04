@@ -1,64 +1,45 @@
 import { Trash2 } from "lucide-react";
-import EmptyList from "./EmptyList";
-import PageLoader from "./PageLoader";
-import ServerError from "./ServerError";
-import GalleryImageCheckbox from "./GalleryImageCheckbox";
-import DeleteBtn from "./DeleteBtn";
-import useMyGaleryImageGet from "../hooks/useMyGaleryImageGet";
 import { useGalleryContext } from "../hooks/useGalleryContext";
 import { useModalContext } from "../hooks/useModalContext";
+import type { GalleryImageType } from "../types/types";
+import DeleteBtn from "./DeleteBtn";
+import GalleryImageCheckbox from "./GalleryImageCheckbox";
+import { getGalleryStatus } from "../functions/getGalleryStatus";
+import { useLocation } from "react-router-dom";
 
-export default function GalleryImages({
-  galleryTitleId,
-}: {
-  galleryTitleId: string;
-}) {
-  const { deletingIdArray, setGalleryImageObj } = useGalleryContext();
+export default function GalleryImages({ item }: { item: GalleryImageType }) {
   const { setIsModalOpen } = useModalContext();
-  const { data, isLoading, isError, error } = useMyGaleryImageGet(
-    galleryTitleId!,
-  );
-
-  if (isLoading) return <PageLoader />;
-
-  if (isError) return <ServerError errorMsg={error?.message} />;
-
-  if (!data || data.length === 0)
-    return <EmptyList message={"Még nincs képed a galériában. Tölts fel!"} />;
+  const { setGalleryImageObj } = useGalleryContext();
+  const { deletingIdArray } = useGalleryContext();
+  const pathname = useLocation().pathname;
+  const galleryStatus = getGalleryStatus(pathname);
 
   return (
-    <>
-      <ul className="gallery-titles-container">
-        {data.map((galleryImage) => (
-          <li
-            key={galleryImage._id}
-            className="w-full h-50 group relative rounded-lg overflow-hidden"
-          >
-            <img
-              src={galleryImage.publicUrl}
-              alt={galleryImage.originalName}
-              className="w-full h-full object-cover cursor-zoom-in"
-              loading="lazy"
-              onClick={() => {
-                setGalleryImageObj(galleryImage);
-                setIsModalOpen(true);
-              }}
-            />
+    <li className="w-full h-50 border-2 border-pink-800 dark:border-pink-200 group relative rounded-lg overflow-hidden">
+      <img
+        src={item.publicUrl}
+        alt={item.originalName}
+        className="w-full h-full object-cover cursor-zoom-in"
+        loading="lazy"
+        onClick={() => {
+          setGalleryImageObj(item);
+          setIsModalOpen(true);
+        }}
+      />
 
-            <span
-              className={`pointer-events-none absolute top-0 left-0 h-full w-full dark:bg-pink-900/40 bg-pink-300/40 ${deletingIdArray.includes(galleryImage._id) ? "opacity-100" : "opacity-0"} transition-opacity duration-200`}
-            />
+      <span
+        className={`pointer-events-none absolute top-0 left-0 h-full w-full dark:bg-pink-900/40 bg-pink-300/40 ${deletingIdArray.includes(item._id) ? "opacity-100" : "opacity-0"} transition-opacity duration-200`}
+      />
 
-            <div className="absolute bottom-0 right-0 flex items-center z-20 justify-between gap-2 p-2 bg-black/50 w-full sm:opacity-0 opacity-100 group-hover:opacity-100 transition-all duration-300">
-              <DeleteBtn id={galleryImage._id} mode="image">
-                <Trash2 />
-              </DeleteBtn>
+      {galleryStatus !== "public" && (
+        <div className="absolute bottom-0 right-0 flex items-center justify-between gap-2 p-2 bg-black/50 w-full sm:opacity-0 opacity-100 group-hover:opacity-100 transition-all duration-300">
+          <DeleteBtn id={item._id} mode="image">
+            <Trash2 />
+          </DeleteBtn>
 
-              <GalleryImageCheckbox galleryImageId={galleryImage._id} />
-            </div>
-          </li>
-        ))}
-      </ul>
-    </>
+          <GalleryImageCheckbox galleryImageId={item._id} />
+        </div>
+      )}
+    </li>
   );
 }

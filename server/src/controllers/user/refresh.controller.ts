@@ -5,6 +5,7 @@ import {
   getJwtSecrets,
   verifyRefreshToken,
 } from "../../functions/jwt";
+import { findUserById } from "../../db/dal/user.repository";
 
 export async function refreshController(
   req: Request,
@@ -28,13 +29,26 @@ export async function refreshController(
       secrets.refreshTokenSecret,
     );
 
+    // Ellenőrizzük, hogy a user még létezik-e az adatbázisban
+    const userExists = await findUserById(decoded._id);
+    if (!userExists) {
+      throw new UnauthorizedError("Hitelesítés szükséges.");
+    }
+
+    const tokenPayload = {
+      _id: decoded._id,
+      username: decoded.username,
+      role: decoded.role,
+    };
+
     const userObj = {
+      _id: decoded._id,
       username: decoded.username,
       role: decoded.role,
     };
 
     const newAccessToken = generateAccessToken(
-      userObj,
+      tokenPayload,
       secrets.accessTokenSecret,
     );
 

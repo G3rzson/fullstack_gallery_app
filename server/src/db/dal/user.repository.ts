@@ -14,12 +14,24 @@ export async function createUser(
   });
 }
 
+export async function findUserById(
+  userId: string,
+): Promise<RegisterDocumentType | null> {
+  return await RegisterModel.findById(userId);
+}
+
 export async function findUserByUsername(
   username: string,
 ): Promise<RegisterDocumentType | null> {
   return await RegisterModel.findOne({ username });
 }
 
-export async function deleteUserByUsername(username: string): Promise<void> {
-  await RegisterModel.findOneAndDelete({ username });
+export async function deleteUserById(userId: string): Promise<void> {
+  await RegisterModel.findByIdAndDelete(userId);
+}
+
+export async function getAllUsers(
+  filter: Record<string, any>,
+): Promise<RegisterDocumentType[]> {
+  return RegisterModel.find(filter).select("-password -__v");
 }

@@ -35,6 +35,9 @@ export default function UserContextProvider({
 
   // Try to refresh token on app mount
   useEffect(() => {
+    // Töröljük az isLoggingOut flaget, ha az oldal újratöltődött
+    sessionStorage.removeItem("isLoggingOut");
+
     const refreshToken = async () => {
       try {
         const response = await apiClient.post("/user/refresh");

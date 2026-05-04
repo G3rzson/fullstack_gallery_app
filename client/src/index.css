@@ -83,7 +83,7 @@
 }
 
 .submit-btn {
-  @apply bg-green-200 dark:bg-green-900 hover:bg-green-300 dark:hover:bg-green-800 border-2 border-pink-800 dark:border-pink-200 cursor-pointer font-semibold py-2 px-4 rounded transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply bg-green-200 dark:bg-green-900 hover:bg-green-300 dark:hover:bg-green-800 border-2 border-pink-800 dark:border-pink-200 cursor-pointer font-semibold py-2 px-4 rounded-md transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed block text-center;
 }
 
 /* webkit input handle autocomplete bg change */
@@ -127,7 +127,11 @@ input:-webkit-autofill:focus {
 }
 
 .gallery-titles {
-  @apply p-4 bg-fuchsia-300 dark:bg-fuchsia-950 border-2 border-pink-800 dark:border-pink-200 rounded-lg text-center text-lg font-semibold text-pink-800 dark:text-pink-200 hover:bg-fuchsia-400 dark:hover:bg-fuchsia-900 transition-colors duration-300 relative;
+  @apply border-2 border-pink-800 dark:border-pink-200 rounded-lg text-center relative;
+}
+
+.gallery-title-link {
+  @apply p-4 bg-fuchsia-300 dark:bg-fuchsia-950 rounded-lg text-center text-lg font-semibold text-pink-800 dark:text-pink-200 hover:bg-fuchsia-400 dark:hover:bg-fuchsia-900 transition-colors duration-300 block relative;
 }
 
 .action-btn {
@@ -139,5 +143,9 @@ input:-webkit-autofill:focus {
 }
 
 .delete-array-btn {
-  @apply cursor-pointer rounded-lg p-1 text-center px-4 mt-6 py-2 bg-pink-300 hover:bg-pink-400 dark:bg-pink-800 dark:hover:bg-pink-700 transition-colors duration-300 flex items-center justify-center gap-2 disabled:text-gray-500 disabled:cursor-not-allowed;
+  @apply cursor-pointer rounded-lg p-1 text-center px-4 mt-4 py-2 bg-pink-300 hover:bg-pink-400 dark:bg-pink-800 dark:hover:bg-pink-700 transition-colors duration-300 flex items-center justify-center gap-2 disabled:text-gray-500 disabled:cursor-not-allowed;
+}
+
+.delete-account-btn {
+  @apply flex items-center justify-center gap-2 p-2 rounded cursor-pointer dark:hover:bg-pink-900 hover:bg-pink-200 transition-colors duration-300 disabled:text-gray-500 disabled:cursor-not-allowed;
 }

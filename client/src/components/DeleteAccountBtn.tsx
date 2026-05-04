@@ -1,48 +1,80 @@
-import { Trash2 } from "lucide-react";
-import { useModalContext } from "../hooks/useModalContext";
-import { useModalClose } from "../hooks/useModalClose";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../hooks/useUserContext";
-import toast from "react-hot-toast";
-import { getAxiosErrorMessage } from "../functions/getAxiosErrorMessage";
 import { useDeleteAccount } from "../hooks/useDeleteAccount";
+import { useModalContext } from "../hooks/useModalContext";
+import { getAxiosErrorMessage } from "../functions/getAxiosErrorMessage";
+import { useQueryClient } from "@tanstack/react-query";
+import { useSidebarContext } from "../hooks/useSidebarContext";
 
 export default function DeleteAccountBtn({
-  closeDropdown,
+  children,
+  userId,
 }: {
-  closeDropdown: () => void;
+  children: React.ReactNode;
+  userId: string;
 }) {
+  const { userObj, setAccessToken, setUserObj } = useUserContext();
   const { setIsModalOpen, setMode } = useModalContext();
-  const handleModalClose = useModalClose();
-  const { setAccessToken, setUserObj } = useUserContext();
+  const deleteAccountQuery = useDeleteAccount(userId);
+  const { setIsDropdownOpen, setIsSidebarOpen } = useSidebarContext();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { mutateAsync, isPending } = useDeleteAccount();
+
+  const { isPending } = deleteAccountQuery;
 
   async function handleDeleteAccount() {
+    const isDeletingOwnAccount = userId === userObj?._id;
+
     try {
       setIsModalOpen(true);
       setMode("loader");
-      const response = await mutateAsync();
-      toast.success(response.message);
-      setAccessToken(null);
-      setUserObj(null);
-      navigate("/", { replace: true });
+
+      if (isDeletingOwnAccount) {
+        sessionStorage.setItem("isLoggingOut", "true");
+      }
+
+      const response = await deleteAccountQuery.mutateAsync();
+
+      if (isDeletingOwnAccount) {
+        setAccessToken(null);
+        setUserObj(null);
+        setIsModalOpen(false);
+        setMode("default");
+        setIsDropdownOpen(false);
+        setIsSidebarOpen(false);
+        toast.success(response?.message || "Fiók sikeresen törölve!");
+        sessionStorage.removeItem("isLoggingOut");
+        navigate("/");
+      } else {
+        // Admin törli másik usert
+        queryClient.invalidateQueries({ queryKey: ["users"] });
+        setIsModalOpen(false);
+        setMode("default");
+        setIsDropdownOpen(false);
+        setIsSidebarOpen(false);
+        toast.success(response?.message || "Fiók sikeresen törölve!");
+      }
     } catch (error: unknown) {
+      if (isDeletingOwnAccount) {
+        sessionStorage.removeItem("isLoggingOut");
+      }
+      setIsModalOpen(false);
+      setMode("default");
+      setIsDropdownOpen(false);
+      setIsSidebarOpen(false);
       toast.error(getAxiosErrorMessage(error));
-    } finally {
-      closeDropdown();
-      handleModalClose();
     }
   }
 
   return (
     <button
-      onClick={handleDeleteAccount}
+      className="delete-account-btn"
+      title="Fiók törlése"
       disabled={isPending}
-      aria-label="Kijelentkezés"
-      className="flex items-center justify-center gap-2 p-2 rounded cursor-pointer dark:text-red-400 text-red-800 dark:hover:bg-red-800 hover:bg-red-300 transition-colors duration-300"
+      onClick={handleDeleteAccount}
     >
-      <Trash2 /> Fiók törlése
+      {children}
     </button>
   );
 }

@@ -15,22 +15,22 @@ export async function loginUserService({
   password,
 }: LoginSchemaType): Promise<{
   accessToken: string;
-  userObj: { username: string; role: "USER" | "ADMIN" };
+  userObj: { _id: string; username: string; role: "USER" | "ADMIN" };
   refreshToken: string;
 }> {
   try {
     const userObj = await findUserByUsername(username);
-
     if (!userObj) {
-      throw new NotFoundError("Felhasználó nem található.");
+      throw new NotFoundError("Érvénytelen felhasználónév vagy jelszó.");
     }
 
     const isValid = await validatePassword(password, userObj.password);
     if (!isValid) {
-      throw new UnauthorizedError("Érvénytelen jelszó.");
+      throw new UnauthorizedError("Érvénytelen felhasználónév vagy jelszó.");
     }
 
     const tokenPayload = {
+      _id: userObj._id.toString(),
       username: userObj.username,
       role: userObj.role,
     };
@@ -51,7 +51,11 @@ export async function loginUserService({
 
     return {
       accessToken,
-      userObj: tokenPayload,
+      userObj: {
+        _id: userObj._id.toString(),
+        username: userObj.username,
+        role: userObj.role,
+      },
       refreshToken,
     };
   } catch (error) {

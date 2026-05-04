@@ -1,16 +1,14 @@
 import { SquarePen } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function UpdateGalleryTitleLink({
   galleryTitleId,
 }: {
   galleryTitleId: string;
 }) {
+  const pathname = useLocation().pathname;
   return (
-    <Link
-      to={`/my-gallery-titles/update/${galleryTitleId}`}
-      className="action-btn"
-    >
+    <Link to={`${pathname}/update/${galleryTitleId}`} className="action-btn">
       <SquarePen />
     </Link>
   );

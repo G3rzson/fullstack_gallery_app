@@ -24,7 +24,7 @@ userRouter.post("/user/logout", logoutController);
 userRouter.post("/user/refresh", refreshController);
 
 userRouter.post(
-  "/user/delete-account",
+  "/user/delete-account/:userId",
   verifyAccessTokenMW(),
   deleteAccountController,
 );

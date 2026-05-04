@@ -24,6 +24,11 @@ export const setAuthToken = (
   setAccessToken = setter;
 };
 
+// Immediately nulls the module-level token without waiting for React re-render
+export const clearAuthToken = () => {
+  accessToken = null;
+};
+
 // Request interceptor: Add Authorization header
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -48,23 +53,33 @@ apiClient.interceptors.response.use(
     // Don't retry if the request is already a refresh request
     const isRefreshRequest = originalRequest.url?.includes("/user/refresh");
 
+    // Don't retry if the request is a login request
+    const isLoginRequest = originalRequest.url?.includes("/user/login");
+
+    // Don't retry if user is logging out or deleting account
+    const isLoggingOut = sessionStorage.getItem("isLoggingOut") === "true";
+
     // If error is 401 and we haven't retried yet and it's not a refresh request
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !isRefreshRequest
+      !isRefreshRequest &&
+      !isLoginRequest &&
+      !isLoggingOut
     ) {
       originalRequest._retry = true;
 
       try {
-        // Try to refresh the token
-        const response = await axios.post(
-          `${API_BASE_URL}/user/refresh`,
-          {},
-          {
-            withCredentials: true,
+        // Try to refresh the token using a new axios instance to avoid interceptor loop
+        const refreshClient = axios.create({
+          baseURL: API_BASE_URL,
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+        });
+
+        const response = await refreshClient.post("/user/refresh");
 
         const newAccessToken = response.data.data.accessToken;
 
@@ -81,6 +96,7 @@ apiClient.interceptors.response.use(
 
         return apiClient(originalRequest);
       } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError);
         // If refresh fails, clear token and redirect to login
         if (setAccessToken) {
           setAccessToken(null);

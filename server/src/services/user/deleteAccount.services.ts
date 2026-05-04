@@ -1,19 +1,21 @@
 import {
   deleteGalleryImage,
   deleteGalleryTitle,
-  getAllGalleryTitleByUsername,
+  getAllGalleryTitleByUserId,
   getGalleryImagesByGalleryId,
-} from "../../db/dal/galery.repository";
-import { deleteUserByUsername } from "../../db/dal/user.repository";
+} from "../../db/dal/gallery.repository";
+import { deleteUserById } from "../../db/dal/user.repository";
 import cloudinary from "../../functions/cloudinary";
 import { errorHandler } from "../../functions/errorHandler";
 
-export async function deleteAccountService(username: string): Promise<void> {
+export async function deleteAccountService(userId: string): Promise<void> {
   try {
-    const galleryTitles = await getAllGalleryTitleByUsername(username);
+    const galleryTitles = await getAllGalleryTitleByUserId(userId);
 
-    if (!galleryTitles) {
-      throw new Error("Hiba történt a müvelet végrahajtása során.");
+    if (!galleryTitles || galleryTitles.length === 0) {
+      // Ha nincs galéria, csak töröljük a felhasználót
+      await deleteUserById(userId);
+      return;
     }
 
     for (const galleryTitle of galleryTitles) {
@@ -33,7 +35,7 @@ export async function deleteAccountService(username: string): Promise<void> {
       await deleteGalleryTitle(galleryTitle._id.toString());
     }
 
-    await deleteUserByUsername(username);
+    await deleteUserById(userId);
   } catch (error) {
     console.error("Fiók törlése közben hiba történt:", error);
     errorHandler(error);
