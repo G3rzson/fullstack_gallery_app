@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import EmptyList from "./EmptyList";
 import PageLoader from "./PageLoader";
 import ServerError from "./ServerError";
@@ -14,14 +13,12 @@ import useGetUsers from "../hooks/useGetUsers";
 import useGetGalleryImages from "../hooks/useGetGalleryImages";
 import GalleryTitles from "./GalleryTitles";
 import GalleryImages from "./GalleryImages";
-import { useSearchContext } from "../hooks/useSearchContext";
 
 type Props = {
   type: GetDataType;
 };
 
 export default function GetData({ type }: Props) {
-  const { setHasListItem } = useSearchContext();
   let query;
 
   if (type === "userData") {
@@ -35,12 +32,6 @@ export default function GetData({ type }: Props) {
   }
 
   const { isLoading, isError, data, error } = query;
-
-  useEffect(() => {
-    if (data) {
-      setHasListItem(data.length > 0);
-    }
-  }, [data, setHasListItem]);
 
   if (isLoading) return <PageLoader />;
 
