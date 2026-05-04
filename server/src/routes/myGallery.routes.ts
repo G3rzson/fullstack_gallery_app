@@ -15,6 +15,7 @@ import { deleteManyGalleryImageController } from "../controllers/myGallery/delet
 import { limitGalleryTitlesMW } from "../middlewares/limitGalleryTitles.mw";
 import { limitGalleryImagesMW } from "../middlewares/limitGalleryImages.mw";
 import { getGalleryTitleController } from "../controllers/myGallery/getGalleryTitle.controller";
+import { hasPermissionMW } from "../middlewares/hasPermission.mw";
 
 const myGalleryRouter = Router();
 
@@ -39,6 +40,7 @@ myGalleryRouter.get(
 myGalleryRouter.put(
   "/my-gallery-titles/:galleryTitleId",
   verifyAccessTokenMW(),
+  hasPermissionMW,
   changeGalleryTitleAccessController,
 );
 myGalleryRouter.post(
@@ -51,18 +53,21 @@ myGalleryRouter.post(
 myGalleryRouter.put(
   "/my-gallery-titles/update/:galleryTitleId",
   verifyAccessTokenMW(),
+  hasPermissionMW,
   validateDataMW(gallerySchema),
   updateGalleryController,
 );
 myGalleryRouter.delete(
   "/my-gallery-titles/:galleryTitleId",
   verifyAccessTokenMW(),
+  hasPermissionMW,
   deleteGalleryTitleController,
 );
 
 myGalleryRouter.delete(
   "/my-gallery-titles/:galleryTitleId/:imageId",
   verifyAccessTokenMW(),
+  hasPermissionMW,
   deleteGalleryImageController,
 );
 myGalleryRouter.post(
@@ -75,6 +80,7 @@ myGalleryRouter.post(
 myGalleryRouter.post(
   "/my-gallery-titles/:galleryTitleId/delete-many",
   verifyAccessTokenMW(),
+  hasPermissionMW,
   deleteManyGalleryImageController,
 );
 

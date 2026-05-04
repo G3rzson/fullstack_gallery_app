@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { deleteAccountService } from "../../services/user/deleteAccount.services";
+import { AppError } from "../../errors/AppError";
 
 export async function deleteAccountController(
   req: Request,
@@ -9,11 +10,16 @@ export async function deleteAccountController(
   try {
     const userIdToDelete = req.params.userId as string;
     const loggedInUserId = req._id as string;
+    const loggedInUserRole = req.userRole;
+
+    const isDeletingOwnAccount = userIdToDelete === loggedInUserId;
+
+    // Sima user csak a saját accountját törölheti
+    if (!isDeletingOwnAccount && loggedInUserRole !== "ADMIN") {
+      throw new AppError("Nincs jogosultságod ehhez a művelethez.", 403);
+    }
 
     await deleteAccountService(userIdToDelete);
-
-    // Csak akkor töröljük a cookie-t, ha a bejelentkezett user a saját accountját törli
-    const isDeletingOwnAccount = userIdToDelete === loggedInUserId;
 
     if (isDeletingOwnAccount) {
       const isProduction = process.env.NODE_ENV === "production";
